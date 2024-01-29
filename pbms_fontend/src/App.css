@@ -36,3 +36,47 @@
     transform: rotate(360deg);
   }
 }
+.App {
+  display: flex;
+}
+/* Card */
+.Calendar {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.Chart {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.ExpectTransaction {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.ExportImport {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.Loan {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.Transaction {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.Wallet {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
+.Budget {
+  background: #FFFFFF;
+  width: 100%;
+  height: 1000px;
+}
