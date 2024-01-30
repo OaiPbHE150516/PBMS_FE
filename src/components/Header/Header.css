@@ -1,0 +1,27 @@
+.Header{
+    width: 100%;
+    background: #59C8FF;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.Header svg{
+    cursor: pointer;
+    font-size: 20px;
+}
+.Menu{
+    margin-left: 30px;
+}
+.User_Setting{
+    display: flex;
+}
+.User_Setting .User{
+    margin-right: 50px;
+}
+.User_Setting .User svg{
+    margin-right: 10px;
+}
+.User_Setting .Setting{
+    margin-right: 30px;
+}
