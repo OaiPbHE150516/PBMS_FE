@@ -3,5 +3,84 @@
 .Overview {
   background: #FFFFFF;
   width: 100%;
-  height: 1000px;
+}
+.Title{
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+.View_Wallet{
+  display: flex;
+  justify-content: center;
+}
+.View_Wallet .table{
+  height: 200px;
+  width: 400px;
+  background: #D9F3FF;
+  margin: 10px;
+  border-radius: 10px;
+}
+.View .TotalBudgetTransaction div{
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+.View .TotalBudgetTransaction span{
+  background: #D9F3FF;
+}
+
+.Wallet .ListWallet div{
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px;
+}
+.Wallet .ListWallet span{
+  background: #D9F3FF;
+}
+
+/* ======================== */
+.OverviewWeek_Surplus{
+  display: flex;
+  justify-content: center;
+}
+.OverviewWeek_Surplus .table{
+  height: 400px;
+  width: 600px;
+  background: #D9F3FF;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+
+/* ======================== */
+.Transaction_Budget{
+  display: flex;
+  justify-content: center;
+}
+.Transaction_Budget .table{
+  height: 420px;
+  width: 600px;
+  background: #D9F3FF;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.TransactionFeatured .ListTransaction .EachTrans{
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+.TransactionFeatured .ListTransaction .EachTrans span{
+  background: #D9F3FF;
+}
+
+.BudgetFeatured .ListBudget .EachBudget{
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+.BudgetFeatured .ListBudget .EachBudget span{
+  background: #D9F3FF;
 }
