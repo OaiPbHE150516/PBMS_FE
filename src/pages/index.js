@@ -7,6 +7,7 @@ import ExportImport from "./export_import";
 import Loan from "./loan";
 import Transaction from "./transaction";
 import Wallet from "./wallet";
+import Value from "./value";
 
 
-export { Budget, Overview, Calendar, Chart, ExpectTransaction, ExportImport, Loan, Transaction, Wallet };
+export { Budget, Overview, Calendar, Chart, ExpectTransaction, ExportImport, Loan, Transaction, Wallet, Value };

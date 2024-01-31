@@ -9,6 +9,7 @@ import {
   Overview,
   Transaction,
   Wallet,
+  Value,
 } from "../pages";
 
 export const routes = [
@@ -63,6 +64,12 @@ export const routes = [
     path: ROUTE_CONSTANTS.BUDGET_PAGE,
     isPrivate: false,
     component: <Budget />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.VALUE_PAGE,
+    isPrivate: false,
+    component: <Value />,
     exact: true,
   },
 ];

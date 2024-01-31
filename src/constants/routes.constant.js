@@ -15,5 +15,6 @@ export const ROUTE_CONSTANTS = {
     OVERVIEW_PAGE: "/overview",
     CHART_PAGE: "/chart",
     CALENDAR_PAGE: "/calendar",
+    VALUE_PAGE: "/value",
 
 }

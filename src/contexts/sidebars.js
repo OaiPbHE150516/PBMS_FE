@@ -65,4 +65,10 @@ export const sidebars = [
     path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,
   },
+  {
+    text: "Value",
+    icon: <BsFileEarmarkZip />,
+    path: ROUTE_CONSTANTS.VALUE_PAGE,
+    exact: true,
+  },
 ];
