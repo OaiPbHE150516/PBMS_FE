@@ -1,21 +1,8 @@
-.Sidebar{
-    width: 300px;
+#sidebar{
     background: #D9F3FF;
+    margin-top: none;
 }
-/* Logo */
-.Logo{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* height: 60px; */
-}
-.Logo img{
-    height: 100px;
-}
-.Logo span{
-    font-size: 32px;
-    font-weight: bold;
-}
+
 /* listSidebar */
 .listSidebar .content{
     display: flex;
@@ -30,15 +17,16 @@
 .listSidebar .content:first-child{
     margin-top: 10px;
 }
-.listSidebar .content a{
+.listSidebar a{
     color: black;
     text-decoration: none;
 }
-.listSidebar .content span{
-    margin-left: 20px;
+.listSidebar a:hover{
+    color: black;
 }
 .listSidebar .active{
     background: #FFFFFF;
+    color: black;
 }
 .listSidebar .active::before{
     content: '';

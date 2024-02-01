@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-// import "./Header.css";
-import {
-  BsFillGrid3X3GapFill,
-  BsPersonCircle,
-  BsFillGearFill,
-  BsSearch,
-  BsList,
-  BsBell,
-} from "react-icons/bs";
-import Dropdown from "react-bootstrap/Dropdown";
+import "./Header.css";
+import { BsPersonCircle, BsFillGearFill, BsList } from "react-icons/bs";
 
 import Logo from "../../assets/Logo.png";
 import { Notification, Profile, Searchbar } from "../../components";
@@ -36,14 +28,13 @@ const AuthenticatedHeader = () => {
   );
 };
 
-const Header = ({ toggleSidebar }) => {
+const Header = ({ onToggleSidebar }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const disptach = useDispatch();
 
   const user = useSelector((state) => state.authen.user);
   console.log(user);
-
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -53,11 +44,11 @@ const Header = ({ toggleSidebar }) => {
 
   return (
     <>
-      <header
-        id="header"
-        className="header fixed-top d-flex align-items-center"
-      >
-        <div className="d-flex align-items-center justify-content-between">
+      <header id="header" className="header fixed-top d-flex">
+        <div
+          className="d-flex align-items-center justify-content-between"
+          onClick={onToggleSidebar}
+        >
           <a href="index.html" className="logo d-flex align-items-center">
             <img src={Logo} alt="" />
             <span>PBMS</span>
@@ -67,23 +58,27 @@ const Header = ({ toggleSidebar }) => {
         </div>
         {/* End Logo */}
 
-        <Searchbar />
-        {/* End Search Bar */}
-
-        {user !== null ? (
-          <AuthenticatedHeader />
-        ) : (
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              disptach(signin(credentialResponse.credential));
-              console.log("ok: ", credentialResponse);
-            }}
-            onError={() => {
-              
-              console.log("Login Failed");
-            }}
-          />
-        )}
+        <div className="User_Setting">
+          <div className="User">
+            <BsPersonCircle />
+            {user !== null ? (
+              <AuthenticatedHeader />
+            ) : (
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  disptach(signin(credentialResponse.credential));
+                  console.log("ok: ", credentialResponse);
+                }}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            )}
+          </div>
+          <div className="Setting">
+            <BsFillGearFill />
+          </div>
+        </div>
       </header>
       {/* End Header */}
     </>

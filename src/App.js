@@ -10,10 +10,10 @@ import { useState } from "react";
 import { Header, Sidebar, Main } from "./components";
 
 function App() {
-  const [isSidebarVisible, setSidebarVisible] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setSidebarVisible(!isSidebarVisible);
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const renderRoute = () => {
@@ -31,18 +31,13 @@ function App() {
 
   return (
     <>
-      <Router>
-        <div>
-          <Header toggleSidebar={toggleSidebar} />
-          <Routes>
-            {renderRoute()}
-            {/* <Routes path="*" element={<ErrorPage />} /> */}
-          </Routes>
-          <Sidebar isSidebarVisible={isSidebarVisible} />
-
-          {/* <ScrollToTop /> */}
-        </div>
-      </Router>
+      <div className={`App ${isSidebarOpen ? "toggle-sidebar" : ""}`}>
+        <Router>
+          <Header onToggleSidebar={handleToggleSidebar} />
+          <Sidebar isOpen={isSidebarOpen} />
+          <Routes>{renderRoute()}</Routes>
+        </Router>
+      </div>
     </>
   );
 }
