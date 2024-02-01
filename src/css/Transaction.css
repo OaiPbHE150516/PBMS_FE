@@ -1,0 +1,76 @@
+.addTransaction{
+    cursor: pointer;
+}
+.addTransaction svg{
+    font-size: 30px;
+    background: #59C8FF;
+    border-radius: 50%;
+}
+.addTransaction span{
+    margin-left: 20px;
+    font-weight: bold;
+}
+.date{
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    width: 1000px;
+    height: 50px;
+    background-color: #D9F3FF;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+.date svg{
+    font-size: 30px;
+    margin: auto 20px;
+    cursor: pointer;
+}
+.date span{
+    font-size: 24px;
+    font-weight: bold;
+    margin: auto 20px;
+}
+
+/* listTransaction */
+.tableTransaction{
+    background: #D9F3FF;
+    width: 1000px;
+    margin: auto;
+    border-radius: 10px;
+}
+.tableTransaction .total{
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    height: 50px;
+    border-bottom: 1px solid black;
+}
+.tableTransaction .total span{
+    margin: auto 20px;
+    color: black;
+    font-weight: bold;
+}
+.tableTransaction .eachTransaction{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+.tableTransaction .money_Date_Menu{
+    display: flex;
+}
+.tableTransaction .money_Date_Menu .money_Date div:last-child{
+    text-align: end;
+}
+.tableTransaction .money_Date_Menu svg{
+    font-size: 30px;
+    margin: auto;
+    cursor: pointer;
+}
+.tableTransaction .money_Date_Menu .color_red{
+    background: #F70500;
+    width: 10px;
+}
+.tableTransaction .money_Date_Menu .color_green{
+    background: #1D7100;
+    width: 10px;
+}
