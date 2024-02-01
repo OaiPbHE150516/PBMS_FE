@@ -1,0 +1,36 @@
+#header{
+    width: 100%;
+    background: #59C8FF;
+    display: flex;
+    justify-content: space-between;
+}
+#header svg:hover{
+    cursor: pointer;
+}
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logo img{
+    height: 60px;
+}
+.logo span{
+    color: black !important;
+}
+.User_Setting{
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+.User_Setting svg{
+    font-size: 20px;
+}
+.User{
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+.User svg{
+    margin-right: 10px;
+}
