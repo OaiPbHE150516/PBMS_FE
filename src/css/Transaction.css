@@ -1,76 +1,185 @@
-.addTransaction{
-    cursor: pointer;
+.addTransaction {
+  cursor: pointer;
 }
-.addTransaction svg{
-    font-size: 30px;
-    background: #59C8FF;
-    border-radius: 50%;
+.addTransaction svg {
+  font-size: 30px;
+  background: #59c8ff;
+  border-radius: 50%;
 }
-.addTransaction span{
-    margin-left: 20px;
-    font-weight: bold;
+.addTransaction span {
+  margin-left: 20px;
+  font-weight: bold;
 }
-.date{
-    display: flex;
-    text-align: center;
-    justify-content: space-between;
-    width: 1000px;
-    height: 50px;
-    background-color: #D9F3FF;
-    margin: 50px auto;
-    border-radius: 10px;
+.date {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  width: 1000px;
+  height: 50px;
+  background-color: #d9f3ff;
+  margin: 50px auto;
+  border-radius: 10px;
 }
-.date svg{
-    font-size: 30px;
-    margin: auto 20px;
-    cursor: pointer;
+.date svg {
+  font-size: 30px;
+  margin: auto 20px;
+  cursor: pointer;
 }
-.date span{
-    font-size: 24px;
-    font-weight: bold;
-    margin: auto 20px;
+.date span {
+  font-size: 24px;
+  font-weight: bold;
+  margin: auto 20px;
 }
 
 /* listTransaction */
-.tableTransaction{
-    background: #D9F3FF;
-    width: 1000px;
-    margin: auto;
-    border-radius: 10px;
+.tableTransaction {
+  background: #d9f3ff;
+  width: 1000px;
+  margin: auto;
+  border-radius: 10px;
+  position: relative;
 }
-.tableTransaction .total{
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-    height: 50px;
-    border-bottom: 1px solid black;
+.tableTransaction .total {
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+  height: 50px;
+  border-bottom: 1px solid black;
 }
-.tableTransaction .total span{
-    margin: auto 20px;
-    color: black;
-    font-weight: bold;
+.tableTransaction .total span {
+  margin: auto 20px;
+  color: black;
+  font-weight: bold;
 }
-.tableTransaction .eachTransaction{
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
+.tableTransaction .eachTransaction {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
 }
-.tableTransaction .money_Date_Menu{
-    display: flex;
+.tableTransaction .money_Date_Menu {
+  display: flex;
 }
-.tableTransaction .money_Date_Menu .money_Date div:last-child{
-    text-align: end;
+.tableTransaction .money_Date_Menu .money_Date div:last-child {
+  text-align: end;
 }
-.tableTransaction .money_Date_Menu svg{
-    font-size: 30px;
-    margin: auto;
-    cursor: pointer;
+.tableTransaction .money_Date_Menu svg {
+  font-size: 30px;
+  margin: auto;
+  cursor: pointer;
 }
-.tableTransaction .money_Date_Menu .color_red{
-    background: #F70500;
-    width: 10px;
+.tableTransaction .money_Date_Menu .color_red {
+  background: #f70500;
+  width: 10px;
 }
-.tableTransaction .money_Date_Menu .color_green{
-    background: #1D7100;
-    width: 10px;
+.tableTransaction .money_Date_Menu .color_green {
+  background: #1d7100;
+  width: 10px;
+}
+
+/* =============From Create============= */
+.create {
+  background: #d9f3ff;
+  width: 800px;
+  margin: auto;
+  border-radius: 10px;
+}
+.revenue_spending {
+  display: flex;
+}
+.revenue,
+.spending {
+  width: 50%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create form {
+  display: flex;
+  justify-content: space-around;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.create .title {
+  font-weight: bold !important;
+}
+.create input {
+  width: 250px;
+  height: 40px;
+  border-radius: 10px;
+  border: none !important;
+}
+.create select {
+  width: 250px;
+  height: 40px;
+  border-radius: 10px;
+  border: none !important;
+}
+.create .button button {
+  margin: 30px 20px;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  width: 80px;
+  font-weight: bold;
+}
+.create .button .btnClose {
+  background: #ffffff;
+}
+.create .Category,
+.create .Wallet,
+.create .Money,
+.create .Date {
+  margin-top: 20px;
+}
+.create .Money span {
+  margin-left: -50px;
+  font-weight: bold;
+}
+
+#createRevenue .button .btnCreate {
+  background: #1d7100;
+  color: #ffffff;
+}
+#createSpending .button .btnCreate {
+  background: #f70500;
+  color: #ffffff;
+}
+#createRevenue .spending {
+  background: #eeeeee;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  border-bottom: 2px solid #000000;
+}
+#createSpending .revenue {
+  background: #eeeeee;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  border-bottom: 2px solid #000000;
+}
+#createSpending .spending {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-radius: 10px 10px 0 0;
+}
+#createRevenue .revenue {
+  border-top: 1px solid #000000;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-radius: 10px 10px 0 0;
+}
+
+.formCreateContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+.formCreate {
+  z-index: 1000;
 }
