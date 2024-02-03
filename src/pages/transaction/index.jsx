@@ -41,14 +41,15 @@ const Transaction = () => {
   //Setup click Detail
   const [openDropdownDetail, setOpenDropdownDetail] = useState(null);
   const handleDropdownToggleDetail = (index) => {
-    setOpenDropdownDetail((prevIndex) =>
-      prevIndex === index ? null : index
-    );
+    setOpenDropdownDetail((prevIndex) => (prevIndex === index ? null : index));
     setOpenDropdownCreate(false);
     setSelectedAction(null);
   };
+  const handleDeleteItemClick = (index) => {
+    window.confirm("Are you sure you want to delete this item?");
+  };
   //Menu Detail
-  const renderDropdownDetail = (isOpen) => {
+  const renderDropdownDetail = (isOpen, index) => {
     return (
       <Dropdown
         align={{ lg: "end" }}
@@ -56,8 +57,8 @@ const Transaction = () => {
         onHide={() => setOpenDropdownDetail(null)}
       >
         <Dropdown.Menu>
-          <Dropdown.Item>Edit</Dropdown.Item>
-          <Dropdown.Item>Delete</Dropdown.Item>
+          <Dropdown.Item onClick={() => handleEditItemClick(index)}>Edit</Dropdown.Item>
+          <Dropdown.Item onClick={() => handleDeleteItemClick(index)}>Delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     );
@@ -90,7 +91,7 @@ const Transaction = () => {
             <BsThreeDotsVertical
               onClick={() => handleDropdownToggleDetail(index)}
             />
-            {renderDropdownDetail(isOpen)}
+            {renderDropdownDetail(isOpen, index)}
             <div className={colorTransaction}></div>
           </div>
         </div>
@@ -180,7 +181,10 @@ const Transaction = () => {
               <button type="submit" className="btnCreate">
                 Create
               </button>
-              <button type="submit" className="btnClose" onClick={() => setIsFormVisible(false)}>
+              <button
+                className="btnClose"
+                onClick={() => setIsFormVisible(false)}
+              >
                 Close
               </button>
             </div>
@@ -244,10 +248,136 @@ const Transaction = () => {
               <button type="submit" className="btnCreate">
                 Create
               </button>
-              <button type="submit" className="btnClose" onClick={() => setIsFormVisible(false)}>
+              <button
+                className="btnClose"
+                onClick={() => setIsFormVisible(false)}
+              >
                 Close
               </button>
             </div>
+          </div>
+        </form>
+      </div>
+    );
+  };
+
+  //=================Form Edit Transaction=================
+  //Setup click Edit
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const handleEditItemClick = (index) => {
+    setSelectedTransaction(listTransaction[index]);
+    setOpenDropdownDetail(null);
+    setIsFormVisible(true);
+  };
+
+  const renderEditForm = () => {
+    if (selectedTransaction) {
+      const { money } = selectedTransaction;
+      if (money < 0) {
+        // return renderEditSpending();
+        return (
+          <div className="formEditContainer">
+          <div className="formEdit">{renderEditSpending()}</div>
+        </div>
+        )
+      } else {
+        // return renderEditRevenue();
+        return (
+          <div className="formEditContainer">
+          <div className="formEdit">{renderEditRevenue()}</div>
+        </div>
+        )
+      }
+    }
+    return null;
+  };
+  //Form Spending
+  const renderEditSpending = () => {
+    return (
+      <div className="editTransaction editSpending">
+        <div className="title edit">Update Spending</div>
+        <form>
+          <div className="Row">
+            <div className="Category">
+              <div className="title">Category</div>
+              <select>
+                <option value="1">Category 1</option>
+                <option value="2">Category 2</option>
+                <option value="3">Category 3</option>
+              </select>
+            </div>
+            <div className="Money">
+              <div className="title">Amount of money</div>
+              <input type="text" />
+              <span>VNĐ</span>
+            </div>
+          </div>
+          <div className="Row">
+            <div className="Wallet">
+              <div className="title">Wallet</div>
+              <select>
+                <option value="1">Wallet 1</option>
+                <option value="2">Wallet 2</option>
+                <option value="3">Wallet 3</option>
+              </select>
+            </div>
+            <div className="Date">
+              <div className="title">Date</div>
+              <input type="date" />
+            </div>
+          </div>
+          <div className="Total">Total: 100.000.000 VNĐ</div>
+          <div className="Button">
+            <button type="submit" className="btnSave">
+              Save
+            </button>
+            <button className="btnClose" onClick={() => setIsFormVisible(false)}>Close</button>
+          </div>
+        </form>
+      </div>
+    );
+  };
+  //Form Spending
+  const renderEditRevenue = () => {
+    return (
+      <div className="editTransaction editRevenue">
+        <div className="title edit">Update Revenue</div>
+        <form>
+          <div className="Row">
+            <div className="Category">
+              <div className="title">Category</div>
+              <select>
+                <option value="1">Category 1</option>
+                <option value="2">Category 2</option>
+                <option value="3">Category 3</option>
+              </select>
+            </div>
+            <div className="Money">
+              <div className="title">Amount of money</div>
+              <input type="text" />
+              <span>VNĐ</span>
+            </div>
+          </div>
+          <div className="Row">
+            <div className="Wallet">
+              <div className="title">Wallet</div>
+              <select>
+                <option value="1">Wallet 1</option>
+                <option value="2">Wallet 2</option>
+                <option value="3">Wallet 3</option>
+              </select>
+            </div>
+            <div className="Date">
+              <div className="title">Date</div>
+              <input type="date" />
+            </div>
+          </div>
+          <div className="Total">Total: 100.000.000 VNĐ</div>
+          <div className="Button">
+            <button type="submit" className="btnSave">
+              Save
+            </button>
+            <button className="btnClose">Close</button>
           </div>
         </form>
       </div>
@@ -266,6 +396,7 @@ const Transaction = () => {
       </div>
       {renderDropdownCreate()}
       {renderFormCreateTransaction()}
+      {renderEditForm()}
       <div className="date">
         <BsArrowLeft />
         <span>November 2023</span>
@@ -276,7 +407,7 @@ const Transaction = () => {
           <span>Total Transaction: {totalTransactions}</span>
           <span>Total Amount: {totalAmount}.000 VNĐ</span>
         </div>
-        <div className="listTransaction">{renderTransaction()}</div>
+        <div className="listTransaction" onClick={() => setIsFormVisible(false)}>{renderTransaction()}</div>
       </div>
     </div>
   );
