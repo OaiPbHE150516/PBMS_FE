@@ -4,23 +4,18 @@ import {
   BsFillWalletFill,
   BsCoin,
   BsReceipt,
-  BsBarChart,
   BsCalendar2Week,
   BsBank2,
   BsFileEarmarkZip,
+  BsFillGearFill,
+  BsFillPeopleFill,
 } from "react-icons/bs";
 import { ROUTE_CONSTANTS } from "../constants";
 export const sidebars = [
   {
     text: "Overview",
-    icon: <BsFillMenuButtonWideFill  />,
+    icon: <BsFillMenuButtonWideFill />,
     path: ROUTE_CONSTANTS.OVERVIEW_PAGE,
-    exact: true,
-  },
-  {
-    text: "Wallet",
-    icon: <BsDatabaseCheck />,
-    path: ROUTE_CONSTANTS.WALLET_PAGE,
     exact: true,
   },
   {
@@ -30,27 +25,21 @@ export const sidebars = [
     exact: true,
   },
   {
-    text: "Expected Transaction",
+    text: "Wallet",
+    icon: <BsDatabaseCheck />,
+    path: ROUTE_CONSTANTS.WALLET_PAGE,
+    exact: true,
+  },
+  {
+    text: "Budget",
     icon: <BsCoin />,
-    path: ROUTE_CONSTANTS.EXPECTED_TRANSACTION_PAGE,
+    path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,
   },
   {
-    text: "Loan",
+    text: "Expected",
     icon: <BsReceipt />,
-    path: ROUTE_CONSTANTS.LOAN_PAGE,
-    exact: true,
-  },
-  {
-    text: "Export Import",
-    icon: <BsBarChart />,
-    path: ROUTE_CONSTANTS.EXPORT_IMPORT_PAGE,
-    exact: true,
-  },
-  {
-    text: "Calendar",
-    icon: <BsCalendar2Week />,
-    path: ROUTE_CONSTANTS.CALENDAR_PAGE,
+    path: ROUTE_CONSTANTS.EXPECTED_PAGE,
     exact: true,
   },
   {
@@ -60,15 +49,33 @@ export const sidebars = [
     exact: true,
   },
   {
-    text: "Budget",
-    icon: <BsFileEarmarkZip />,
-    path: ROUTE_CONSTANTS.BUDGET_PAGE,
+    text: "Calendar",
+    icon: <BsCalendar2Week />,
+    path: ROUTE_CONSTANTS.CALENDAR_PAGE,
     exact: true,
   },
   {
-    text: "Value",
+    text: "Collaborators",
+    icon: <BsFillPeopleFill />,
+    path: ROUTE_CONSTANTS.COLLABORATORS_VALUE,
+    exact: true,
+  },
+  {
+    text: "Loan",
+    icon: <BsBank2 />,
+    path: ROUTE_CONSTANTS.LOAN_PAGE,
+    exact: true,
+  },
+  {
+    text: "Report",
     icon: <BsFileEarmarkZip />,
-    path: ROUTE_CONSTANTS.VALUE_PAGE,
+    path: ROUTE_CONSTANTS.LOAN_PAGE,
+    exact: true,
+  },
+  {
+    text: "Setting",
+    icon: <BsFillGearFill />,
+    path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,
   },
 ];

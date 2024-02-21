@@ -1,21 +1,10 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { routes } from "./contexts/routes";
 import { useState } from "react";
 import { Header, Sidebar, Main } from "./components";
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const handleToggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   const renderRoute = () => {
     return routes.map((route) => {
       return (
@@ -28,13 +17,18 @@ function App() {
       );
     });
   };
+  const [isSidebarIcons, setIsSidebarIcons] = useState(false);
+
+  const toggleSidebarMode = () => {
+    setIsSidebarIcons((prevState) => !prevState);
+  };
 
   return (
     <>
-      <div className={`App ${isSidebarOpen ? "toggle-sidebar" : ""}`}>
+      <div className={`App`}>
         <Router>
-          <Header onToggleSidebar={handleToggleSidebar} />
-          <Sidebar isOpen={isSidebarOpen} />
+        <Header onToggleSidebar={toggleSidebarMode} />
+          <Sidebar isIconsMode={isSidebarIcons} />
           <Routes>{renderRoute()}</Routes>
         </Router>
       </div>

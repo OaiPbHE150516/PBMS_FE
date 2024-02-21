@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Header.css";
-import { BsPersonCircle, BsFillGearFill, BsList } from "react-icons/bs";
+import { BsList } from "react-icons/bs";
 
 import Logo from "../../assets/Logo.png";
 import { Notification, Profile, Searchbar } from "../../components";
@@ -16,12 +16,9 @@ const AuthenticatedHeader = () => {
           <li className="nav-item dropdown">
             <Notification />
           </li>
-          {/* End Notification Nav */}
-
           <li className="nav-item dropdown pe-3">
             <Profile />
           </li>
-          {/* End Profile Nav */}
         </ul>
       </nav>
     </>
@@ -29,16 +26,11 @@ const AuthenticatedHeader = () => {
 };
 
 const Header = ({ onToggleSidebar }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const disptach = useDispatch();
 
   const user = useSelector((state) => state.authen.user);
   console.log(user);
-
-  const handleDropdownToggle = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const [isSignIn, setIsSignIn] = useState(false);
 
@@ -47,66 +39,33 @@ const Header = ({ onToggleSidebar }) => {
       <header id="header" className="header fixed-top d-flex">
         <div
           className="d-flex align-items-center justify-content-between"
-          onClick={onToggleSidebar}
         >
           <a href="index.html" className="logo d-flex align-items-center">
             <img src={Logo} alt="" />
             <span>PBMS</span>
           </a>
 
-          <BsList className="toggle-sidebar-btn" />
+          <BsList className="toggle-sidebar-btn" onClick={onToggleSidebar} />
         </div>
-        {/* End Logo */}
 
-        <div className="User_Setting">
-          <div className="User">
-            <BsPersonCircle />
-            {user !== null ? (
-              <AuthenticatedHeader />
-            ) : (
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  disptach(signin(credentialResponse.credential));
-                  console.log("ok: ", credentialResponse);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-            )}
-          </div>
-          <div className="Setting">
-            <BsFillGearFill />
-          </div>
+        <div className="User">
+          {user !== null ? (
+            <AuthenticatedHeader />
+          ) : (
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                disptach(signin(credentialResponse.credential));
+                console.log("ok: ", credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          )}
         </div>
       </header>
-      {/* End Header */}
     </>
   );
-
-  // return (
-  //   <div className="Header">
-  //     <div className="Menu" onClick={toggleSidebar}>
-  //       <BsFillGrid3X3GapFill />
-  //     </div>
-  //     <div className="User_Setting">
-  //       <div className="User">
-  //         <BsPersonCircle />
-  //         <span>Tên người dùng</span>
-  //       </div>
-  //       <div className="Setting">
-  //         <BsFillGearFill onClick={handleDropdownToggle} />
-  //         <Dropdown align={{ lg: "end" }} show={dropdownOpen} onHide={() => setDropdownOpen(false)}>
-  //           <Dropdown.Menu>
-  //             <Dropdown.Item>Action</Dropdown.Item>
-  //             <Dropdown.Item>Another action</Dropdown.Item>
-  //             <Dropdown.Item>Something else</Dropdown.Item>
-  //           </Dropdown.Menu>
-  //         </Dropdown>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default Header;

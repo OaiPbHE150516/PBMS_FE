@@ -9,12 +9,12 @@ export const ROUTE_CONSTANTS = {
     BUDGET_PAGE: "/budget",
     LOAN_PAGE: "/loan",
     WALLET_PAGE: "/wallet",
-    EXPECTED_TRANSACTION_PAGE: "/expected-transaction",
+    EXPECTED_PAGE: "/expected",
     EXPORT_IMPORT_PAGE: "/export-import",
     CHANGE_PASSWORD_PAGE: "/change-password",
     OVERVIEW_PAGE: "/overview",
     CHART_PAGE: "/chart",
     CALENDAR_PAGE: "/calendar",
     VALUE_PAGE: "/value",
-
+    COLLABORATORS_VALUE: "/Collaborators",
 }
