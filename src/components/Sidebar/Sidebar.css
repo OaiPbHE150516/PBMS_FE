@@ -1,9 +1,10 @@
 #sidebar{
-    background: #D9F3FF;
+    background: #FFFFFF;
     margin-top: none;
 }
-
-/* listSidebar */
+#sidebarIcons{
+    width: 110px;
+}
 .listSidebar .content{
     display: flex;
     font-size: 18px;
@@ -25,12 +26,6 @@
     color: black;
 }
 .listSidebar .active{
-    background: #FFFFFF;
+    background: #EFEDE4;
     color: black;
-}
-.listSidebar .active::before{
-    content: '';
-    width: 10px;
-    height: 100%;
-    background: #59C8FF;
 }

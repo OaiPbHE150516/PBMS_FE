@@ -1,6 +1,6 @@
 #header{
     width: 100%;
-    background: #59C8FF;
+    background: #FFFFFF;
     display: flex;
     justify-content: space-between;
 }
@@ -17,14 +17,6 @@
 }
 .logo span{
     color: black !important;
-}
-.User_Setting{
-    display: flex;
-    align-items: center;
-    margin-right: 50px;
-}
-.User_Setting svg{
-    font-size: 20px;
 }
 .User{
     display: flex;
