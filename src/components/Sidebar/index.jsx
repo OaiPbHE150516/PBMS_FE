@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Sidebar.css";
 import { Link } from "react-router-dom";
 import { sidebars } from "../../contexts/sidebars";
-import { BsList } from "react-icons/bs";
 
 const Sidebar = ({ isIconsMode }) => {
   const [selected, setSelected] = useState(0);
@@ -49,15 +48,15 @@ const Sidebar = ({ isIconsMode }) => {
     <>
       {/* ======= Sidebar ======= */}
       {isIconsMode ? (
-        <aside id="sidebar" className={`sidebar`}>
-          <ul className="listSidebar sidebar-nav" id="sidebar-nav">
-            {renderSidebars()}
-          </ul>
-        </aside>
-      ) : (
         <aside id="sidebarIcons" className={`sidebar`}>
           <ul className="listSidebar sidebar-nav" id="sidebar-nav">
             {renderSidebarIcons()}
+          </ul>
+        </aside>
+      ) : (
+        <aside id="sidebar" className={`sidebar`}>
+          <ul className="listSidebar sidebar-nav" id="sidebar-nav">
+            {renderSidebars()}
           </ul>
         </aside>
       )}
