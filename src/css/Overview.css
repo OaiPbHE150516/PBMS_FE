@@ -1,3 +1,41 @@
 .Overview {
   width: 100%;
 }
+.title {
+  color: #000000;
+}
+.tdMoney {
+  float: right;
+}
+.red {
+  color: #f70500 !important;
+}
+
+.green {
+  color: #1d7100 !important;
+}
+.tdCateRed div {
+  background: #f70500 !important;
+  border-radius: 10px;
+  padding: 5px;
+  color: #ffffff;
+  text-align: center;
+}
+.tdCateGreen div {
+  background: #1d7100 !important;
+  border-radius: 10px;
+  padding: 5px;
+  color: #ffffff;
+  text-align: center;
+}
+.thCate {
+  display: flex;
+  justify-content: center;
+}
+.table .tdEndDay {
+  display: flex;
+  justify-content: right;
+}
+.table .thPercent {
+  text-align: center;
+}
