@@ -113,3 +113,45 @@
     width: 30px;
     height: 30px;
 }
+
+.formcreate {
+    background-color: #fff;
+    margin-bottom: 30px;
+    border: 1px solid;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  }
+  
+  .formcreate-header,
+  .formcreate-footer {
+    border-color: #ebeef4;
+    background-color: #fff;
+    color: #798eb3;
+    padding: 15px;
+  }
+  
+  .formcreate-title {
+    padding: 20px 0 15px 0;
+    font-size: 25px;
+    font-weight: bold;
+    color: #000000;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .formcreate-body {
+    padding: 0 20px 20px 20px;
+  }
+  .formcreate button.btn-primary {
+    background-color: #FFFFFF; 
+    border-color: #000; 
+    color: #000;
+}
+.formcreate label {
+    font-size: 16px;
+    font-weight: normal;
+  }
+.formcreate button.btn-secondary {
+    background-color: #1D7100; 
+    border-color: #000; 
+    color: #FFFFFF;
+}
