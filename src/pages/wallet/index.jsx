@@ -9,52 +9,42 @@ const Wallet = () => {
         <div className="Wallet">
             <PageTitle title="Wallet" />
             <div className="addWallet" /*onClick={() => handleActionItemClick("AddWallet")}*/>
-                <button>New Wallet</button>
+                <button>Create New Wallet</button>
                 <span>
                     Total: <p>1.000.000.0000 đ</p>
                 </span>
             </div>
-            <div class="card-container">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Cash<span>1.000.000.0000 đ</span></h5>
-                        <h6 class="card-sub">Created date: 31/2/2024</h6>
-                        <h6 class="card-sub">Currency unit: VND - đ</h6>
-                        <h6 class="card-sub">Initial amount: 1.000.000 đ</h6>
+            <div class="wallet-container">
+                <div class="wallet">
+                    <div class="wallet-body">
+                        <h5 class="wallet-title">Cash<span>1.000.000.0000 đ</span></h5>
+                        <h6 class="wallet-sub">Created date: 31/2/2024</h6>
+                        <h6 class="wallet-sub">Currency unit: VND - đ</h6>
+                        <h6 class="wallet-sub">Initial amount: 1.000.000 đ</h6>
                         <div class="active1"><BsToggleOn /> <span>Active</span></div>
                         <div class="active2"><IoReload />   <BsPencilSquare /></div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">TP Bank<span>1.000.000.0000 đ</span></h5>
-                        <h6 class="card-sub">Created date: 31/2/2024</h6>
-                        <h6 class="card-sub">Currency unit: VND - đ</h6>
-                        <h6 class="card-sub">Initial amount: 1.000.000 đ</h6>
+                <div class="wallet">
+                    <div class="wallet-body">
+                        <h5 class="wallet-title">TP Bank<span>1.000.000.0000 đ</span></h5>
+                        <h6 class="wallet-sub">Created date: 31/2/2024</h6>
+                        <h6 class="wallet-sub">Currency unit: VND - đ</h6>
+                        <h6 class="wallet-sub">Initial amount: 1.000.000 đ</h6>
                         <div class="active1"><BsToggleOn /> <span>Active</span></div>
-                        <div class="active2"><IoReload />    <BsPencilSquare /></div>
+                        <div class="active2"><IoReload />   <BsPencilSquare /></div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Cash<span>1.000.000.0000 đ</span></h5>
-                        <h6 class="card-sub">Created date: 31/2/2024</h6>
-                        <h6 class="card-sub">Currency unit: VND - đ</h6>
-                        <h6 class="card-sub">Initial amount: 1.000.000 đ</h6>
+                <div class="wallet">
+                    <div class="wallet-body">
+                        <h5 class="wallet-title">Techcombank<span>1.000.000.0000 đ</span></h5>
+                        <h6 class="wallet-sub">Created date: 31/2/2024</h6>
+                        <h6 class="wallet-sub">Currency unit: VND - đ</h6>
+                        <h6 class="wallet-sub">Initial amount: 1.000.000 đ</h6>
                         <div class="active1"><BsToggleOn /> <span>Active</span></div>
-                        <div class="active2"><IoReload />    <BsPencilSquare /></div>
+                        <div class="active2"><IoReload />   <BsPencilSquare /></div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">TP Bank<span>1.000.000.0000 đ</span></h5>
-                        <h6 class="card-sub">Created date: 31/2/2024</h6>
-                        <h6 class="card-sub">Currency unit: VND - đ</h6>
-                        <h6 class="card-sub">Initial amount: 1.000.000 đ</h6>
-                        <div class="active1"><BsToggleOn /> <span>Active</span></div>
-                        <div class="active2"><IoReload />    <BsPencilSquare /></div>
-                    </div>
-                </div>              
             </div>
         </div>
     );
