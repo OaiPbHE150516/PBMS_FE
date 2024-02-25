@@ -1,0 +1,45 @@
+.btn.c-btn {
+  border-radius: 10px;
+  padding: 6px 19px;
+}
+
+.btn.c-btn.btn-lg {
+  padding: 10px 22px;
+  font-size: 1rem;
+}
+
+.btn.c-btn.btn-sm {
+  padding: 3px 19px;
+  font-size: 1rem;
+}
+
+.bold.c-btn {
+  font-weight: 700;
+}
+
+.c-btn.btn-primary,
+.c-btn.btn-light {
+  border: 1px solid black;
+}
+
+.c-btn.btn-primary:hover,
+.c-btn.btn-light:hover {
+  border: 1px solid black;
+}
+
+.btn.c-btn.btn-light.active,
+.btn.c-btn.btn-light:hover {
+  background: #EFEDE4;
+  border: 1px solid black;
+}
+
+.btn.c-btn.btn-light:active {
+  background: #eae3c8;
+}
+
+.btn-reset {
+  background: transparent;
+  outline: unset;
+  border: unset;
+  padding: unset;
+}

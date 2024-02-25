@@ -1,0 +1,37 @@
+.c-card {
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.2);
+  padding: 13px 16px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.c-card__title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.c-card__logo {
+  min-width: 50px;
+  height: 50px;
+  flex-basis: 50px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.force-center {
+  position: relative;
+}
+
+.force-center > * {
+  position: absolute;
+  inset: 0;
+  transform: translate(-50%, -50%);
+}
+.c-card:hover .progressIcons {
+  display: block !important;
+}
+
+.progressIcons {
+  display: none !important;
+}
