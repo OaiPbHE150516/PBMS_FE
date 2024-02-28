@@ -19,6 +19,7 @@ const Budget = () => {
   const [removeModal, removeModalSet] = useState(false);
   return (
     <div className="Budget">
+      <PageTitle title="Budget" />
       <Button
         size="btn-lg"
         onClick={() => showSet(!show)}
