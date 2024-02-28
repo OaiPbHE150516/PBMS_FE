@@ -1,8 +1,9 @@
 import React from 'react';
+import { PageTitle } from '../../components';
 const Chart = () => {
     return (
         <div className='Chart'>
-            Chart
+            <PageTitle title="Chart" />
         </div>
     );
 };

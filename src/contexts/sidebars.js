@@ -57,7 +57,7 @@ export const sidebars = [
   {
     text: "Collaborators",
     icon: <BsFillPeopleFill />,
-    path: ROUTE_CONSTANTS.COLLABORATORS_VALUE,
+    path: ROUTE_CONSTANTS.COLLABORATOR_PAGE,
     exact: true,
   },
   {
@@ -69,13 +69,13 @@ export const sidebars = [
   {
     text: "Report",
     icon: <BsFileEarmarkZip />,
-    path: ROUTE_CONSTANTS.LOAN_PAGE,
+    path: ROUTE_CONSTANTS.REPORT_PAGE,
     exact: true,
   },
   {
     text: "Setting",
     icon: <BsFillGearFill />,
-    path: ROUTE_CONSTANTS.BUDGET_PAGE,
+    path: ROUTE_CONSTANTS.SETTING_PAGE,
     exact: true,
   },
 ];

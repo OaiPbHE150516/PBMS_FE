@@ -3,13 +3,14 @@ import {
   Budget,
   Calendar,
   Chart,
-  ExpectTransaction,
-  ExportImport,
+  Expected,
   Loan,
   Overview,
   Transaction,
   Wallet,
-  Value,
+  Callaborator,
+  Report,
+  Setting,
 } from "../pages";
 
 export const routes = [
@@ -19,45 +20,15 @@ export const routes = [
     component: <Overview />,
   },
   {
-    path: ROUTE_CONSTANTS.WALLET_PAGE,
-    isPrivate: false,
-    component: <Wallet />,
-    exact: true,
-  },
-  {
     path: ROUTE_CONSTANTS.TRANSACTION_PAGE,
     isPrivate: false,
     component: <Transaction />,
     exact: true,
   },
   {
-    path: ROUTE_CONSTANTS.EXPECTED_TRANSACTION_PAGE,
+    path: ROUTE_CONSTANTS.WALLET_PAGE,
     isPrivate: false,
-    component: <ExpectTransaction />,
-    exact: true,
-  },
-  {
-    path: ROUTE_CONSTANTS.LOAN_PAGE,
-    isPrivate: false,
-    component: <Loan />,
-    exact: true,
-  },
-  {
-    path: ROUTE_CONSTANTS.EXPORT_IMPORT_PAGE,
-    isPrivate: false,
-    component: <ExportImport />,
-    exact: true,
-  },
-  {
-    path: ROUTE_CONSTANTS.CALENDAR_PAGE,
-    isPrivate: false,
-    component: <Calendar />,
-    exact: true,
-  },
-  {
-    path: ROUTE_CONSTANTS.CHART_PAGE,
-    isPrivate: false,
-    component: <Chart />,
+    component: <Wallet />,
     exact: true,
   },
   {
@@ -67,9 +38,46 @@ export const routes = [
     exact: true,
   },
   {
-    path: ROUTE_CONSTANTS.VALUE_PAGE,
+    path: ROUTE_CONSTANTS.EXPECTED_PAGE,
     isPrivate: false,
-    component: <Value />,
+    component: <Expected />,
     exact: true,
   },
+  {
+    path: ROUTE_CONSTANTS.CHART_PAGE,
+    isPrivate: false,
+    component: <Chart />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.CALENDAR_PAGE,
+    isPrivate: false,
+    component: <Calendar />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.COLLABORATOR_PAGE,
+    isPrivate: false,
+    component: <Callaborator />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.LOAN_PAGE,
+    isPrivate: false,
+    component: <Loan />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.REPORT_PAGE,
+    isPrivate: false,
+    component: <Report />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.SETTING_PAGE,
+    isPrivate: false,
+    component: <Setting />,
+    exact: true,
+  },
+ 
 ];
