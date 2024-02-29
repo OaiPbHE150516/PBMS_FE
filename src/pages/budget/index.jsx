@@ -39,7 +39,7 @@ const Budget = () => {
         onClose={() => removeModalSet(false)}
       />
       <div className="mt-5">
-        <h2 className="mb-3 text-center bold">Ngân sách hàng tháng</h2>
+        <h3 className="mb-3 text-center h3">Monthly budget</h3>
         <div className="mb-4">
           <CardMonth
             onDelete={() => removeModalSet(true)}
@@ -47,7 +47,7 @@ const Budget = () => {
             onReload={() => {}}
           />
         </div>
-        <h2 className="mb-3 text-center bold">Ngân sách hàng tuần</h2>
+        <h3 className="mb-3 text-center h3">Weekly budget</h3>
         <div className="mb-3">
           <CardWeek
             onDelete={() => removeModalSet(true)}

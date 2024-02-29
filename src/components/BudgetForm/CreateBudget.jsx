@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from '../Button';
 import MultipleSelect from '../MultipleSelect';
 import Popup from '../Popup';
+import { categoryListData } from '../../contexts/category';
+import { walletListData } from '../../contexts/wallet';
 
 /**
  *
@@ -28,9 +30,9 @@ const getInputDateFormat = (date) => {
 
 const CreateBudget = ({show, showSet}) => {
   const [budgetName, budgetNameSet] = useState('')
-  const [category, categorySet] = useState([{label: 'Ăn uống ', value: 'au'}, {label: 'Giải trí', value: 'gt'}])
+  const [category, categorySet] = useState('')
   const [initialAmount, initialAmountSet] = useState('')
-  const [wallet, walletSet] = useState([{label: 'Tiền mặt', value: 'tm'}, {label: 'TP Bank', value: 'tpbank'}])
+  const [wallet, walletSet] = useState('')
   const [repeat, repeatSet] = useState(true)
   const [numberIterations, numberIterationsSet] = useState(1)
   const [note, noteSet] = useState('')
@@ -81,7 +83,9 @@ const CreateBudget = ({show, showSet}) => {
                   <Form.Label>Category</Form.Label>
                   <div className="row">
                       <div className="col-9">
-                          <MultipleSelect onChange={(data) => categorySet(data)} value={category} isMulti options={[{label: 'Ăn uống ', value: 'au'}, {label: 'Giải trí', value: 'gt'}]} />
+                          <MultipleSelect onChange={(data) => categorySet(data)} value={category} isMulti
+                           options={categoryListData.map(category => ({ label: category.name, value: category.value }))}
+                            />
                       </div>
                       <div className="col-3 d-flex align-items-center justify-content-center">
                           <div className="force-center">
@@ -102,7 +106,9 @@ const CreateBudget = ({show, showSet}) => {
               </Form.Group>
               <Form.Group className="mb-4">
                   <Form.Label>Wallet</Form.Label>
-                  <MultipleSelect value={wallet} onChange={data => walletSet(data)} isMulti options={[{label: 'Tiền mặt', value: 'tm'}, {label: 'TP Bank', value: 'tpbank'}]} />
+                  <MultipleSelect value={wallet} onChange={data => walletSet(data)} isMulti 
+                  options={walletListData.map(wallet => ({ label: wallet.name, value: wallet.value }))}
+                   />
               </Form.Group>
               <Form.Group className="mb-3 d-flex align-items-center gap-3">
                   <Form.Label>Period</Form.Label>
