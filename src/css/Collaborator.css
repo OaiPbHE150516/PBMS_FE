@@ -1,0 +1,66 @@
+.actionTable{
+    height: 500px;
+}
+.collCard-Detail{
+    height: 220px;
+}
+.totalMoney{
+    display: flex;
+    justify-content: center;
+}
+.listButton button{
+    width: 100%;
+    margin-top: 5px;
+    background: #FFFFFF;
+}
+.listButton span{
+    font-size: 12px;
+}
+.listButton{
+    display: none;
+    width: 90%;
+    margin: auto;
+}
+.cardItem:hover .listButton{
+    display: block;
+}
+#myTabjustified{
+    border: 1px solid #000000 !important;
+}
+#myTabjustified button:hover{
+    border: none !important;
+    border-radius: 0 !important;
+}
+#myTabjustified .active{
+    background: #EFEDE4;
+    border-radius: 0;
+    border: 1px solid #000000;
+    border-top: none;
+    border-bottom: none;
+}
+.cardActionItem{
+    box-shadow: none !important;
+}
+.cardActionItem .row{
+    background: #EFEDE4;
+    border: 1px solid #000000 !important;
+}
+.cardActionItem img{
+    height: 50px;
+    border: 1px solid #000000;
+    border-radius: 50% !important;
+}
+.cardActionItem .c-card-member-comment{
+    display: flex;
+    align-items: center;
+}
+.cardActionItem .c-card-member{
+    font-weight: bold;
+}
+.cardActionItem .c-card-time-money .card-body{
+    float: right;
+    text-align: right;
+}
+.cardActionItem .c-card-time-money .c-card-money{
+    font-weight: bold;
+}
