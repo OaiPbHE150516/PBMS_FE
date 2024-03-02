@@ -1,3 +1,20 @@
 main{
     background: #F4F7FE;
 }
+
+.c-form {
+    --bs-border-color: #000000;
+}
+
+.c-form .form-label {
+    margin-bottom: 0;
+}
+
+.c-form .form-select,
+.c-form .form-control {
+    border-radius: unset;
+}
+
+.text-base {
+    font-size: 14px;
+}
