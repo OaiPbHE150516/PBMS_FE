@@ -12,8 +12,9 @@ import { walletListData } from '../../contexts/wallet';
  * @param {Date} date
  */
 function getMonthAndDay(date) {
-  const monthName = date.toLocaleString("default", { month: "short" });
-  return `${monthName} ${date.getDate()}`;
+  const monthName = date.toLocaleString("default", { month: "2-digit" });
+  const dayName = date.toLocaleString("default", { day: "2-digit" });
+  return `${dayName}/${monthName}/${date.getFullYear()}`;
 }
 
 /**

@@ -1,6 +1,7 @@
 .btn.c-btn {
   border-radius: 10px;
   padding: 6px 19px;
+  line-height: 1.25em;
 }
 
 .btn.c-btn.btn-lg {

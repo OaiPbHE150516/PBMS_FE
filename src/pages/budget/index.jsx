@@ -38,7 +38,9 @@ const Budget = () => {
         show={removeModal}
         onClose={() => removeModalSet(false)}
       />
+
       <div className="mt-5">
+        {/* Monthly */}
         <h3 className="mb-3 text-center h3">Monthly budget</h3>
         <div className="mb-4">
           <CardMonth
@@ -47,6 +49,7 @@ const Budget = () => {
             onReload={() => {}}
           />
         </div>
+        {/* Weekly */}
         <h3 className="mb-3 text-center h3">Weekly budget</h3>
         <div className="mb-3">
           <CardWeek
@@ -55,8 +58,17 @@ const Budget = () => {
             onReload={() => {}}
           />
         </div>
-        <div>
+        <div className="mb-3">
           <CardWeek
+            onDelete={() => removeModalSet(true)}
+            onEdit={() => editModalSet(true)}
+            onReload={() => {}}
+          />
+        </div>
+        {/* Other */}
+        <h3 className="mb-3 text-center h3">Other budget</h3>
+        <div className="mb-4">
+          <CardMonth
             onDelete={() => removeModalSet(true)}
             onEdit={() => editModalSet(true)}
             onReload={() => {}}
