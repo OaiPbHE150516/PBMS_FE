@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./Sidebar.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { sidebars } from "../../contexts/sidebars";
 
 const Sidebar = ({ isIconsMode }) => {
-  const [selected, setSelected] = useState(0);
 
   const renderSidebars = () => {
     return sidebars.map((item, index) => {
@@ -12,15 +11,14 @@ const Sidebar = ({ isIconsMode }) => {
         <li
           key={index}
           className={"nav-item "}
-          onClick={() => setSelected(index)}
         >
-          <Link
-            className={selected === index ? "content active " : "content"}
+          <NavLink
+            className={"content"}
             to={item.path}
           >
             {item.icon}
             <span className="nav-link-text ms-2">{item.text}</span>
-          </Link>
+          </NavLink>
         </li>
       );
     });
@@ -32,14 +30,13 @@ const Sidebar = ({ isIconsMode }) => {
         <li
           key={index}
           className={"nav-item "}
-          onClick={() => setSelected(index)}
         >
-          <Link
-            className={selected === index ? "content active " : "content"}
+          <NavLink
+            className="content"
             to={item.path}
           >
             {item.icon}
-          </Link>
+          </NavLink>
         </li>
       );
     });

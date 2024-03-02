@@ -30,7 +30,7 @@ const Header = ({ onToggleSidebar }) => {
   const disptach = useDispatch();
 
   const user = useSelector((state) => state.authen.user);
-  console.log(user);
+  // console.log(user);
 
   const [isSignIn, setIsSignIn] = useState(false);
 

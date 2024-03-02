@@ -87,3 +87,7 @@
     pointer-events: all;
     visibility: visible;
 }
+
+.Callaborator .dashboard{
+    margin-top: 20px;
+}

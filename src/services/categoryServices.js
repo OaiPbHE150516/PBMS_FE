@@ -7,9 +7,9 @@ const config = {
   },
 };
 
-export const getWallets = async () => {
+export const getCategories = async () => {
   const response = await axios.get(
-    API.MANAGE_WALLET + "/api/wallet/get/account/117911566377016615313"
+    API.MANAGE_CATEGORY + "/api/category/get/account/117911566377016615313"
   );
   console.log(response);
   return response.data;

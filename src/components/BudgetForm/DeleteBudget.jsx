@@ -1,7 +1,7 @@
 import React from 'react'
 import Popup from '../Popup';
 
-const DeleteBudget = ({name, amount, note, period, onClose, show, onSubmit}) => {
+const DeleteBudget = ({name, amount, note, period, onClose, show, onSubmit = () => {}}) => {
   return (
       <Popup
           title={`Delete Budget “${name}”`}

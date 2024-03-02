@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import Select from 'react-select'
 
 const colourStyles = {
@@ -8,6 +9,6 @@ const colourStyles = {
  * 
  * @type {typeof Select} 
  */
-const MultipleSelect = (props) => <Select styles={colourStyles} {...props} />
+const MultipleSelect = forwardRef((props, ref) => <Select styles={colourStyles} {...props} ref={ref} />)
 
 export default MultipleSelect
