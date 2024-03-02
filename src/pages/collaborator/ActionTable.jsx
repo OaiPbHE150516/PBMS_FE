@@ -3,7 +3,7 @@ import MemberTab from "./MemberTab";
 import {ActionCard} from "./ActionCard";
 import {AddNewMember} from "./AddNewMember";
 
-export const ActionTable=() => {
+export const ActionTable=({ collabID }) => {
   return (
     <div class="card h-100 pt-3">
       <div class="card-body d-flex flex-column">

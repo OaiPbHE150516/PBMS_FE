@@ -7,14 +7,37 @@ const config = {
   },
 };
 
-const getBudgets = async () => {
+export const getBudgets = async () => {
   const response = await axios.get(
-    API.MANAGE_BUDGET + "/get/all/117911566377016615313"
+    API.MANAGE_BUDGET + "/api/budget/get/all/a1"
   );
   console.log(response);
   return response.data;
 };
 
-export default {
-  getBudgets,
+export const addBudgets = async (data) => {
+  const response = await axios.post(
+    API.MANAGE_BUDGET + "/api/budget/create",
+    data
+  );
+  console.log(response);
+  return response.data;
+};
+
+export const updateBudgets = async (data) => {
+  // const response = await axios.post(
+  //   API.MANAGE_BUDGET + "/api/budget/creat",
+  //   data
+  // );
+  console.log(data);
+  // return response.data;
+};
+
+export const removeBudgets = async (budgetID) => {
+  const response = await axios.delete(
+    API.MANAGE_BUDGET + "/api/budget/delete/budget",
+    budgetID
+  );
+  console.log(response);
+  // return response.data;
 };

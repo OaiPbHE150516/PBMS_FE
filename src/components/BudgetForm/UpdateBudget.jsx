@@ -4,43 +4,83 @@ import Popup from "../Popup";
 import Form from "react-bootstrap/Form";
 import { categoryListData } from "../../contexts/category";
 import { walletListData } from "../../contexts/wallet";
+import { Controller, useForm } from "react-hook-form";
+import useAppSelector from "../../hooks/useAppSelector";
+import { FormErrorMessage } from "./FormErrorMessage";
 
-const UpdateBudget = ({ show, onClose }) => {
-  const [budgetName, budgetNameSet] = useState("");
-  const [category, categorySet] = useState('');
-  const [initialAmount, initialAmountSet] = useState("");
-  const [wallet, walletSet] = useState('');
-  const [note, noteSet] = useState("");
+const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
+  //List Categories
+  const categories = useAppSelector((state) => state.category.values);
+  const categoryOptions = categories.map((item) => ({
+    label: item.nameVN,
+    value: item.categoryID,
+  }));
 
+  //List Wallet
+  const wallets = useAppSelector((state) => state.wallet.values);
+  const walletOptions = wallets.map((item) => ({
+    label: item.name,
+    value: item.walletID,
+  }));
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
+    defaultValues: {
+      wallet: [],
+      ...data,
+      categories: data.categories.map((item) => ({
+        label: item.nameVN,
+        value: item.categoryID,
+      })),
+    },
+  });
+
+  console.log({isDirty})
+
+  const [wallet, walletSet] = useState([]);
+  console.log(
+    data.categories.map((item) => ({
+      label: item.name,
+      value: item.walletID,
+    }))
+  );
   return (
     <Popup
       title={"Update Budget"}
       show={show}
       onClose={() => onClose()}
-      onSubmit={() => alert("submited")}
+      onSubmit={isDirty ? handleSubmit(onSubmit) : onClose}
     >
-      <Form className="c-form">
+      <Form noValidate validated={isValid} className="c-form">
         <Form.Group className="mb-2">
           <Form.Label>Budget Name</Form.Label>
           <Form.Control
             type="text"
-            value={budgetName}
-            onChange={({ target: { value } }) => budgetNameSet(value)}
+            {...register("budgetName", { required: true })}
           ></Form.Control>
+          <FormErrorMessage errors={errors} fieldName={"budgetName"} />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Category</Form.Label>
           <div className="row">
             <div className="col-9">
-              <MultipleSelect
-                onChange={(data) => categorySet(data)}
-                value={category}
-                isMulti
-                options={categoryListData.map((category) => ({
-                  label: category.name,
-                  value: category.value,
-                }))}
+              <Controller
+                rules={{ validate: (value) => Boolean(value.length) }}
+                control={control}
+                name="categories"
+                render={({ field }) => (
+                  <MultipleSelect
+                    isMulti
+                    {...field}
+                    options={categoryOptions}
+                  />
+                )}
               />
+              <FormErrorMessage errors={errors} fieldName={"categories"} />
             </div>
             <div className="col-3 d-flex align-items-center justify-content-center">
               <div className="force-center">
@@ -58,30 +98,31 @@ const UpdateBudget = ({ show, onClose }) => {
         <Form.Group className="mb-2">
           <Form.Label>Initial amount</Form.Label>
           <Form.Control
-            type="text"
-            value={initialAmount}
-            onChange={({ target: { value } }) => initialAmountSet(value)}
+            type="number"
+            {...register("targetAmount", { required: true })}
           ></Form.Control>
+          <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
         </Form.Group>
         <Form.Group className="mb-4">
           <Form.Label>Wallet</Form.Label>
-          <MultipleSelect
-            value={wallet}
-            onChange={(data) => walletSet(data)}
-            isMulti
-            options={walletListData.map((wallet) => ({
-              label: wallet.name,
-              value: wallet.value,
-            }))}
-          />
+          <Controller
+                rules={{ validate: (value) => Boolean(value.length) }}
+                control={control}
+                name="wallet"
+                render={({ field }) => (
+                  <MultipleSelect
+                    {...field}
+                    isMulti
+                    options={walletOptions}
+                  />
+                )}
+              />
+          <FormErrorMessage errors={errors} fieldName={"wallet"} />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Note</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={note}
-            onChange={({ target: { value } }) => noteSet(value)}
-          ></Form.Control>
+          <Form.Control as="textarea" {...register("note")}></Form.Control>
+          <FormErrorMessage errors={errors} fieldName={"note"} />
         </Form.Group>
       </Form>
     </Popup>
