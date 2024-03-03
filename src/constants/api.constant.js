@@ -7,4 +7,6 @@ export const API = {
     },
     MANAGE_ACCOUNT: process.env.REACT_APP_MANAGE_ACCOUNT,
     MANAGE_VALUE: process.env.REACT_APP_MANAGE_VALUE,
+    MANAGE_WALLET: process.env.REACT_APP_WALLET,
+    MANAGE_TOTALWALLET: process.env.REACT_APP_TOTALWALLET,
 }
