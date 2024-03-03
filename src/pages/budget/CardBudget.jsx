@@ -5,11 +5,12 @@ import {IoReload} from 'react-icons/io5';
 import Progress from '../../components/Progress';
 import logo from "../../assets/Logo.png"
 import "../../css/Budget.css"
+import * as dayjs from 'dayjs'
 
-const Card = ({ onDelete, onEdit, onReload }) => {
+const CardBudget = ({ onDelete, onEdit, onReload, data }) => {
   return (
       <div className="c-card">
-          <h3 className="c-card__title">Budget 1</h3>
+          <h3 className="c-card__title">{data.budgetName}</h3>
           <div className="ps-3">
               <div className="d-flex gap-3">
                   <div className="c-card__logo">
@@ -21,18 +22,18 @@ const Card = ({ onDelete, onEdit, onReload }) => {
                       />
                   </div>
                   <Progress
-                      fromDate={"1/1/2023"}
-                      toDate={"1/1/2023"}
-                      percent={20}
-                      value={"200.000 đ"}
+                      fromDate={dayjs(data.beginDate).format("DD/MM/YYYY")}
+                      toDate={dayjs(data.endDate).format("DD/MM/YYYY")}
+                      percent={data.percentProgress}
+                      value={data.currentAmountStr}
                       fromValue={"0 đ"}
-                      toValue={"1.000.000 đ"}
+                      toValue={data.targetAmountStr}
                   />
               </div>
               <div className="d-flex align-items-end w-100 mt-4">
                   <div>
-                      <p className="mb-0 text-base">Surplus: 800.000 đ </p>
-                      <p className="mb-0 text-base">Note: Shopping</p>
+                      <p className="mb-0 text-base">Surplus: {data.remainAmountStr} </p>
+                      <p className="mb-0 text-base">Note: {data.note}</p>
                   </div>
                   <div className="row ms-auto progressIcons">
                       <button
@@ -60,4 +61,4 @@ const Card = ({ onDelete, onEdit, onReload }) => {
   );
 };
 
-export default Card
+export default CardBudget

@@ -11,9 +11,9 @@ import './Button.css'
  * }} param0 
  * @returns 
  */
-const Button = ({ className = 'btn-light', reset, children, size, type="button", ...props }) => {
+const Button = ({ className, reset, children, size, type="button", ...props }) => {
   return (
-    <button className={reset ? "btn-reset" : clsx(className,size, 'btn c-btn')} type={type} {...props}>{children}</button>
+    <button className={reset ? clsx("btn-reset", className) : clsx(className ?? 'btn-light',size, 'btn c-btn')} type={type} {...props}>{children}</button>
   )
 }
 
