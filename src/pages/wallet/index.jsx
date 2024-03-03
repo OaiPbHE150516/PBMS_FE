@@ -29,12 +29,6 @@ const Wallet = () => {
     useEffect(() => {
         retrieveValues();
     }, []);
-    const [selectedAction, setSelectedAction] = useState(null);
-    const [isFormVisible, setIsFormVisible] = useState(false);
-    const handleActionItemClick = (action) => {
-        setSelectedAction(action);
-        setIsFormVisible(true);
-    };
     return (
         <div className="Wallet">
             <PageTitle title="Wallet" />
