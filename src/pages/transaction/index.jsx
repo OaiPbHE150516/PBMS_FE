@@ -1,70 +1,72 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PageTitle } from '../../components';
 import "../../css/Transaction.css";
 import Button from "../../components/Button";
-const Transaction = () => {
-    return (
-        <div className='Transaction'>
-            <PageTitle title="Transaction" />
-            <div className="addTransaction">
-            <button>Create New Wallet</button>
-            <button>Create New Wallet</button>
-            </div>
-            <div class="transactiontable">
-            <div class="transactiontable-body">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Start Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                  </tr>
-                </tbody>
-              </table>
+import { getTransaction } from "../../redux/transactionSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-            </div>
-          </div>
+const Transaction = () => {
+  const dispatch = useDispatch();
+  const transactions = useSelector((state) => state.transaction.values);
+
+  const retrieveValues = () => {
+    console.log("retrieveValues");
+    dispatch(getTransaction());
+  };
+
+  useEffect(() => {
+    retrieveValues();
+  }, []);
+
+  return (
+    <div className='Transaction'>
+      <PageTitle title="Transaction" />
+      <div className="addTransaction">
+        <Button
+          size="btn-lg"
+          className="active bold btn-light"
+        >
+          Create new Transaction
+        </Button>
+        <Button
+          size="btn-lg"
+          className="active bold btn-light"
+        >
+          List category
+        </Button>
+      </div>
+      <div className="transactiontable">
+        <div className="transactiontable-body">
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Time</th>
+                <th scope="col">Category</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Wallet</th>
+                <th scope="col">Description</th>
+                <th scope="col">Infor</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions?.map((transaction) => (
+                <tr>
+                  <td></td>
+                  <td>{transaction.transactionDateMinus}, {transaction.transactionDateStr}</td>
+                  <td>{transaction.category.nameVN}</td>
+                  <td>{transaction.totalAmount}</td>
+                  <td>{transaction.wallet.name}</td>
+                  <td>{transaction.note}</td>
+                  <td>{transaction.toPerson}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Transaction;

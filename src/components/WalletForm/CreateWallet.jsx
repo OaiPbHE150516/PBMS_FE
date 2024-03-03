@@ -84,7 +84,6 @@ const CreateBudget = ({ show, showSet }) => {
                     <Form.Control as="select" value={budgetName} onChange={({ target: { value } }) => budgetNameSet(value)}>
                         <option value="option1">Option 1</option>
                         <option value="option2">Option 2</option>
-                        {/* Thêm các tùy chọn khác nếu cần */}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className="mb-2">
@@ -93,7 +92,7 @@ const CreateBudget = ({ show, showSet }) => {
                 </Form.Group>
                 <Form.Group className="mb-2">
                     <Form.Label>Note</Form.Label>
-                    <Form.Control type="text"></Form.Control>
+                    <Form.Control as="textarea"></Form.Control>
                 </Form.Group>
             </Form>
         </Popup>

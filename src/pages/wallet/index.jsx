@@ -5,7 +5,7 @@ import { BsToggleOn } from "react-icons/bs";
 import { IoReload } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { getValues,getTotalValues } from "../../redux/walletSlice";
+import { getTotalWallets, getWallets } from "../../redux/walletSlice";
 import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
 import CreateWallet from "../../components/WalletForm/CreateWallet";
@@ -13,19 +13,19 @@ import UpdateWallet from "../../components/WalletForm/UpdateWallet";
 const Wallet = () => {
     const dispatch = useDispatch();
     const wallet = useSelector((state) => state.wallet.values);
+    const totalwallets = useSelector((state) => state.totalwallet.values);
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     };
 
     const retrieveValues = () => {
         console.log("retrieveValues");
-        dispatch(getValues());
-        dispatch(getTotalValues());
+        dispatch(getWallets());
+        dispatch(getTotalWallets());
     };
 
     const [show, showSet] = useState(false);
     const [editModal, editModalSet] = useState(false);
-    // Use useEffect to trigger retrieveValues when the component mounts
     useEffect(() => {
         retrieveValues();
     }, []);
@@ -47,9 +47,11 @@ const Wallet = () => {
                     Create new Wallet
                 </Button>
                 <CreateWallet show={show} showSet={showSet} />
-                <span>
-                    Total: <p>totalBalance</p>
-                </span>
+                {totalwallets && (
+                    <span>
+                        Total: <p>{totalwallets.totalBalance}</p>
+                    </span>
+                )}
             </div>
             <div className="wallet-list-container">
                 <div className="wallet-list row">
@@ -58,9 +60,9 @@ const Wallet = () => {
                             <div class="wallet">
                                 <div class="wallet-body">
                                     <h5 class="wallet-title">{capitalizeFirstLetter(wallet.name)}<span>{wallet.balance}</span></h5>
-                                    <h6 class="wallet-sub">Created date: 31/2/2024</h6>
-                                    <h6 class="wallet-sub">Currency unit: VND - đ</h6>
-                                    <h6 class="wallet-sub">Note:</h6>
+                                    <h6 class="wallet-sub">Created date: {wallet.createTime}</h6>
+                                    <h6 class="wallet-sub">Currency unit: {wallet.currency.name} - {wallet.currency.symbol}</h6>
+                                    <h6 class="wallet-sub">Note: {wallet.note}</h6>
                                     <div class="active-container">
                                         <div class="active1">
                                             <div>
@@ -70,6 +72,7 @@ const Wallet = () => {
                                                     reverse
                                                     label="Active"
                                                     size={"lg"}
+                                                    checked={wallet.currency.activeState.activeStateID === 1}
                                                 ></Form.Check>
                                             </div>
                                         </div>
@@ -80,8 +83,8 @@ const Wallet = () => {
                                                 <BsPencilSquare />
                                             </button>
                                         </div>
-                                        
-                                    </div>  
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
