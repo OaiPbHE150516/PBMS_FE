@@ -4,14 +4,17 @@ import authenSlice from "./authenSlice";
 import valueSlice from "./valueSlice";
 import budgetSlice from "./budgetSlice";
 import categorySlice from "./categorySlice";
-import walletSlice from "./walletSlice";
+import walletSlice, { totalwalletSlice } from "./walletSlice";
 import collaboratorSlice from "./collaboratorSlice";
+import transactionSlice from "./transactionSlice";
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   value: valueSlice.reducer,
   budget:budgetSlice.reducer,
   category: categorySlice.reducer,
   wallet: walletSlice.reducer,
+  totalwallet: totalwalletSlice.reducer,
+  transaction: transactionSlice.reducer,
   collaborator: collaboratorSlice.reducer,
 });
 
