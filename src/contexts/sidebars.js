@@ -78,4 +78,11 @@ export const sidebars = [
     path: ROUTE_CONSTANTS.SETTING_PAGE,
     exact: true,
   },
+  // category
+  {
+    text: "Category",
+    icon: <BsFillGearFill />,
+    path: ROUTE_CONSTANTS.CATEGORY_PAGE,
+    exact: true,
+  }
 ];

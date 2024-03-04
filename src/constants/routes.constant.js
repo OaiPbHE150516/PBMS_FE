@@ -17,4 +17,5 @@ export const ROUTE_CONSTANTS = {
     LOAN_PAGE: "/loan",
     REPORT_PAGE: "/report",
     SETTING_PAGE: "/setting",
+    CATEGORY_PAGE: "/category",
 }
