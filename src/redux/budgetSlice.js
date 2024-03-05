@@ -4,8 +4,8 @@ import { addBudgets as addBudgetServices } from "../services/budgetServices";
 import { updateBudgets as updateBudgetServices } from "../services/budgetServices";
 import { removeBudgets as removeBudgetServices } from "../services/budgetServices";
 
-export const getBudgets = createAsyncThunk("get-budgets", async () => {
-  const response = await budgetServices();
+export const getBudgets = createAsyncThunk("get-budgets", async (accountID) => {
+  const response = await budgetServices(accountID);
   return response;
 });
 
@@ -24,10 +24,9 @@ const getBudgetId = (period) => {
 
 export const addBudgets = createAsyncThunk(
   "add-budgets",
-  async (fieldValue, { dispatch }) => {
+  async ({accountID, fieldValue}, { dispatch }) => {
     const body = {
-        // accountID: "117911566377016615313",
-        accountID: "a1",
+        accountID: accountID,
         budgetName: fieldValue.budgetName,
         targetAmount: fieldValue.targetAmount,
         beginDate: new Date(fieldValue.fromPeriod).toISOString(),
@@ -89,6 +88,7 @@ export const removeBudgets = createAsyncThunk(
     // return response;
   }
 );
+
 const budgetSlice = createSlice({
   name: "budget",
   initialState: {

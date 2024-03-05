@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../css/Overview.css";
 import { PageTitle } from "../../components";
 import ReactApexChart from "react-apexcharts";
@@ -12,6 +12,14 @@ import {
   budgetListData,
 } from "../../contexts/overview";
 import logo from "../.././assets/Logo.png";
+import { useDispatch } from "react-redux";
+import { getTotalWallets, getWallets } from "../../redux/walletSlice";
+import useAppSelector from "../../hooks/useAppSelector";
+import * as dayjs from 'dayjs'
+
+const formatNumber = (number) => {
+  return number.toLocaleString('vi-VN');
+};
 
 const OverViewCard = () => {
   return (
@@ -39,7 +47,12 @@ const OverViewCard = () => {
   );
 };
 
-const WalletViewCard = () => {
+const WalletViewCard = (data) => {
+  const wallets = useAppSelector((state) => state.wallet.values);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getWallets());
+  }, []);
   return (
     <div class="col-xxl-6 col-md-6">
       <div class="card info-card revenue-card">
@@ -47,13 +60,13 @@ const WalletViewCard = () => {
           <h5 class="card-title">Wallet</h5>
           <table class="table">
             <tbody>
-              {walletData.map((item) => (
+              {wallets.map((item) => (
                 <tr>
                   <td>{item.name}</td>
                   <td
-                    className={item.money < 0 ? "tdMoney red" : "tdMoney green"}
+                    className={item.balance < 0 ? "tdMoney red" : "tdMoney green"}
                   >
-                    {item.money} đ
+                    {formatNumber(item.balance)} đ
                   </td>
                 </tr>
               ))}
@@ -233,6 +246,11 @@ const MostTransactionViewCard = () => {
 };
 
 const BudgetListViewCard = () => {
+  const budgets = useAppSelector((state) => state.budget.values);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTotalWallets());
+  }, []);
   return (
     <div class="col-6">
       <div class="card top-selling overflow-auto">
@@ -240,7 +258,7 @@ const BudgetListViewCard = () => {
           <h5 class="card-title">Budget List</h5>
           <table class="table table-borderless">
             <tbody>
-              {budgetListData.map((item) => (
+              {budgets.map((item) => (
                 <tr>
                   <th scope="row">
                     <img src={logo} alt="" />
@@ -250,13 +268,13 @@ const BudgetListViewCard = () => {
                       <tbody>
                         <tr>
                           <td scope="col" className="tdStartDay">
-                            {item.startDate}
+                            {dayjs(item.beginDate).format("DD/MM/YYYY")}
                           </td>
                           <th scope="col" className="thPercent">
-                            {item.percent} %
+                          {item.percentProgress} %
                           </th>
                           <td scope="col" className="tdEndDay">
-                            {item.endDate}
+                            {dayjs(item.endDate).format("DD/MM/YYYY")}
                           </td>
                         </tr>
                         <tr>
@@ -265,7 +283,7 @@ const BudgetListViewCard = () => {
                               <div
                                 class="progress-bar"
                                 role="progressbar"
-                                style={{ width: `${item.percent}%` }}
+                                style={{ width: `${item.percentProgress}%` }}
                                 aria-valuenow="25"
                                 aria-valuemin="0"
                                 aria-valuemax="100"
@@ -275,11 +293,11 @@ const BudgetListViewCard = () => {
                         </tr>
                         <tr>
                           <td scope="col" className="tdStartDay">
-                            {item.startMoney} đ
+                            0 đ
                           </td>
                           <th></th>
                           <td scope="col" className="tdEndDay">
-                            {item.endMoney} đ
+                            {formatNumber(item.targetAmount)} đ
                           </td>
                         </tr>
                       </tbody>
@@ -295,6 +313,7 @@ const BudgetListViewCard = () => {
   );
 };
 const Overview = () => {
+
   return (
     <div className="Overview">
       <PageTitle title="Overview" />
@@ -305,7 +324,7 @@ const Overview = () => {
               {/* Overview */}
               <OverViewCard />
               {/* Wallet */}
-              <WalletViewCard />
+              <WalletViewCard/>
             </div>
           </div>
         </div>
