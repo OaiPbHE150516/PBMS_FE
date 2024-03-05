@@ -8,15 +8,17 @@ const config = {
 };
 
 export const getWallets = async () => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const response = await axios.get(
-    API.MANAGE_WALLET + "/api/wallet/get/account/117911566377016615313"
+    API.MANAGE_WALLET + `/api/wallet/get/account/${user.accountID}`
   );
   console.log(response);
   return response.data;
 };
 export const getTotalWallets = async () => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const response = await axios.get(
-    API.MANAGE_WALLET + "/api/wallet/get/total-amount/117911566377016615313"
+    API.MANAGE_WALLET + `/api/wallet/get/total-amount/${user.accountID}`
   );
   console.log(response);
   return response.data;

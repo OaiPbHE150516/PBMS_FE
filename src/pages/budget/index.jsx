@@ -20,6 +20,7 @@ const Budget = () => {
   // Get List Budget
   const dispatch = useDispatch();
   const budgets = useAppSelector((state) => state.budget.values);
+  const accountID = useSelector((state) => state.authen.user?.accountID);
   useEffect(() => {
     dispatch(getBudgets());
     dispatch(getCategories());
@@ -59,7 +60,7 @@ const Budget = () => {
         show={show}
         showSet={showSet}
         onSubmit={(fieldValue) =>
-          dispatch(addBudgets(fieldValue))
+          dispatch(addBudgets({accountID: accountID, fieldValue: fieldValue}))
             .unwrap()
             .then(() => showSet(false))
         }
