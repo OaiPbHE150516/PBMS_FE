@@ -5,8 +5,8 @@ export const getWallets = createAsyncThunk("get-wallets", async () => {
   const response = await walletServices();
   return response;
 });
-export const getTotalWallets = createAsyncThunk("get-totalwallets", async () => {
-  const response = await totalwalletServices();
+export const getTotalWallets = createAsyncThunk("get-totalwallets", async (accountID) => {
+  const response = await totalwalletServices(accountID);
   return response;
 });
 export const totalwalletSlice = createSlice({
