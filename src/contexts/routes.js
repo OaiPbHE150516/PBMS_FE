@@ -12,6 +12,7 @@ import {
   Report,
   Setting,
 } from "../pages";
+import Category from "../pages/category";
 
 export const routes = [
   {
@@ -77,6 +78,13 @@ export const routes = [
     path: ROUTE_CONSTANTS.SETTING_PAGE,
     isPrivate: false,
     component: <Setting />,
+    exact: true,
+  },
+  // category
+  {
+    path: ROUTE_CONSTANTS.CATEGORY_PAGE,
+    isPrivate: false,
+    component: <Category />,
     exact: true,
   },
  

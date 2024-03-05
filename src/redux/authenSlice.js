@@ -37,10 +37,10 @@ const authenSlice = createSlice({
           toast.success("Đăng nhập thành công");
         }
       })
-      .addCase(signin.rejected, (state, action) => {
-        console.log("rejected");
-        toast.warning("Tài khoản hoặc mật khẩu không chính xác");
-      })
+      // .addCase(signin.rejected, (state, action) => {
+      //   console.log("rejected");
+      //   toast.warning("Tài khoản hoặc mật khẩu không chính xác");
+      // })
       .addCase(signin.pending, (state, action) => {
         console.log("pending");
       });
