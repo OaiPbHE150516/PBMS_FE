@@ -19,8 +19,8 @@ const Profile = () => {
 
   const handleSignOutClick = () => {
     dispatch(setUser(null));
-    // Add your sign-out logic here
-    console.log('Signing out...');
+    sessionStorage.removeItem("user");
+    // window.location.href = ROUTE_CONSTANTS.OVERVIEW_PAGE;
   };
   
 

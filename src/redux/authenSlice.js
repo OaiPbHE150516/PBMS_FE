@@ -26,7 +26,6 @@ const authenSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signin.fulfilled, (state, action) => {
-        console.log("done");
         const user  = action.payload;
         if (user == null) {
           const { message } = action.payload;

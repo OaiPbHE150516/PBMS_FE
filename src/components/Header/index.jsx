@@ -26,20 +26,16 @@ const AuthenticatedHeader = () => {
 };
 
 const Header = ({ onToggleSidebar }) => {
-
   const disptach = useDispatch();
-
-  const user = useSelector((state) => state.authen.user);
-  // console.log(user);
-
+  // get user from session storage
+  const userSession =JSON.parse(sessionStorage.getItem("user"));
+  const userRedux = useSelector((state) => state.authen.user);
   const [isSignIn, setIsSignIn] = useState(false);
 
   return (
     <>
       <header id="header" className="header fixed-top d-flex">
-        <div
-          className="d-flex align-items-center justify-content-between"
-        >
+        <div className="d-flex align-items-center justify-content-between">
           <a href="index.html" className="logo d-flex align-items-center">
             <img src={Logo} alt="" />
             <span>PBMS</span>
@@ -49,18 +45,18 @@ const Header = ({ onToggleSidebar }) => {
         </div>
 
         <div className="User">
-          {user !== null ? (
-            <AuthenticatedHeader />
-          ) : (
+          {userSession === null ? (
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 disptach(signin(credentialResponse.credential));
-                console.log("ok: ", credentialResponse);
               }}
               onError={() => {
                 console.log("Login Failed");
               }}
+              useOneTap={false}
             />
+          ) : (
+            <AuthenticatedHeader />
           )}
         </div>
       </header>
