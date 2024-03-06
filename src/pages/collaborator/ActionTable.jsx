@@ -64,9 +64,7 @@ export const ActionTable=({ collabID }) => {
           >
             <div className="d-flex flex-column h-100">
               <div className="flex-grow-1">
-                <ActionCard />
-                <ActionCard />
-                <ActionCard />
+                <ActionCard collabID={collabID}/>
               </div>
               <AddNewMember />
             </div>
@@ -77,7 +75,7 @@ export const ActionTable=({ collabID }) => {
             role="tabpanel"
             aria-labelledby="member-tab"
           >
-            <MemberTab />
+            <MemberTab collabID={collabID}/>
           </div>
           <div
             class="tab-pane fade"

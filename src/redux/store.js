@@ -7,6 +7,9 @@ import categorySlice from "./categorySlice";
 import walletSlice, { totalwalletSlice } from "./walletSlice";
 import collaboratorSlice from "./collaboratorSlice";
 import transactionSlice from "./transactionSlice";
+import memberSlice from "./memberSlice";
+import actionSlice from "./actionSlice";
+
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   value: valueSlice.reducer,
@@ -16,6 +19,8 @@ const rootReducers = combineReducers({
   totalwallet: totalwalletSlice.reducer,
   transaction: transactionSlice.reducer,
   collaborator: collaboratorSlice.reducer,
+  member: memberSlice.reducer,
+  action: actionSlice.reducer,
 });
 
 const store = configureStore({

@@ -15,10 +15,10 @@ import { ROUTE_CONSTANTS } from "../../constants";
 const Profile = () => {
 
   const dispatch = useDispatch ();
-  const {setUser} = authenSlice.actions;
+  const {signOut} = authenSlice.actions;
 
   const handleSignOutClick = () => {
-    dispatch(setUser(null));
+    dispatch(signOut());
     // Add your sign-out logic here
     console.log('Signing out...');
   };
