@@ -9,7 +9,6 @@ import {
   walletData,
   thisMonthData,
   mostTransaction,
-  budgetListData,
 } from "../../contexts/overview";
 import logo from "../.././assets/Logo.png";
 import { useDispatch } from "react-redux";
@@ -49,6 +48,7 @@ const OverViewCard = () => {
 
 const WalletViewCard = (data) => {
   const wallets = useAppSelector((state) => state.wallet.values);
+  const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getWallets());

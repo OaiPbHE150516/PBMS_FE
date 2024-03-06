@@ -8,6 +8,10 @@ export const CollaItemCard=({ data, onItemClick }) => {
     onItemClick(data.collabFundID);
   };
 
+  const formatNumber = (number) => {
+    return number.toLocaleString('vi-VN');
+  };
+
   const buttonStyle={
     // backgroundImage: `url(${logo})`,
     backgroundColor: "#EFEDE4",
@@ -21,7 +25,15 @@ export const CollaItemCard=({ data, onItemClick }) => {
         <div class="col-md-7 collCard-Detail">
           <div class="card-body p-2">
             <h5 class="card-title pt-2 pb-3 mb-0 fs-6">{data.name}</h5>
-            <p class="card-text small mb-2">Member 1, Member 2</p>
+            <p class="card-text small mb-2">
+              {data.accountInCollabFunds.map((item, index) => {
+                return (
+                <>
+                {item.accountName}
+                {index < data.accountInCollabFunds.length - 1 && ", "}
+                </>)
+              })}
+            </p>
             <p class="card-text small mb-2">Description: {data.description}</p>
             <p class="card-text small">
               <div style={{width: "min-content"}}>
@@ -38,7 +50,7 @@ export const CollaItemCard=({ data, onItemClick }) => {
           </div>
         </div>
         <div class="col-md-5 collCard-Button p-2" style={buttonStyle}>
-          <h5 class="card-title totalMoney pt-2 pb-3 mb-0 fs-6">{data.totalAmount} đ</h5>
+          <h5 class="card-title totalMoney pt-2 pb-3 mb-0 fs-6">{formatNumber(data.totalAmount)} đ</h5>
           <div className="listButton">
             <Button size="btn-sm" className="btn btn-outline-secondary">
               <span>New Transaction</span>

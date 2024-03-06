@@ -10,7 +10,7 @@ export const signin = createAsyncThunk("signin", async (token) => {
 const authenSlice = createSlice({
   name: "authen",
   initialState: {
-    user: null,
+    user: sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : null,
   },
   reducers: {
     signOut: (state, action) => {

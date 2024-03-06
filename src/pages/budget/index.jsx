@@ -17,7 +17,6 @@ const Budget = () => {
   const [editIdModal, editIdModalSet] = useState(false);
   const [removeIdModal, removeIdModalSet] = useState(false);
 
-  // Get List Budget
   const dispatch = useDispatch();
   const budgets = useAppSelector((state) => state.budget.values);
   const accountID = useSelector((state) => state.authen.user?.accountID);
