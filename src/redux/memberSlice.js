@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMembersOfCollab as MembersOfCollabServices } from "../services/memberServices";
 
-export const getMembersOfCollab = createAsyncThunk("get-membersOfCollab", async (collabID) => {
-  const response = await MembersOfCollabServices(collabID);
+export const getMembersOfCollab = createAsyncThunk("get-membersOfCollab", async (collabID,accountID) => {
+  const response = await MembersOfCollabServices(collabID,accountID);
   return response;
 });
 
