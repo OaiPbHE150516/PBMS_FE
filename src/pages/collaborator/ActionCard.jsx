@@ -11,7 +11,6 @@ export const ActionCard = ({ collabID }) => {
   useEffect(() => {
     dispatch(getActionsOfCollab(collabID));
   }, [collabID]);
-  console.log(actions);
 
   return (
     <div class="card mb-3 cardActionItem">
@@ -36,7 +35,7 @@ export const ActionCard = ({ collabID }) => {
                 <div class="col-md-8 c-card-time-money">
                   <div class="card-body py-0">
                     <p class="card-text small fst-italic  mb-2">
-                      {dayjs(item.createTime).format("DD/MM/YYYY")}
+                      {item.minusTimeNowString}, {item.createTimeString}
                     </p>
                     {item.transactionID && (
                       <p class="card-text c-card-money">

@@ -9,6 +9,7 @@ import collaboratorSlice from "./collaboratorSlice";
 import transactionSlice from "./transactionSlice";
 import memberSlice from "./memberSlice";
 import actionSlice from "./actionSlice";
+import calendarSlice from "./calendarSlice";
 
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
@@ -21,6 +22,7 @@ const rootReducers = combineReducers({
   collaborator: collaboratorSlice.reducer,
   member: memberSlice.reducer,
   action: actionSlice.reducer,
+  calendar: calendarSlice.reducer,
 });
 
 const store = configureStore({

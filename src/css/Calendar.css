@@ -1,0 +1,21 @@
+.fullCalendar {
+  padding: 15px 0;
+}
+.Calendar .row {
+  display: flex;
+  justify-content: space-around;
+}
+.fc-daygrid-event {
+  background-color: transparent !important;
+  border: none !important;
+}
+.fc-event-main {
+  color: black !important;
+}
+.Calendar  .green {
+  color: green !important;
+}
+
+.Calendar  .red {
+  color: red !important;
+}
