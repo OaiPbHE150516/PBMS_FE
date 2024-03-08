@@ -6,10 +6,10 @@ const config = {
     "Content-Type": "application/json",
   },
 };
-
 export const getTransaction = async () => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const response = await axios.get(
-    API.MANAGE_TRANSACTION + "/api/transaction/get/account/a1"
+    API.MANAGE_TRANSACTION + `/api/transaction/get/${user.accountID}/1/10`
   );
   console.log(response);
   return response.data;

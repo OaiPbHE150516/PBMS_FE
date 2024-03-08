@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageTitle } from '../../components';
 import "../../css/Transaction.css";
 import Button from "../../components/Button";
@@ -8,15 +8,19 @@ import { useDispatch, useSelector } from "react-redux";
 const Transaction = () => {
   const dispatch = useDispatch();
   const transactions = useSelector((state) => state.transaction.values);
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
 
   const retrieveValues = () => {
-    console.log("retrieveValues");
     dispatch(getTransaction());
   };
 
   useEffect(() => {
     retrieveValues();
   }, []);
+
+  const handleToggleCheckboxes = () => {
+    setShowCheckboxes(!showCheckboxes);
+  };
 
   return (
     <div className='Transaction'>
@@ -40,7 +44,10 @@ const Transaction = () => {
           <table className="table table-hover">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col" onClick={handleToggleCheckboxes}>
+                  {showCheckboxes}
+                  #
+                </th>
                 <th scope="col">Time</th>
                 <th scope="col">Category</th>
                 <th scope="col">Amount</th>
@@ -50,12 +57,22 @@ const Transaction = () => {
               </tr>
             </thead>
             <tbody>
-              {transactions?.map((transaction) => (
-                <tr>
-                  <td></td>
-                  <td>{transaction.transactionDateMinus}, {transaction.transactionDateStr}</td>
+              {Array.isArray(transactions.resultDTO) && transactions.resultDTO.map((transaction, index) => (
+                <tr key={index}>
+                  <td>
+                    {showCheckboxes && <input type="checkbox" />}
+                  </td>
+                  <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}, ${transaction.transactionDateStr}` : transaction.transactionDateStr}</td>
                   <td>{transaction.category.nameVN}</td>
-                  <td>{transaction.totalAmount}</td>
+                  <td>
+                  {transaction.category.categoryType.categoryTypeID === 1 ? (
+                    <span style={{ color: '#4CAF50' }}>+ {transaction.totalAmount}</span>
+                  ) : transaction.category.categoryType.categoryTypeID === 2 ? (
+                    <span style={{ color: 'red' }}>- {transaction.totalAmount}</span>
+                  ) : (
+                    <span>{transaction.totalAmount}</span>
+                  )}
+                </td>
                   <td>{transaction.wallet.name}</td>
                   <td>{transaction.note}</td>
                   <td>{transaction.toPerson}</td>

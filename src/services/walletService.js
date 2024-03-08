@@ -23,3 +23,11 @@ export const getTotalWallets = async () => {
   console.log(response);
   return response.data;
 };
+export const addWallet = async (data) => {
+  const response = await axios.post(
+    API.MANAGE_WALLET + "/api/wallet/create",
+    data
+  );
+  console.log(response);
+  return response.data;
+};
