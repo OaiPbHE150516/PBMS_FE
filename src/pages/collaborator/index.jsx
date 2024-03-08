@@ -23,7 +23,6 @@ const Callaborator = () => {
   const handleCollabItemClick = (collabId) => {
     setSelectedCollab(collabId);
   };
-
   return (
     <div className="Callaborator">
       <PageTitle title="Callaborator" />
