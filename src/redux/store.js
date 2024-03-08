@@ -7,6 +7,7 @@ import categorySlice from "./categorySlice";
 import walletSlice, { totalwalletSlice } from "./walletSlice";
 import collaboratorSlice from "./collaboratorSlice";
 import transactionSlice from "./transactionSlice";
+import currencySlice from "./currencySlice";
 import memberSlice from "./memberSlice";
 import actionSlice from "./actionSlice";
 import calendarSlice from "./calendarSlice";
@@ -20,6 +21,7 @@ const rootReducers = combineReducers({
   totalwallet: totalwalletSlice.reducer,
   transaction: transactionSlice.reducer,
   collaborator: collaboratorSlice.reducer,
+  currency: currencySlice.reducer,
   member: memberSlice.reducer,
   action: actionSlice.reducer,
   calendar: calendarSlice.reducer,

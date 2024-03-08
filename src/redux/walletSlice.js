@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {getWallets as walletServices} from "../services/walletService";
-import {getTotalWallets as totalwalletServices} from "../services/walletService";
+import { getWallets as walletServices } from "../services/walletService";
+import { getTotalWallets as totalwalletServices } from "../services/walletService";
+import { addWallet as addWalletServices } from "../services/walletService";
+import { updateWallet as updateWalletServices } from "../services/walletService";
 export const getWallets = createAsyncThunk("get-wallets", async () => {
   const response = await walletServices();
   return response;
@@ -9,6 +11,22 @@ export const getTotalWallets = createAsyncThunk("get-totalwallets", async (accou
   const response = await totalwalletServices(accountID);
   return response;
 });
+export const addWallet = createAsyncThunk(
+  "add-wallet",
+  async ({ accountID, fieldValue }, { dispatch }) => {
+    const body = {
+      accountID: accountID,
+      name: fieldValue.name,
+      balance: fieldValue.balance,
+      currencyID: fieldValue.currencyID,
+    };
+    console.log(body);
+    const response = await addWalletServices(body);
+    await dispatch(getWallets())
+    await dispatch(getTotalWallets())
+    return response;
+  }
+);
 export const totalwalletSlice = createSlice({
   name: "totalwallet",
   initialState: {
@@ -29,6 +47,33 @@ export const totalwalletSlice = createSlice({
       })
   },
 });
+export const updateWallet = createAsyncThunk(
+  "update-wallet",
+  async ({ accountID, walletID, fieldValue }, { dispatch }) => {
+    const isBanking =
+      typeof fieldValue.isBanking === "string"
+        ? fieldValue.isBanking.toLowerCase() === "true"
+        : Boolean(fieldValue.isBanking);
+
+    const body = {
+      accountID: accountID,
+      walletID: walletID,
+      name: fieldValue.name,
+      note: fieldValue.note,
+      isBanking: isBanking,
+      qrCodeURL: fieldValue.qrCodeURL,
+      bankName: fieldValue.bankName,
+      bankAccount: fieldValue.bankAccount,
+      bankUsername: fieldValue.bankUsername,
+    };
+    console.log(body);
+    const response = await updateWalletServices(body);
+    await dispatch(getWallets());
+    await dispatch(getTotalWallets());
+
+    return response;
+  }
+);
 const walletSlice = createSlice({
   name: "wallet",
   initialState: {
