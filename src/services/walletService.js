@@ -31,3 +31,12 @@ export const addWallet = async (data) => {
   console.log(response);
   return response.data;
 };
+export const updateWallet = async (data) => {
+  const response = await axios.put(
+    API.MANAGE_WALLET + "/api/wallet/update",
+    data
+  );
+  console.log(data);
+  console.log(response);
+  return response.data;
+};

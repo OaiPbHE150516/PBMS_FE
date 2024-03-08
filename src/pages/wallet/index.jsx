@@ -5,7 +5,7 @@ import { BsToggleOn } from "react-icons/bs";
 import { IoReload } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addWallet, getTotalWallets, getWallets } from "../../redux/walletSlice";
+import { addWallet, getTotalWallets, getWallets ,updateWallet} from "../../redux/walletSlice";
 import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
 import CreateWallet from "../../components/WalletForm/CreateWallet";
@@ -13,13 +13,18 @@ import UpdateWallet from "../../components/WalletForm/UpdateWallet";
 import { getCurrency } from "../../redux/currencySlice";
 const Wallet = () => {
     const dispatch = useDispatch();
+
     const wallet = useSelector((state) => state.wallet.values);
+    const walletID = useSelector((state) => state.wallet?.walletID);
     const totalwallets = useSelector((state) => state.totalwallet.values);
     const accountID = useSelector((state) => state.authen.user?.accountID);
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     };
-
+    const [editIdModal, editIdModalSet] = useState(false);
+    const updateWalletData = wallet.find(
+        (item) => item.walletID === editIdModal
+    );
     const retrieveValues = () => {
         console.log("retrieveValues");
         dispatch(getWallets());
@@ -28,7 +33,7 @@ const Wallet = () => {
     };
 
     const [show, showSet] = useState(false);
-    const [editModal, editModalSet] = useState(false);
+
     useEffect(() => {
         retrieveValues();
     }, []);
@@ -81,12 +86,24 @@ const Wallet = () => {
                                                 ></Form.Check>
                                             </div>
                                         </div>
-                                        <div class="active2"><button className="icon-button">
-                                            <IoReload />
-                                        </button>
+                                        <div class="active2">
                                             <button className="icon-button">
-                                                <BsPencilSquare />
+                                                <IoReload />
                                             </button>
+                                            {wallet && (
+                                                <button className="icon-button" onClick={() => editIdModalSet(wallet.walletID)}>
+                                                    <BsPencilSquare />
+                                                </button>)}
+                                            {updateWalletData && (
+                                                <UpdateWallet
+                                                    data={updateWalletData}
+                                                    show={Boolean(editIdModal)}
+                                                    onClose={() => editIdModalSet(false)}
+                                                    onSubmit={(fieldValue) =>
+                                                        dispatch(updateWallet({ accountID: accountID,walletID: editIdModal, fieldValue: fieldValue }))
+                                                            .unwrap()
+                                                            .then(() => editIdModalSet(false))}
+                                                />)}
                                         </div>
 
                                     </div>
