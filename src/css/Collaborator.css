@@ -6,7 +6,7 @@
 }
 .totalMoney{
     display: flex;
-    justify-content: center;
+    justify-content: right;
 }
 .listButton button{
     width: 100%;

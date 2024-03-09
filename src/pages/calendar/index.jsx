@@ -53,13 +53,13 @@ const Calendar = () => {
       <PageTitle title="Calendar" />
       <section className="section dashboard">
         <div className="row">
-          <div className="col-lg-4 listTrans card">
+          <div className="col-lg-3 listTrans card">
             <div className="card-body">
-              <h5 className="card-title">Calendar</h5>
+              <h5 className="card-title">Transaction</h5>
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
                     <th scope="col">Category</th>
                     <th scope="col">Wallet</th>
                     <th scope="col">Money</th>
@@ -68,11 +68,11 @@ const Calendar = () => {
                 <tbody>
                   {displayedTransactions.map((transaction, index) => (
                     <tr key={index}>
-                      <td>{dayjs(transaction.transactionDate).format("DD/MM/YYYY")}</td>
+                      <td>{transaction.transactionDateMinus}</td>
                       <td>{transaction.category.nameVN}</td>
                       <td>{transaction.wallet.name}</td>
                       <td className={transaction.totalAmount > 0 ? "green" : "red"}>
-                        {transaction.totalAmount}
+                        {transaction.totalAmount.toLocaleString("vi-VN")} đ
                       </td>
                     </tr>
                   ))}
@@ -80,7 +80,7 @@ const Calendar = () => {
               </table>
             </div>
           </div>
-          <div className="col-lg-7 fullCalendar card">
+          <div className="col-lg-8 fullCalendar card">
             <FullCalendar
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
@@ -92,12 +92,12 @@ const Calendar = () => {
                     {arg.event.extendedProps.totalAmount > 0 ? (
                       <div className="green">
                         <IoMdArrowDropup />
-                        {arg.event.extendedProps.totalAmount.toLocaleString("vi-VN")}
+                        {arg.event.extendedProps.totalAmount.toLocaleString("vi-VN")} đ
                       </div>
                     ) : (
                       <div className="red">
                         <IoMdArrowDropdown />
-                        {arg.event.extendedProps.totalAmount.toLocaleString("vi-VN")}
+                        {arg.event.extendedProps.totalAmount.toLocaleString("vi-VN")} đ
                       </div>
                     )}
                   </div>
@@ -117,8 +117,8 @@ const Calendar = () => {
                 });
               }}
               datesSet={(info) => {
-                setCurrentMonth(info.start.getMonth() + 2);
-                setCurrentYear(info.start.getFullYear());
+                setCurrentMonth(info.view.currentStart.getMonth() + 1);
+                setCurrentYear(info.view.currentStart.getFullYear());
               }}
             />
           </div>
