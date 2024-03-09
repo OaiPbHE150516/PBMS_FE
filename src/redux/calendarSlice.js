@@ -12,7 +12,7 @@ export const getCalendars = createAsyncThunk(
 const calendarSlice = createSlice({
   name: "calendar",
   initialState: {
-    values: [], // Initialize as an empty array
+    values: [], 
   },
   reducers: {
     setValues: (state, action) => {

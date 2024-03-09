@@ -66,18 +66,21 @@ const MemberTab = ({ collabID }) => {
   useEffect(() => {
     dispatch(getMembersOfCollab(collabID));
   }, [collabID]);
+  console.log(collabID);
 
   const membersActive = members.filter((item) => {
-    return item.roleID === 1;
+    return item.activeStateID === 1;
   });
   const membersInActive = members.filter((item) => {
-    return item.roleID === 2;
+    return item.activeStateID === 2;
   });
 
   const membersWaiting = members.filter((item) => {
-    return item.roleID === 3;
+    return item.activeStateID === 3;
   });
 
+  console.log("Member Tab:");
+  console.log(members);
   return (
     <>
       <AddNewMemberPopup
@@ -87,25 +90,25 @@ const MemberTab = ({ collabID }) => {
       {membersActive.length > 0 && (
         <>
           <h5 className="card-title text-center">Action</h5>
-          {membersActive.map((item) => (
-            <MemberCard data={item} />
-          ))}
+          {membersActive.map((item) => {
+            return <MemberCard data={item} />;
+          })}
         </>
       )}
       {membersInActive.length > 0 && (
         <>
           <h5 className="card-title text-center">Inactive</h5>
-          {membersInActive.map((item) => (
-            <MemberCard data={item} />
-          ))}
+          {membersInActive.map((item) => {
+            return <MemberCard data={item} />;
+          })}
         </>
       )}
       {membersWaiting.length > 0 && (
         <>
           <h5 className="card-title text-center">Waiting for confirmation</h5>
-          {membersWaiting.map((item) => (
-            <MemberCard data={item} />
-          ))}
+          {membersWaiting.map((item) => {
+            return <MemberCard data={item} />;
+          })}
         </>
       )}
 

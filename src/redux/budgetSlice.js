@@ -37,7 +37,6 @@ export const addBudgets = createAsyncThunk(
         createTime: new Date().toISOString(),
         categoryIDs: fieldValue.category.map((item) => item.value),
       };
-      // console.log(body);
     const response = await addBudgetServices(body);
     await dispatch(getBudgets())
     return response;
