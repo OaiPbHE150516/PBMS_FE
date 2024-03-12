@@ -10,20 +10,24 @@ const Transaction = () => {
   const transactions = useSelector((state) => state.transaction.values);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [pageSize, setPageSize] = useState(10);
   const retrieveValues = () => {
-    dispatch(getTransaction({ pageNumber: currentPage, pageSize: 100 }));
+    dispatch(getTransaction({ pageNumber: currentPage, pageSize }));
   };
 
   useEffect(() => {
     retrieveValues();
-  }, [currentPage]); 
+  }, [currentPage, pageSize]);
 
   const handleToggleCheckboxes = () => {
     setShowCheckboxes(!showCheckboxes);
   };
   const handlePageClick = (page) => {
     setCurrentPage(page);
+  };
+  const handlePageSizeChange = (event) => {
+    const selectedPageSize = parseInt(event.target.value, 10);
+    setPageSize(selectedPageSize);
   };
 
   return (
@@ -85,57 +89,70 @@ const Transaction = () => {
               ))}
             </tbody>
           </table>
-          <ul className="pagination justify-content-end" style={{ marginRight: '30px' }}>
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button
-                className="page-link"
-                onClick={() => handlePageClick(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-            </li>
-            {[1, 2, 3].map((page) => (
-              <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handlePageClick(page)}>
-                  {page}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <a style={{ marginLeft: '20px', marginRight: '10px' }}>Show</a>
+            <select
+              className="form-select"
+              style={{ width: '70px' }}
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+            <a style={{ marginLeft: '10px' }}>entries per page</a>
+            <ul className="pagination justify-content-end" style={{ marginLeft: 'auto' }}>
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageClick(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  {'<<<'}
                 </button>
               </li>
-            ))}
-            {transactions.totalPage > 3 && (
-              <>
-                <li className="page-item disabled">
-                  <span className="page-link">...</span>
-                </li>
-                <li className={`page-item ${currentPage === transactions.totalPage - 1 ? 'active' : ''}`}>
-                  <button
-                    className="page-link"
-                    onClick={() => handlePageClick(transactions.totalPage - 1)}
-                  >
-                    {transactions.totalPage - 1}
+              {[1, 2, 3].map((page) => (
+                <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageClick(page)}>
+                    {page}
                   </button>
                 </li>
-                <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
-                  <button
-                    className="page-link"
-                    onClick={() => handlePageClick(transactions.totalPage)}
-                  >
-                    {transactions.totalPage}
-                  </button>
-                </li>
-              </>
-            )}
-            <li className={`page-item ${currentPage === transactions.totalPage ? 'disabled' : ''}`}>
-              <button
-                className="page-link"
-                onClick={() => handlePageClick(currentPage + 1)}
-                disabled={currentPage === transactions.totalPage}
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-
+              ))}
+              {transactions.totalPage > 3 && (
+                <>
+                  <li className="page-item disabled">
+                    <span className="page-link">...</span>
+                  </li>
+                  <li className={`page-item ${currentPage === transactions.totalPage - 1 ? 'active' : ''}`}>
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageClick(transactions.totalPage - 1)}
+                    >
+                      {transactions.totalPage - 1}
+                    </button>
+                  </li>
+                  <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageClick(transactions.totalPage)}
+                    >
+                      {transactions.totalPage}
+                    </button>
+                  </li>
+                </>
+              )}
+              <li className={`page-item ${currentPage === transactions.totalPage ? 'disabled' : ''}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageClick(currentPage + 1)}
+                  disabled={currentPage === transactions.totalPage}
+                >
+                  {'>>>'}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
