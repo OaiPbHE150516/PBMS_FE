@@ -9,17 +9,21 @@ const Transaction = () => {
   const dispatch = useDispatch();
   const transactions = useSelector((state) => state.transaction.values);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const retrieveValues = () => {
-    dispatch(getTransaction());
+    dispatch(getTransaction({ pageNumber: currentPage, pageSize: 100 }));
   };
 
   useEffect(() => {
     retrieveValues();
-  }, []);
+  }, [currentPage]); 
 
   const handleToggleCheckboxes = () => {
     setShowCheckboxes(!showCheckboxes);
+  };
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -44,42 +48,94 @@ const Transaction = () => {
           <table className="table table-hover">
             <thead>
               <tr>
-                <th scope="col" onClick={handleToggleCheckboxes}>
+                <th style={{ width: '50px' }} scope="col" onClick={handleToggleCheckboxes}>
                   {showCheckboxes}
                   #
                 </th>
-                <th scope="col">Time</th>
-                <th scope="col">Category</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Wallet</th>
-                <th scope="col">Description</th>
-                <th scope="col">Infor</th>
+                <th scope="col" style={{ width: '150px' }}>Time</th>
+                <th scope="col" style={{ width: '150px' }}>Category</th>
+                <th scope="col" style={{ width: '150px' }}>Amount</th>
+                <th scope="col" style={{ width: '150px' }}>Wallet</th>
+                <th scope="col" style={{ width: '150px' }}>Description</th>
+                <th scope="col" style={{ width: '150px' }}>Infor</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray(transactions.resultDTO) && transactions.resultDTO.map((transaction, index) => (
                 <tr key={index}>
-                  <td>
+                  <td style={{ width: '50px' }}>
                     {showCheckboxes && <input type="checkbox" />}
                   </td>
-                  <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}, ${transaction.transactionDateStr}` : transaction.transactionDateStr}</td>
-                  <td>{transaction.category.nameVN}</td>
-                  <td>
-                  {transaction.category.categoryType.categoryTypeID === 1 ? (
-                    <span style={{ color: '#4CAF50' }}>+ {transaction.totalAmount}</span>
-                  ) : transaction.category.categoryType.categoryTypeID === 2 ? (
-                    <span style={{ color: 'red' }}>- {transaction.totalAmount}</span>
-                  ) : (
-                    <span>{transaction.totalAmount}</span>
-                  )}
-                </td>
-                  <td>{transaction.wallet.name}</td>
-                  <td>{transaction.note}</td>
-                  <td>{transaction.toPerson}</td>
+                  <td style={{ width: '150px' }}>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}, ${transaction.transactionDateStr}` : transaction.transactionDateStr}</td>
+                  <td style={{ width: '150px' }}>{transaction.category.nameVN}</td>
+                  <td style={{ width: '150px' }}>
+                    {transaction.category.categoryType.categoryTypeID === 1 ? (
+                      <span style={{ color: '#4CAF50' }}>+{transaction.totalAmount}</span>
+                    ) : transaction.category.categoryType.categoryTypeID === 2 ? (
+                      <span style={{ color: 'red' }}>-{transaction.totalAmount}</span>
+                    ) : (
+                      <span>{transaction.totalAmount}</span>
+                    )}
+                  </td>
+
+                  <td style={{ width: '150px' }}>{transaction.wallet.name}</td>
+                  <td style={{ width: '150px' }}>{transaction.note}</td>
+                  <td style={{ width: '150px' }}>{transaction.toPerson}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <ul className="pagination justify-content-end" style={{ marginRight: '30px' }}>
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button
+                className="page-link"
+                onClick={() => handlePageClick(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+            </li>
+            {[1, 2, 3].map((page) => (
+              <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePageClick(page)}>
+                  {page}
+                </button>
+              </li>
+            ))}
+            {transactions.totalPage > 3 && (
+              <>
+                <li className="page-item disabled">
+                  <span className="page-link">...</span>
+                </li>
+                <li className={`page-item ${currentPage === transactions.totalPage - 1 ? 'active' : ''}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageClick(transactions.totalPage - 1)}
+                  >
+                    {transactions.totalPage - 1}
+                  </button>
+                </li>
+                <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageClick(transactions.totalPage)}
+                  >
+                    {transactions.totalPage}
+                  </button>
+                </li>
+              </>
+            )}
+            <li className={`page-item ${currentPage === transactions.totalPage ? 'disabled' : ''}`}>
+              <button
+                className="page-link"
+                onClick={() => handlePageClick(currentPage + 1)}
+                disabled={currentPage === transactions.totalPage}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+
         </div>
       </div>
     </div>
