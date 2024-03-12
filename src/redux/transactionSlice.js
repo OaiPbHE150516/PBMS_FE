@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {getTransaction as transactionServices} from "../services/transactionServices";
+import { getTransaction as transactionServices } from "../services/transactionServices";
 
-export const getTransaction = createAsyncThunk("get-transaction", async () => {
-  const response = await transactionServices();
+export const getTransaction = createAsyncThunk("get-transaction", async ({ pageNumber, pageSize }) => {
+  const response = await transactionServices(pageNumber, pageSize);
   return response;
 });
-
 
 const transactionSlice = createSlice({
   name: "transaction",
@@ -24,9 +23,8 @@ const transactionSlice = createSlice({
       })
       .addCase(getTransaction.rejected, (state, action) => {
         console.log("rejected");
-      })
+      });
   },
 });
 
 export default transactionSlice;
-
