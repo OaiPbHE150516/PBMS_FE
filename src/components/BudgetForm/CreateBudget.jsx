@@ -38,19 +38,18 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     control,
     watch,
     formState: { errors, isValid },
-    setValue
+    setValue,
   } = useForm({
     defaultValues: {
       budgetName: "",
-      category: [],
       targetAmount: 0,
-      wallet: [],
-      repeat: false,
-      numberIterations: 1,
-      note: "",
       fromPeriod: getInputDateFormat(new Date()),
       toPeriod: getInputDateFormat(new Date()),
+      repeat: false,
       period: /** @type {'week' | 'month' | 'other'} */ ("other"),
+      numberIterations: 1,
+      note: "",
+      category: [],
     },
   });
 
@@ -58,7 +57,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
   const fromPeriod = watch("fromPeriod");
   const toPeriod = watch("toPeriod");
   const repeat = watch("repeat");
-  
+
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
   const categoryOptions = categories.map((item) => ({
@@ -75,45 +74,51 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
 
   useEffect(() => {
     const subscription = watch((fields, { name, type }) => {
-        if(name === 'period') {
-            const now = new Date();
-            const value = fields.period
-            switch(value) {
-                case 'other': {
-                    setValue('fromPeriod', dayjs(now).format('YYYY-MM-DD'))
-                    setValue('toPeriod', dayjs(now).add(1, 'day').format('YYYY-MM-DD'));
-                    break;
-                }
-                case 'week': {
-                    setValue('fromPeriod', dayjs(now).format('YYYY-MM-DD'))
-                    setValue('toPeriod', dayjs(now).add(1, 'week').format('YYYY-MM-DD'));
-                    break;
-                }
-                case 'month': {
-                    setValue('fromPeriod', dayjs(now).format('YYYY-MM-DD'))
-                    setValue('toPeriod', dayjs(now).add(1, 'month').format('YYYY-MM-DD'));
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
+      if (name === "period") {
+        const now = new Date();
+        const value = fields.period;
+        switch (value) {
+          case "other": {
+            setValue("fromPeriod", dayjs(now).format("YYYY-MM-DD"));
+            setValue("toPeriod", dayjs(now).add(1, "day").format("YYYY-MM-DD"));
+            break;
+          }
+          case "week": {
+            setValue("fromPeriod", dayjs(now).format("YYYY-MM-DD"));
+            setValue(
+              "toPeriod",
+              dayjs(now).add(1, "week").format("YYYY-MM-DD")
+            );
+            break;
+          }
+          case "month": {
+            setValue("fromPeriod", dayjs(now).format("YYYY-MM-DD"));
+            setValue(
+              "toPeriod",
+              dayjs(now).add(1, "month").format("YYYY-MM-DD")
+            );
+            break;
+          }
+          default: {
+            break;
+          }
         }
+      }
     });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <Popup
-      title={"New Budget"}
+      title={"Ngân sách mới"}
       show={show}
       onClose={() => showSet(false)}
       onSubmit={handleSubmit(onSubmit)}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Budget Name</Form.Label>
+          <Form.Label>Tên ngân sách</Form.Label>
           <Form.Control
             type="text"
             {...register("budgetName", { required: true })}
@@ -121,7 +126,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
           <FormErrorMessage errors={errors} fieldName={"budgetName"} />
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Category</Form.Label>
+          <Form.Label>Hạng mục</Form.Label>
           <div className="row">
             <div className="col-9">
               <Controller
@@ -152,27 +157,15 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
           <FormErrorMessage errors={errors} fieldName={"category"} />
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Target amount</Form.Label>
+          <Form.Label>Lượng ngân sách</Form.Label>
           <Form.Control
             type="number"
             {...register("targetAmount", { required: true })}
           ></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
         </Form.Group>
-        <Form.Group className="mb-4">
-          <Form.Label>Wallet</Form.Label>
-          <Controller
-            control={control}
-            name="wallet"
-            rules={{ validate: (value) => Boolean(value.length) }}
-            render={({ field }) => (
-              <MultipleSelect {...field} isMulti options={walletOptions} />
-            )}
-          />
-          <FormErrorMessage errors={errors} fieldName={"wallet"} />
-        </Form.Group>
         <Form.Group className="mb-3 d-flex align-items-center gap-3">
-          <Form.Label>Period</Form.Label>
+          <Form.Label>Khoảng thời gian</Form.Label>
           <Controller
             name="period"
             control={control}
@@ -185,7 +178,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
                   })}
                   size="btn-sm"
                 >
-                  Week
+                  Tuần
                 </Button>
                 <Button
                   onClick={() => field.onChange("month")}
@@ -194,7 +187,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
                   })}
                   size="btn-sm"
                 >
-                  Month
+                  Tháng
                 </Button>
                 <Button
                   onClick={() => field.onChange("other")}
@@ -203,7 +196,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
                   })}
                   size="btn-sm"
                 >
-                  Other
+                  Khác
                 </Button>
               </div>
             )}
@@ -214,7 +207,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
           {period === "other" && (
             <div className="row mb-3">
               <div className="col-6 d-flex align-items-center gap-2">
-                <label class="form-label mb-0">Form</label>
+                <label class="form-label mb-0">Từ</label>
                 <input
                   type="date"
                   {...register("fromPeriod")}
@@ -222,7 +215,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
                 />
               </div>
               <div className="col-6 d-flex align-items-center gap-2">
-                <label class="form-label  mb-0">To</label>
+                <label class="form-label  mb-0">Đến</label>
                 <input
                   type="date"
                   {...register("toPeriod")}
@@ -232,18 +225,18 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             </div>
           )}
           <p className="mb-0">
-            Start from <b>{getMonthAndDay(new Date(fromPeriod))}</b> to{" "}
+            Bắt đầu <b>{getMonthAndDay(new Date(fromPeriod))}</b> đến{" "}
             <b>{getMonthAndDay(new Date(toPeriod))}</b>{" "}
           </p>
         </Form.Group>
         <Form.Group className="d-flex mb-2 align-items-center">
           <div className="pe-4">
-            <div style={{ width: "min-content" }}>
+            <div>
               <Form.Check
                 className="mb-0"
                 type="switch"
                 reverse
-                label="Repeat"
+                label="Lặp lại"
                 size={"lg"}
                 {...register("repeat")}
               ></Form.Check>
@@ -253,7 +246,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
           {repeat && (
             <div className="d-flex gap-2 align-items-center">
               <Form.Label className="mb-0" style={{ whiteSpace: "nowrap" }}>
-                Number of iterations
+                Số lần lặp
               </Form.Label>
               <Form.Control
                 size="sm"
@@ -268,7 +261,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
           )}
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Note</Form.Label>
+          <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"note"} />
         </Form.Group>

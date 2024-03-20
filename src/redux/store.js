@@ -11,11 +11,13 @@ import currencySlice from "./currencySlice";
 import memberSlice from "./memberSlice";
 import actionSlice from "./actionSlice";
 import calendarSlice from "./calendarSlice";
+import overviewLastTransactionSlice from "./overviewLastTransactionSlice";
+import profileSlice from "./profileSlice";
 
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   value: valueSlice.reducer,
-  budget:budgetSlice.reducer,
+  budget: budgetSlice.reducer,
   category: categorySlice.reducer,
   wallet: walletSlice.reducer,
   totalwallet: totalwalletSlice.reducer,
@@ -25,13 +27,14 @@ const rootReducers = combineReducers({
   member: memberSlice.reducer,
   action: actionSlice.reducer,
   calendar: calendarSlice.reducer,
+  lastTransaction: overviewLastTransactionSlice.reducer,
+  profile: profileSlice.reducer,
 });
 
 const store = configureStore({
   reducer: rootReducers,
   middleware: [thunk],
 });
-
 
 /**
  * @typedef {ReturnType<typeof store.getState>} RootState

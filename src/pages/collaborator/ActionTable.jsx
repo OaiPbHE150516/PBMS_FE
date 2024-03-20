@@ -1,9 +1,10 @@
 import React from "react";
 import MemberTab from "./MemberTab";
 import {ActionCard} from "./ActionCard";
-import {AddNewMember} from "./AddNewMember";
+import {AddNewAction} from "./AddNewAction";
 
 export const ActionTable=({ collabID }) => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   return (
     <div class="card h-100 pt-3">
       <div class="card-body d-flex flex-column">
@@ -22,7 +23,7 @@ export const ActionTable=({ collabID }) => {
               role="tab"
               aria-selected="true"
             >
-              Action
+              Hoạt động
             </button>
           </li>
           <li class="nav-item flex-fill" role="presentation">
@@ -35,7 +36,7 @@ export const ActionTable=({ collabID }) => {
               role="tab"
               aria-selected="false"
             >
-              Member
+              Thành viên
             </button>
           </li>
           <li class="nav-item flex-fill" role="presentation">
@@ -48,7 +49,7 @@ export const ActionTable=({ collabID }) => {
               role="tab"
               aria-selected="false"
             >
-              History
+              Lịch sử
             </button>
           </li>
         </ul>
@@ -66,7 +67,7 @@ export const ActionTable=({ collabID }) => {
               <div className="flex-grow-1">
                 <ActionCard collabID={collabID}/>
               </div>
-              <AddNewMember />
+              <AddNewAction data={user} collabID={collabID}/>
             </div>
           </div>
           <div

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
+import UpdateCollabFund from "../../components/CollabFundForm/UpdateCollabFund";
+import DevideMoney from "../../components/CollabFundForm/DevideMoney";
 
 export const CollaItemCard = ({ data, onItemClick }) => {
   const [repeat, repeatSet] = useState(true);
@@ -8,16 +10,19 @@ export const CollaItemCard = ({ data, onItemClick }) => {
     onItemClick(data.collabFundID);
   };
 
+  console.log(data);
   const formatNumber = (number) => {
     return number.toLocaleString("vi-VN");
   };
 
   const buttonStyle = {
-    // backgroundImage: `url(${logo})`,
-    backgroundColor: "#EFEDE4",
+    backgroundImage: `url(${data.imageURL})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
   };
+
+  const [showFormUpdate, setShowFormUpdate] = useState(false);
+  const [showDivideForm, setShowDivideForm] = useState(false);
 
   return (
     <div class="card mb-3 cardItem overflow-hidden" onClick={handleClick}>
@@ -35,13 +40,13 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 );
               })}
             </p>
-            <p class="card-text small mb-2">Description: {data.description}</p>
+            <p class="card-text small mb-2">Ghi chú: {data.description}</p>
             <p class="card-text small">
-              <div style={{ width: "min-content" }}>
+              <div>
                 <Form.Check
                   className="mb-0"
                   type="switch"
-                  label="Active"
+                  label="Hoạt động"
                   size={"lg"}
                   checked={repeat}
                   onChange={({ target: { checked } }) => repeatSet(checked)}
@@ -50,27 +55,59 @@ export const CollaItemCard = ({ data, onItemClick }) => {
             </p>
           </div>
         </div>
-        <div class="col-md-5 collCard-Button p-2" style={buttonStyle}>
+        <div
+          class="col-md-5 collCard-Button p-2"
+          style={buttonStyle}
+          onClick={handleClick}
+        >
           <h5 class="card-title totalMoney pt-2 pb-3 mb-0 fs-6">
             {formatNumber(data.totalAmount)} đ
           </h5>
           <div className="listButton">
             <Button size="btn-sm" className="btn btn-outline-secondary">
-              <span>New Transaction</span>
+              <span>Giao dịch mới</span>
             </Button>
             {data.isFundholder ? (
-              <Button className="btn btn-outline-secondary" size="btn-sm">
-                <span>Suggest Divide Money</span>
+              <Button
+                className="btn btn-outline-secondary"
+                size="btn-sm"
+                onClick={() => setShowDivideForm(true)}
+              >
+                <span>Đề nghị chia tiền</span>
               </Button>
             ) : (
-              <Button className="btn btn-outline-secondary" size="btn-sm">
-                <span>Divide Money</span>
+              <Button
+                className="btn btn-outline-secondary"
+                size="btn-sm"
+                onClick={() => setShowDivideForm(true)}
+              >
+                <span>Chia tiền</span>
               </Button>
             )}
+            {showDivideForm && (
+              <DevideMoney
+                show={showDivideForm}
+                showSet={setShowDivideForm}
+                onSubmit={(fieldValue) => {
+                  // Handle form submission logic here
+                }}
+              />
+            )}
 
-            <Button className="btn btn-outline-secondary" size="btn-sm">
-              <span>Edit</span>
+            <Button
+              className="btn btn-outline-secondary"
+              size="btn-sm"
+              onClick={() => setShowFormUpdate(true)}
+            >
+              <span>Chỉnh sửa</span>
             </Button>
+            {showFormUpdate && (
+              <UpdateCollabFund
+                show={showFormUpdate}
+                showSet={setShowFormUpdate}
+                onSubmit={(fieldValue) => {}}
+              />
+            )}
           </div>
         </div>
       </div>

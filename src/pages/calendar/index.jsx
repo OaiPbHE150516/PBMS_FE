@@ -7,8 +7,7 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
 import { getCalendars } from "../../redux/calendarSlice";
-import dayjs from "dayjs";
-
+import viLocale from '@fullcalendar/core/locales/vi';
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [displayedTransactions, setDisplayedTransactions] = useState([]);
@@ -50,19 +49,19 @@ const Calendar = () => {
 
   return (
     <div className="Calendar">
-      <PageTitle title="Calendar" />
+      <PageTitle title="Lịch" />
       <section className="section dashboard">
         <div className="row">
           <div className="col-lg-3 listTrans card">
             <div className="card-body">
-              <h5 className="card-title">Transaction</h5>
+              <h5 className="card-title">Các giao dịch</h5>
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">Time</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Wallet</th>
-                    <th scope="col">Money</th>
+                    <th scope="col">Thời gian</th>
+                    <th scope="col">Danh mục</th>
+                    <th scope="col">Ví</th>
+                    <th scope="col">số tiền</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -103,6 +102,11 @@ const Calendar = () => {
                   </div>
                 </>
               )}
+              headerToolbar={{
+                start: 'prev',
+                center: 'title',
+                end: 'next'
+              }}
               dayCellDidMount={(arg) => {
                 const cellDate =
                   arg.date.getFullYear() +
@@ -120,6 +124,7 @@ const Calendar = () => {
                 setCurrentMonth(info.view.currentStart.getMonth() + 1);
                 setCurrentYear(info.view.currentStart.getFullYear());
               }}
+              locale={viLocale}
             />
           </div>
         </div>

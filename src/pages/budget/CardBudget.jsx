@@ -25,8 +25,8 @@ const Card = ({ onDelete, onEdit, onReload, data }) => {
         </div>
         <div className="d-flex align-items-end w-100 mt-4">
           <div>
-            <p className="mb-0 text-base">Surplus: {data.remainAmountStr} </p>
-            <p className="mb-0 text-base">Note: {data.note}</p>
+            <p className="mb-0 text-base">Số dư: {data.remainAmountStr} </p>
+            <p className="mb-0 text-base">Ghi chú: {data.note}</p>
           </div>
           <div className="row ms-auto">
             <button

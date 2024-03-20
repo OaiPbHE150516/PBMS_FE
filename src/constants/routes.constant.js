@@ -18,4 +18,5 @@ export const ROUTE_CONSTANTS = {
     REPORT_PAGE: "/report",
     SETTING_PAGE: "/setting",
     CATEGORY_PAGE: "/category",
+    PROFILE_PAGE: "/profile",
 }

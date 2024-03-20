@@ -91,3 +91,12 @@
 .Callaborator .dashboard{
     margin-top: 20px;
 }
+
+.listDivideMoney img{
+    height: 40px;
+    border-radius: 50%;
+}
+.listDivideMoney .divideItem{
+    border: 1px solid #000000;
+    margin-bottom: 10px;
+}

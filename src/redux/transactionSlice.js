@@ -6,7 +6,6 @@ export const getTransaction = createAsyncThunk("get-transaction", async () => {
   return response;
 });
 
-
 const transactionSlice = createSlice({
   name: "transaction",
   initialState: {

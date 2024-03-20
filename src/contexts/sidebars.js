@@ -1,7 +1,4 @@
 import {
-  BsFillMenuButtonWideFill,
-  BsDatabaseCheck,
-  BsFillWalletFill,
   BsCoin,
   BsReceipt,
   BsCalendar2Week,
@@ -10,79 +7,84 @@ import {
   BsFillGearFill,
   BsFillPeopleFill,
 } from "react-icons/bs";
+import { GrOverview } from "react-icons/gr";
+import { AiOutlineTransaction } from "react-icons/ai";
+import { LuWallet } from "react-icons/lu";
+import { TbChartHistogram } from "react-icons/tb";
+import { MdOutlineCategory } from "react-icons/md";
 import { ROUTE_CONSTANTS } from "../constants";
 export const sidebars = [
   {
-    text: "Overview",
-    icon: <BsFillMenuButtonWideFill />,
+    text: "Tổng quan",
+    icon: <GrOverview />,
     path: ROUTE_CONSTANTS.OVERVIEW_PAGE,
     exact: true,
   },
   {
-    text: "Transaction",
-    icon: <BsFillWalletFill />,
+    text: "Giao dịch",
+    icon: <AiOutlineTransaction />,
     path: ROUTE_CONSTANTS.TRANSACTION_PAGE,
     exact: true,
   },
   {
-    text: "Wallet",
-    icon: <BsDatabaseCheck />,
+    text: "Ví",
+    icon: <LuWallet />,
     path: ROUTE_CONSTANTS.WALLET_PAGE,
     exact: true,
   },
   {
-    text: "Budget",
+    text: "Ngân sách",
     icon: <BsCoin />,
     path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,
   },
   {
-    text: "Expected",
+    text: "Giao dịch dự kiến",
     icon: <BsReceipt />,
     path: ROUTE_CONSTANTS.EXPECTED_PAGE,
     exact: true,
   },
   {
-    text: "Chart",
-    icon: <BsBank2 />,
+    text: "Biểu đồ",
+    icon: <TbChartHistogram />,
     path: ROUTE_CONSTANTS.CHART_PAGE,
     exact: true,
   },
   {
-    text: "Calendar",
+    text: "Lịch",
     icon: <BsCalendar2Week />,
     path: ROUTE_CONSTANTS.CALENDAR_PAGE,
     exact: true,
   },
   {
-    text: "Collaborators",
+    text: "Quỹ cộng tác",
     icon: <BsFillPeopleFill />,
     path: ROUTE_CONSTANTS.COLLABORATOR_PAGE,
     exact: true,
   },
   {
-    text: "Loan",
+    text: "Khoản vay",
     icon: <BsBank2 />,
     path: ROUTE_CONSTANTS.LOAN_PAGE,
     exact: true,
   },
   {
-    text: "Report",
+    text: "Báo cáo",
     icon: <BsFileEarmarkZip />,
     path: ROUTE_CONSTANTS.REPORT_PAGE,
     exact: true,
   },
   {
-    text: "Setting",
+    text: "Cài đặt",
     icon: <BsFillGearFill />,
     path: ROUTE_CONSTANTS.SETTING_PAGE,
     exact: true,
   },
   // category
   {
-    text: "Category",
-    icon: <BsFillGearFill />,
+    text: "Danh mục",
+    icon: <MdOutlineCategory />,
     path: ROUTE_CONSTANTS.CATEGORY_PAGE,
     exact: true,
-  }
+  },
 ];

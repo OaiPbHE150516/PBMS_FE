@@ -1,10 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getActionsOfCollab as ActionsOfCollabServices } from "../services/actionServices";
+import { addActionsOfCollabNoTrans as NewActionsOfCollabNoTransServices } from "../services/actionServices";
 
-export const getActionsOfCollab = createAsyncThunk("get-actionsOfCollab", async (collabID) => {
-  const response = await ActionsOfCollabServices(collabID);
+export const getActionsOfCollab = createAsyncThunk("get-actionsOfCollab", async (collabID, accountID) => {
+  const response = await ActionsOfCollabServices(collabID, accountID);
   return response;
 });
+
+export const addActionNoTrans = createAsyncThunk(
+  "add-action-no-trans",
+  async ({accountID, fieldValue}, { dispatch }) => {
+    const body = {
+      collabFundID: fieldValue.collabID,
+      accountID: accountID,
+      note: fieldValue.note,
+      filename: "",
+      };
+    const response = await NewActionsOfCollabNoTransServices(body);
+    await dispatch(getActionsOfCollab())
+    return response;
+  }
+);
 
 const actionSlice = createSlice({
   name: "actionsOfCollab",
@@ -26,5 +42,6 @@ const actionSlice = createSlice({
       });
   },
 });
+
 
 export default actionSlice;

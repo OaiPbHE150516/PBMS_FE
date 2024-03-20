@@ -11,6 +11,7 @@ import {
   Callaborator,
   Report,
   Setting,
+  Profile,
 } from "../pages";
 import Category from "../pages/category";
 
@@ -80,11 +81,16 @@ export const routes = [
     component: <Setting />,
     exact: true,
   },
-  // category
   {
     path: ROUTE_CONSTANTS.CATEGORY_PAGE,
     isPrivate: false,
     component: <Category />,
+    exact: true,
+  },
+  {
+    path: ROUTE_CONSTANTS.PROFILE_PAGE,
+    isPrivate: false,
+    component: <Profile />,
     exact: true,
   },
  
