@@ -7,21 +7,20 @@ const config = {
   },
 };
 
-export const getActionsOfCollab = async (collabID) => {
+export const getProfile = async () => {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const response = await axios.get(
-    API.MANAGE_COLLABORATOR + `/api/collabfund/get/activity/${collabID}/${user.accountID}`
+    API.MANAGE_PROFILE + `/api/profile/get/${user.accountID}`
   );
   console.log(response);
   return response.data;
 };
 
-export const addActionsOfCollabNoTrans = async (data) => {
+export const updateBudgets = async (data) => {
   const response = await axios.post(
-    API.MANAGE_COLLABORATOR + `/api/collabfund/create/activity/notrans`,
+    API.MANAGE_PROFILE + "/api/profile/update",
     data
   );
-  console.log(response);
+  console.log(data);
   return response.data;
 };
-

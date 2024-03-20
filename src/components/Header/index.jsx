@@ -8,7 +8,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../../redux/authenSlice";
 
-const AuthenticatedHeader = () => {
+const AuthenticatedHeader = ({data}) => {
   return (
     <>
       <nav className="header-nav ms-auto">
@@ -17,7 +17,7 @@ const AuthenticatedHeader = () => {
             <Notification />
           </li>
           <li className="nav-item dropdown pe-3">
-            <Profile />
+            <Profile data={data}/>
           </li>
         </ul>
       </nav>
@@ -30,7 +30,7 @@ const Header = ({ onToggleSidebar }) => {
   const disptach = useDispatch();
 
   const user = useSelector((state) => state.authen.user);
-  // console.log(user);
+  console.log(user);
 
   const [isSignIn, setIsSignIn] = useState(false);
 
@@ -50,12 +50,13 @@ const Header = ({ onToggleSidebar }) => {
 
         <div className="User">
           {user !== null ? (
-            <AuthenticatedHeader />
+            <AuthenticatedHeader data={user}/>
           ) : (
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 disptach(signin(credentialResponse.credential));
-                console.log("ok: ", credentialResponse);
+                // disptach(signin(user.accountName));
+                // console.log("ok: ", credentialResponse);
               }}
               onError={() => {
                 console.log("Login Failed");

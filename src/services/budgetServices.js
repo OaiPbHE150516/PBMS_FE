@@ -34,11 +34,10 @@ export const updateBudgets = async (data) => {
   // return response.data;
 };
 
-export const removeBudgets = async (budgetID) => {
+export const removeBudgets = async (budgetID, accountID) => {
   const response = await axios.delete(
     API.MANAGE_BUDGET + "/api/budget/delete/budget",
-    budgetID
+    { data: { budgetID, accountID } }
   );
-  console.log(response);
-  // return response.data;
+  return response.data;
 };

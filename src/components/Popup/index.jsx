@@ -7,8 +7,8 @@ const Popup = ({
     onSubmit,
     show,
     children,
-    closeName = "Close",
-    submitName = "Submit",
+    closeName = "Hủy",
+    submitName = "Lưu",
 }) => {
     return (
         <Modal

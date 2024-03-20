@@ -25,7 +25,7 @@ function App() {
 
   return (
     <>
-      <div className={`App`}>
+      <div className={`App ${isSidebarIcons ? "sidebar-open" : "sidebar-closed"}`}>
         <Router>
         <Header onToggleSidebar={toggleSidebarMode} />
           <Sidebar isIconsMode={isSidebarIcons} />

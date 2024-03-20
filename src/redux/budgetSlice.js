@@ -67,24 +67,11 @@ export const updateBudgets = createAsyncThunk(
 );
 
 export const removeBudgets = createAsyncThunk(
-  "add-budgets",
-  async (fieldValue, { dispatch }) => {
-    // const body = {
-    //     accountID: "117911566377016615313",
-    //     budgetName: fieldValue.budgetName,
-    //     targetAmount: fieldValue.targetAmount,
-    //     beginDate: new Date(fieldValue.fromPeriod).toISOString(),
-    //     endDate:  new Date(fieldValue.toPeriod).toISOString(),
-    //     budgetTypeID: getBudgetId(fieldValue.period),
-    //     repeatInterVal: fieldValue.repeat ? fieldValue.numberIterations : 0,
-    //     note: fieldValue.note,
-    //     createTime: new Date().toISOString(),
-    //     categoryIDs: fieldValue.category.map((item) => item.value),
-    //   };
-      // console.log(body);
-    // const response = await addBudgetServices(body);
-    // await dispatch(getBudgets())
-    // return response;
+  "remove-budgets",
+  async ({ budgetID, accountID }, { dispatch }) => {
+    const response = await removeBudgetServices(budgetID, accountID);
+    await dispatch(getBudgets(accountID));
+    return response;
   }
 );
 

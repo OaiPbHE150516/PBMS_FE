@@ -46,13 +46,13 @@ const Budget = () => {
 
   return (
     <div className="Budget">
-      <PageTitle title="Budget" />
+      <PageTitle title="Ngân sách" />
       <Button
         size="btn-lg"
         onClick={() => showSet(!show)}
         className="active bold btn-light"
       >
-        Create new Budget
+        Tạo ngân sách mới
       </Button>
 
       <CreateBudget
@@ -89,10 +89,9 @@ const Budget = () => {
       )}
 
       <div className="mt-5">
-        {/* Monthly */}
         {MonthlyBudget.length > 0 && (
           <>
-            <h3 className="mb-3 text-center h3">Monthly budget</h3>
+            <h3 className="mb-3 text-center h3">Ngân sách hàng tháng</h3>
             {MonthlyBudget.map((item) => (
               <div className="mb-4" key={item.budgetID}>
                 <CardBudget
@@ -105,10 +104,9 @@ const Budget = () => {
             ))}
           </>
         )}
-        {/* Weekly */}
         {WeeklyBudget.length > 0 && (
           <>
-            <h3 className="mb-3 text-center h3">Weekly budget</h3>
+            <h3 className="mb-3 text-center h3">Ngân sách hàng tuần</h3>
             {WeeklyBudget.map((item) => (
               <div className="mb-4" key={item.budgetID}>
                 <CardBudget
@@ -124,7 +122,7 @@ const Budget = () => {
         {/* Other */}
         {OtherBudget.length > 0 && (
           <>
-            <h3 className="mb-3 text-center h3">Other budget</h3>
+            <h3 className="mb-3 text-center h3">Ngân sách khác</h3>
             {OtherBudget.map((item) => (
               <div className="mb-4" key={item.budgetID}>
                 <CardBudget

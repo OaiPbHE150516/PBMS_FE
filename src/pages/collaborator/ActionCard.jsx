@@ -35,7 +35,7 @@ export const ActionCard = ({ collabID }) => {
                 <div class="col-md-8 c-card-time-money">
                   <div class="card-body py-0">
                     <p class="card-text small fst-italic  mb-2">
-                      {item.minusTimeNowString}, {item.createTimeString}
+                      {item.createTimeString}
                     </p>
                     {item.transactionID && (
                       <p class="card-text c-card-money">

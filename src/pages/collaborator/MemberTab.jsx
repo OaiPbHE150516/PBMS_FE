@@ -59,14 +59,14 @@ function AddNewMemberPopup({ show, onClose }) {
   );
 }
 
-const MemberTab = ({ collabID }) => {
+const MemberTab = ({ collabID, data }) => {
   const [showAddNewPopup, showAddNewPopupSet] = useState(false);
   const members = useAppSelector((state) => state.member.values);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getMembersOfCollab(collabID));
   }, [collabID]);
-  console.log(collabID);
 
   const membersActive = members.filter((item) => {
     return item.activeStateID === 1;
@@ -79,8 +79,6 @@ const MemberTab = ({ collabID }) => {
     return item.activeStateID === 3;
   });
 
-  console.log("Member Tab:");
-  console.log(members);
   return (
     <>
       <AddNewMemberPopup
@@ -89,7 +87,7 @@ const MemberTab = ({ collabID }) => {
       />
       {membersActive.length > 0 && (
         <>
-          <h5 className="card-title text-center">Action</h5>
+          <h5 className="card-title text-center">Hoạt động</h5>
           {membersActive.map((item) => {
             return <MemberCard data={item} />;
           })}
@@ -97,7 +95,7 @@ const MemberTab = ({ collabID }) => {
       )}
       {membersInActive.length > 0 && (
         <>
-          <h5 className="card-title text-center">Inactive</h5>
+          <h5 className="card-title text-center">Không hoạt động</h5>
           {membersInActive.map((item) => {
             return <MemberCard data={item} />;
           })}
@@ -105,7 +103,7 @@ const MemberTab = ({ collabID }) => {
       )}
       {membersWaiting.length > 0 && (
         <>
-          <h5 className="card-title text-center">Waiting for confirmation</h5>
+          <h5 className="card-title text-center">Đang xét duyệt </h5>
           {membersWaiting.map((item) => {
             return <MemberCard data={item} />;
           })}
@@ -117,7 +115,7 @@ const MemberTab = ({ collabID }) => {
           size="btn-lg"
           onClick={() => showAddNewPopupSet(!showAddNewPopup)}
         >
-          Add new member
+          Thêm thành viên
         </Button>
       </div>
     </>

@@ -10,7 +10,7 @@ const PageTitle = ({ title }) => {
       <nav>
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <Link to={ROUTE_CONSTANTS.OVERVIEW_PAGE}>Home</Link>
+            <Link to={ROUTE_CONSTANTS.OVERVIEW_PAGE}>Trang chủ</Link>
           </li>
           <li className="breadcrumb-item active">{title}</li>
         </ol>
