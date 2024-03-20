@@ -14,3 +14,10 @@ export const getTransaction = async (pageNumber,pageSize) => {
   console.log(response);
   return response.data;
 };
+export const addTransactionwithoutInvoice = async (data) => {
+  const response = await axios.post(
+    API.MANAGE_TRANSACTION + "/api/transaction/create/withoutinvoice", data
+  );
+  console.log(response);
+  return response.data;
+};

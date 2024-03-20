@@ -4,6 +4,9 @@ import "../../css/Transaction.css";
 import Button from "../../components/Button";
 import { getTransaction } from "../../redux/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
+import CreateTransaction from '../../components/TransactionForm/CreateTransaction';
+import { getCategories } from "../../redux/categorySlice";
+import { getWallets } from "../../redux/walletSlice";
 
 const Transaction = () => {
   const dispatch = useDispatch();
@@ -18,6 +21,10 @@ const Transaction = () => {
   useEffect(() => {
     retrieveValues();
   }, [currentPage, pageSize]);
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getWallets());
+  }, []);
 
   const handleToggleCheckboxes = () => {
     setShowCheckboxes(!showCheckboxes);
@@ -29,17 +36,27 @@ const Transaction = () => {
     const selectedPageSize = parseInt(event.target.value, 10);
     setPageSize(selectedPageSize);
   };
-
+  const [show, showSet] = useState(false);
   return (
     <div className='Transaction'>
       <PageTitle title="Transaction" />
       <div className="addTransaction">
         <Button
           size="btn-lg"
+          onClick={() => showSet(!show)}
           className="active bold btn-light"
         >
           Create new Transaction
         </Button>
+        <CreateTransaction
+          show={show}
+          showSet={showSet}
+        // onSubmit={(fieldValue) =>
+        //   dispatch(addWallet({ accountID: accountID, fieldValue: fieldValue }))
+        //     .unwrap()
+        //     .then(() => showSet(false))
+        // }
+        />
         <Button
           size="btn-lg"
           className="active bold btn-light"
@@ -52,27 +69,27 @@ const Transaction = () => {
           <table className="table table-hover">
             <thead>
               <tr>
-                <th style={{ width: '50px' }} scope="col" onClick={handleToggleCheckboxes}>
+                <th scope="col" onClick={handleToggleCheckboxes}>
                   {showCheckboxes}
                   #
                 </th>
-                <th scope="col" style={{ width: '150px' }}>Time</th>
-                <th scope="col" style={{ width: '150px' }}>Category</th>
-                <th scope="col" style={{ width: '150px' }}>Amount</th>
-                <th scope="col" style={{ width: '150px' }}>Wallet</th>
-                <th scope="col" style={{ width: '150px' }}>Description</th>
-                <th scope="col" style={{ width: '150px' }}>Infor</th>
+                <th scope="col">Time</th>
+                <th scope="col">Category</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Wallet</th>
+                <th scope="col">Description</th>
+                <th scope="col">Infor</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray(transactions.resultDTO) && transactions.resultDTO.map((transaction, index) => (
                 <tr key={index}>
-                  <td style={{ width: '50px' }}>
+                  <td>
                     {showCheckboxes && <input type="checkbox" />}
                   </td>
-                  <td style={{ width: '150px' }}>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}, ${transaction.transactionDateStr}` : transaction.transactionDateStr}</td>
-                  <td style={{ width: '150px' }}>{transaction.category.nameVN}</td>
-                  <td style={{ width: '150px' }}>
+                  <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}, ${transaction.transactionDateStr}` : transaction.transactionDateStr}</td>
+                  <td>{transaction.category.nameVN}</td>
+                  <td>
                     {transaction.category.categoryType.categoryTypeID === 1 ? (
                       <span style={{ color: '#4CAF50' }}>+{transaction.totalAmount}</span>
                     ) : transaction.category.categoryType.categoryTypeID === 2 ? (
@@ -82,9 +99,23 @@ const Transaction = () => {
                     )}
                   </td>
 
-                  <td style={{ width: '150px' }}>{transaction.wallet.name}</td>
-                  <td style={{ width: '150px' }}>{transaction.note}</td>
-                  <td style={{ width: '150px' }}>{transaction.toPerson}</td>
+                  <td style={{ width: "150px" }}>
+                    {transaction.wallet.name}
+                  </td>
+                  <td>
+                    {transaction.note.length > 40 ? (
+                      <>{transaction.note.substring(0, 40)}...</>
+                    ) : (
+                      <>{transaction.note}</>
+                    )}
+                  </td>
+                  <td>
+                    {transaction.note.length > 10 ? (
+                      <>{transaction.note.substring(0, 10)}...</>
+                    ) : (
+                      <>{transaction.note}</>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
