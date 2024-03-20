@@ -11,6 +11,9 @@ import currencySlice from "./currencySlice";
 import memberSlice from "./memberSlice";
 import actionSlice from "./actionSlice";
 import calendarSlice from "./calendarSlice";
+import scanInvoiceSlice from "./scanInvoiceSlice";
+import overviewLastTransactionSlice from "./overviewLastTransactionSlice";
+import profileSlice from "./profileSlice";
 
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
@@ -25,6 +28,9 @@ const rootReducers = combineReducers({
   member: memberSlice.reducer,
   action: actionSlice.reducer,
   calendar: calendarSlice.reducer,
+  scan: scanInvoiceSlice.reducer,
+  lastTransaction: overviewLastTransactionSlice.reducer,
+  profile: profileSlice.reducer
 });
 
 const store = configureStore({

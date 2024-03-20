@@ -22,7 +22,6 @@ const OverViewCard = () => {
   useEffect(() => {
     dispatch(getTotalWallets());
   }, [dispatch]);
-  console.log(totalWallets);
   return (
     <div class="col-xxl-6 col-md-6 card_Overview_Wallet">
       <div class="card info-card sales-card">
