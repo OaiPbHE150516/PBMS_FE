@@ -20,9 +20,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
       ...data,
     },
   });
-
   console.log({ isDirty })
-
   return (
     <Popup
       title={"Update Wallet"}

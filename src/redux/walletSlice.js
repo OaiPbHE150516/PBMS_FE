@@ -3,6 +3,7 @@ import { getWallets as walletServices } from "../services/walletService";
 import { getTotalWallets as totalwalletServices } from "../services/walletService";
 import { addWallet as addWalletServices } from "../services/walletService";
 import { updateWallet as updateWalletServices } from "../services/walletService";
+import { deleteWallet as deleteWalletServices } from "../services/walletService";
 export const getWallets = createAsyncThunk("get-wallets", async () => {
   const response = await walletServices();
   return response;
@@ -71,6 +72,20 @@ export const updateWallet = createAsyncThunk(
     await dispatch(getWallets());
     await dispatch(getTotalWallets());
 
+    return response;
+  }
+);
+export const deleteWallet = createAsyncThunk(
+  'delete-wallet',
+  async ({ accountID, walletID}, { dispatch }) => {
+    const body = {
+      walletID: walletID,
+      accountID: accountID,
+    };
+    console.log("Xóa ví:", body); 
+    const response = await deleteWalletServices(body);
+    await dispatch(getWallets());
+    await dispatch(getTotalWallets());
     return response;
   }
 );
