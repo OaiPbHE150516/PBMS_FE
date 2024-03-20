@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getProfile as ProfileServices } from "../services/profileServices";
-import { updateProfile as UpdateProfileServices } from "../services/profileServices";
+// import { updateProfile as UpdateProfileServices } from "../services/profileServices";
 
-export const getProfile = createAsyncThunk("get-profile", async () => {
+export const getProfileInfor = createAsyncThunk("get-profile", async () => {
   const response = await ProfileServices();
   return response;
 });
@@ -19,10 +19,10 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProfile.fulfilled, (state, action) => {
+      .addCase(getProfileInfor.fulfilled, (state, action) => {
         state.values = action.payload;
       })
-      .addCase(getProfile.rejected, (state, action) => {
+      .addCase(getProfileInfor.rejected, (state, action) => {
         console.log("rejected get profile");
       });
   },

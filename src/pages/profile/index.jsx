@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import "../../css/Profile.css";
 import dayjs from "dayjs";
 import useAppSelector from "../../hooks/useAppSelector";
-import { getProfile } from "../../redux/profileSlice";
 import Button from "../../components/Button";
+import { getProfileInfor } from "../../redux/profileSlice";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.profile.values);
@@ -14,8 +14,10 @@ const Profile = () => {
   const [editedUser, setEditedUser] = useState({});
 
   useEffect(() => {
-    dispatch(getProfile());
+    dispatch(getProfileInfor());
   }, []);
+
+  console.log(user);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -31,9 +33,7 @@ const Profile = () => {
   };
 
   const saveChanges = () => {
-    // Handle saving changes here
     setIsEditing(false);
-    // Dispatch action to update user profile with editedUser data
   };
 
   return (
