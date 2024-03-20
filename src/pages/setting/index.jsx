@@ -1,13 +1,12 @@
-import React from "react";
-import { PageTitle } from "../../components";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { PageTitle } from '../../components';
 
 const Setting = () => {
-  return (
-    <div className="Setting">
-      <PageTitle title="Chỉnh sửa" />
-    </div>
-  );
+    return (
+        <div className='Setting'>
+            <PageTitle title="Setting" />
+        </div>
+    );
 };
 
 export default Setting;
