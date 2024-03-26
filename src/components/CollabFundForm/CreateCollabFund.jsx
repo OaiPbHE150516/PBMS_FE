@@ -1,9 +1,30 @@
 import React from "react";
 import Popup from "../Popup";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import MultipleSelect from "../MultipleSelect";
 import { FormErrorMessage } from "../BudgetForm/FormErrorMessage";
+import logo from "../../assets/Logo.png";
+
+function ItemMember() {
+  return (
+    <div className="d-flex align-items-center gap-2 p-2">
+      <div>
+        <img
+          src={logo}
+          alt=""
+          className="rounded-full border border-dark"
+          width={50}
+          height={50}
+        />
+      </div>
+      <div className="flex-grow-1">
+        <p className="mb-0 bold">Member 1</p>
+        <p className="mb-0 small">Member 1</p>
+      </div>
+    </div>
+  );
+}
 
 const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
   const {
@@ -46,14 +67,21 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
           ></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"name"} />
         </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Lượng ngân sách</Form.Label>
-          <Form.Control
-            type="number"
-            {...register("totalAmount", { required: true })}
-          ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"totalAmount"} />
-        </Form.Group>
+        <Form className="c-form">
+          <Form.Group className="mb-3 d-flex gap-3 align-items-center">
+            <Form.Control type="text" className="flex-grow-1" />
+            <Button>Search</Button>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <MultipleSelect
+              // value={[{ value: "member1", label: "member 1" }]}
+              options={[
+                // { value: "member1", label: "member 1" },
+                // { value: "member2", label: "member 2" },
+              ]}
+            ></MultipleSelect>
+          </Form.Group>
+        </Form>
         <div className="row">
           <div className="col-md-6">
             <Form.Group className="mb-2">
@@ -76,10 +104,10 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
                 onChange={handleImageSelect}
               />
             </Form.Group>
-            {watch("imageURL") && ( 
+            {watch("imageURL") && (
               <div>
                 <img
-                  src={watch("imageURL")} 
+                  src={watch("imageURL")}
                   alt={`Image`}
                   className="img-fluid"
                 />

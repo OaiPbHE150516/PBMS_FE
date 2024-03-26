@@ -1,9 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getProfile as ProfileServices } from "../services/profileServices";
-// import { updateProfile as UpdateProfileServices } from "../services/profileServices";
+import { updateProfile as UpdateProfileServices } from "../services/profileServices";
+import { getAccountByKey as getAccountByKeyServices } from "../services/profileServices";
 
 export const getProfileInfor = createAsyncThunk("get-profile", async () => {
   const response = await ProfileServices();
+  return response;
+});
+export const updateProfileInfo = createAsyncThunk(
+  "update-budgets",
+  async (userData, { dispatch }) => {
+    const response = await UpdateProfileServices(userData);
+  await dispatch(getProfileInfor());
+  return response;
+  }
+);
+
+export const getAccountByKey = createAsyncThunk("get-account-by-key", async (key) => {
+  const response = await getAccountByKeyServices(key);
   return response;
 });
 
@@ -28,4 +42,6 @@ const profileSlice = createSlice({
   },
 });
 
-export default profileSlice;
+export const { setValues } = profileSlice.actions;
+
+export default profileSlice.reducer;
