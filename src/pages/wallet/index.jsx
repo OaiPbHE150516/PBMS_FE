@@ -44,14 +44,14 @@ const Wallet = () => {
     }, []);
     return (
         <div className="Wallet">
-            <PageTitle title="Wallet" />
+            <PageTitle title="Ví" />
             <div className="addWallet">
                 <Button
                     size="btn-lg"
                     onClick={() => showSet(!show)}
                     className="active bold btn-light"
                 >
-                    Create new Wallet
+                    Tạo ví mới
                 </Button>
                 <CreateWallet
                     show={show}
@@ -64,7 +64,7 @@ const Wallet = () => {
                 />
                 {totalwallets && (
                     <span>
-                        Total: <p>{totalwallets.totalBalance}</p>
+                        Tổng tiền: <p>{totalwallets.totalBalance}</p>
                     </span>
                 )}
             </div>
@@ -75,9 +75,9 @@ const Wallet = () => {
                             <div class="wallet">
                                 <div class="wallet-body">
                                     <h5 class="wallet-title">{capitalizeFirstLetter(wallet.name)}<span>{wallet.balance} {wallet.currency.symbol}</span></h5>
-                                    <h6 class="wallet-sub">Created date: {wallet.createTimeStr}</h6>
-                                    <h6 class="wallet-sub">Currency unit: {wallet.currency.name} - {wallet.currency.symbol}</h6>
-                                    <h6 class="wallet-sub">Note: {wallet.note}</h6>
+                                    <h6 class="wallet-sub">Ngày tạo ví: {wallet.createTimeStr}</h6>
+                                    <h6 class="wallet-sub">Đơn vị tiền: {wallet.currency.name} - {wallet.currency.symbol}</h6>
+                                    <h6 class="wallet-sub">Ghi chú: {wallet.note}</h6>
                                     <div class="active-container">
                                         <div class="active1">
                                             <div>

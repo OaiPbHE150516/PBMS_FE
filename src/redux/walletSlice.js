@@ -77,13 +77,8 @@ export const updateWallet = createAsyncThunk(
 );
 export const deleteWallet = createAsyncThunk(
   'delete-wallet',
-  async ({ accountID, walletID}, { dispatch }) => {
-    const body = {
-      walletID: walletID,
-      accountID: accountID,
-    };
-    console.log("Xóa ví:", body); 
-    const response = await deleteWalletServices(body);
+  async ({ accountID, walletID}, { dispatch }) => { 
+    const response = await deleteWalletServices(walletID,accountID);
     await dispatch(getWallets());
     await dispatch(getTotalWallets());
     return response;

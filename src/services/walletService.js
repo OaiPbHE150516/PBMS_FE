@@ -43,7 +43,7 @@ export const updateWallet = async (data) => {
 export const deleteWallet = async (walletID,accountID) => {
   const response = await axios.delete(
     API.MANAGE_WALLET + "/api/wallet/delete",
-    { data: { walletID: walletID, accountID: accountID } } 
+    { data: {walletID,accountID}} 
   );
   console.log(response);
   return response.data;

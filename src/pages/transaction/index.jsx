@@ -7,10 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import CreateTransaction from '../../components/TransactionForm/CreateTransaction';
 import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
+import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
 
 const Transaction = () => {
   const dispatch = useDispatch();
   const transactions = useSelector((state) => state.transaction.values);
+  const accountID = useSelector((state) => state.authen.user?.accountID);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -51,11 +53,11 @@ const Transaction = () => {
         <CreateTransaction
           show={show}
           showSet={showSet}
-        // onSubmit={(fieldValue) =>
-        //   dispatch(addWallet({ accountID: accountID, fieldValue: fieldValue }))
-        //     .unwrap()
-        //     .then(() => showSet(false))
-        // }
+        onSubmit={(fieldValue) =>
+          dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
+            .unwrap()
+            .then(() => showSet(false))
+        }
         />
         <Button
           size="btn-lg"
