@@ -39,19 +39,19 @@ const CreateWallet = ({ show, showSet, onSubmit = () => { } }) => {
         >
             <Form className="c-form">
                 <Form.Group className="mb-2">
-                    <Form.Label>Wallet Name</Form.Label>
+                    <Form.Label>Tên ví</Form.Label>
                     <Form.Control type="text"
                         {...register("name", { required: true })}>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className="mb-2">
-                    <Form.Label>Balance</Form.Label>
+                    <Form.Label>Số dư</Form.Label>
                     <Form.Control type="text"
                         {...register("balance", { required: true })}>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group className="mb-2">
-                    <Form.Label>Currency Unit</Form.Label>
+                    <Form.Label>Đơn vị tiền tệ</Form.Label>
                     <Controller
                         control={control}
                         name="currencyID"
