@@ -13,7 +13,7 @@ export const addTransactionwithoutInvoice = createAsyncThunk(
       walletID: fieldValue.walletID,
       categoryID: fieldValue.categoryID,
       totalAmount: fieldValue.totalAmount,
-      transactionDate: fieldValue.transactionDate,
+      transactionDate: fieldValue.transactionDate+'Z',
       note:"",
       fromPerson:"",
       toPerson:"",
@@ -21,7 +21,7 @@ export const addTransactionwithoutInvoice = createAsyncThunk(
     };
     console.log(body);
     const response = await addTransactionwithoutInvoiceServices(body);
-    await dispatch(getTransaction())
+    dispatch(getTransaction({ pageNumber: 1, pageSize: 10 }));
     return response;
   }
 );
@@ -43,6 +43,10 @@ const transactionSlice = createSlice({
       })
       .addCase(getTransaction.rejected, (state, action) => {
         console.log("rejected");
+      })
+      .addCase(addTransactionwithoutInvoice.fulfilled, (state, action) => {
+        console.log("addTransactionwithoutInvoiceServices fulfilled");
+        state.values = action.payload; 
       });
   },
 });
