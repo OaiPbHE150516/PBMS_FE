@@ -22,6 +22,7 @@ function ItemMember() {
         <p className="mb-0 bold">Member 1</p>
         <p className="mb-0 small">Member 1</p>
       </div>
+      <Button>Thêm</Button>
     </div>
   );
 }
@@ -67,21 +68,14 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
           ></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"name"} />
         </Form.Group>
-        <Form className="c-form">
-          <Form.Group className="mb-3 d-flex gap-3 align-items-center">
-            <Form.Control type="text" className="flex-grow-1" />
-            <Button>Search</Button>
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <MultipleSelect
-              // value={[{ value: "member1", label: "member 1" }]}
-              options={[
-                // { value: "member1", label: "member 1" },
-                // { value: "member2", label: "member 2" },
-              ]}
-            ></MultipleSelect>
-          </Form.Group>
-        </Form>
+        <Form.Label>Thành viên</Form.Label>
+        <Form.Group className="mb-3 d-flex gap-3 align-items-center">
+          <Form.Control type="text" className="flex-grow-1" />
+          <Button>Search</Button>
+        </Form.Group>
+        <Form.Group className="mb-3 border border-dark">
+          <ItemMember />
+        </Form.Group>
         <div className="row">
           <div className="col-md-6">
             <Form.Group className="mb-2">

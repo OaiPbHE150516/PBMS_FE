@@ -15,3 +15,20 @@ export const getMembersOfCollab = async (collabID) => {
   console.log(response);
   return response.data;
 };
+
+export const getMembersByKey = async (key) => {
+  const response = await axios.get(
+    API.MANAGE_COLLABORATOR + `/api/profile/search/${key}`
+  );
+  console.log(response);
+  return response.data;
+};
+
+export const addMemberToCollab = async (body) => {
+  const response = await axios.get(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/invite`,
+    body
+  );
+  console.log(response);
+  return response.data;
+};

@@ -1,18 +1,14 @@
 import React from "react";
 import MemberTab from "./MemberTab";
-import {ActionCard} from "./ActionCard";
-import {AddNewAction} from "./AddNewAction";
+import { ActionCard } from "./ActionCard";
+import { AddNewAction } from "./AddNewAction";
 
-export const ActionTable=({ collabID }) => {
+export const ActionTable = ({ collabID }) => {
   const user = JSON.parse(sessionStorage.getItem("user"));
   return (
     <div class="card h-100 pt-3">
       <div class="card-body d-flex flex-column">
-        <ul
-          class="nav nav-tabs d-flex"
-          id="myTabjustified"
-          role="tablist"
-        >
+        <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
           <li class="nav-item flex-fill" role="presentation">
             <button
               class="nav-link w-100 active"
@@ -53,10 +49,7 @@ export const ActionTable=({ collabID }) => {
             </button>
           </li>
         </ul>
-        <div
-          class="tab-content pt-2 h-100"
-          id="myTabjustifiedContent"
-        >
+        <div class="tab-content pt-2 h-100" id="myTabjustifiedContent">
           <div
             class="tab-pane fade show active h-100"
             id="action-justified"
@@ -65,9 +58,9 @@ export const ActionTable=({ collabID }) => {
           >
             <div className="d-flex flex-column h-100">
               <div className="flex-grow-1">
-                <ActionCard collabID={collabID}/>
+                <ActionCard collabID={collabID} />
               </div>
-              <AddNewAction data={user} collabID={collabID}/>
+              <AddNewAction data={user} collabID={collabID} />
             </div>
           </div>
           <div
@@ -76,7 +69,7 @@ export const ActionTable=({ collabID }) => {
             role="tabpanel"
             aria-labelledby="member-tab"
           >
-            <MemberTab collabID={collabID}/>
+            <MemberTab collabID={collabID} />
           </div>
           <div
             class="tab-pane fade"

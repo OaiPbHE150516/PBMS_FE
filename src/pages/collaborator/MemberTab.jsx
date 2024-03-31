@@ -50,8 +50,8 @@ function AddNewMemberPopup({ show, onClose }) {
           </Form.Group>
           <Form.Group className="mb-3 border border-dark">
             <ItemMember />
-            <hr className="border-b border-dark opacity-100 m-0" />
-            <ItemMember />
+            {/* <hr className="border-b border-dark opacity-100 m-0" />
+            <ItemMember /> */}
           </Form.Group>
         </Form>
       </div>
@@ -59,7 +59,7 @@ function AddNewMemberPopup({ show, onClose }) {
   );
 }
 
-const MemberTab = ({ collabID, data }) => {
+const MemberTab = ({ collabID }) => {
   const [showAddNewPopup, showAddNewPopupSet] = useState(false);
   const members = useAppSelector((state) => state.member.values);
   const dispatch = useDispatch();

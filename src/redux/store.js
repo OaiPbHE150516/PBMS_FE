@@ -15,6 +15,7 @@ import scanInvoiceSlice from "./scanInvoiceSlice";
 import overviewLastTransactionSlice from "./overviewLastTransactionSlice";
 import profileSlice from "./profileSlice";
 import coverImageSlice from "./coverImageSlice";
+import divideMoneySlice from "./divideMoneySlice";
 
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
@@ -33,6 +34,7 @@ const rootReducers = combineReducers({
   lastTransaction: overviewLastTransactionSlice.reducer,
   profile: profileSlice.reducer,
   coverImage: coverImageSlice.reducer,
+  divideMoney: divideMoneySlice.reducer,
 });
 
 const store = configureStore({

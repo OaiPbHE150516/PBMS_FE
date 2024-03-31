@@ -37,12 +37,15 @@ export const ActionCard = ({ collabID }) => {
                     <p class="card-text small fst-italic  mb-2">
                       {item.createTimeString}
                     </p>
-                    {item.transactionID && (
-                      <p class="card-text c-card-money">
-                        -{item.transaction.totalAmount.toLocaleString("vi-VN")}{" "}
-                        đ
-                      </p>
-                    )}
+                    {item.transaction &&
+                      item.transaction.totalAmount !== null &&
+                      item.transaction.totalAmount !== 0 && (
+                        <p class="card-text c-card-money">
+                          -
+                          {item.transaction.totalAmount.toLocaleString("vi-VN")}{" "}
+                          đ
+                        </p>
+                      )}
                   </div>
                 </div>
               </div>
