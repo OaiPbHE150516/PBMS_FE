@@ -23,7 +23,7 @@ const Category = () => {
           // onClick={() => showSet(!show)}
           className="active bold btn-light"
         >
-          Hạng mục mới
+          Hạng mục mới 1
         </Button>
       </div>
     </div>
