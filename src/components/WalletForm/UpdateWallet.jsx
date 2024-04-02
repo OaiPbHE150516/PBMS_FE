@@ -23,56 +23,56 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   console.log({ isDirty })
   return (
     <Popup
-      title={"Update Wallet"}
+      title={"Chỉnh sửa ví"}
       show={show}
       onClose={() => onClose()}
       onSubmit={isDirty ? handleSubmit(onSubmit) : onClose}
     >
       <Form className="c-form">
         <Form.Group className="mb-2">
-          <Form.Label>Wallet Name</Form.Label>
+          <Form.Label>Tên ví</Form.Label>
           <Form.Control
             type="text"
             {...register("name")}
           ></Form.Control>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Note</Form.Label>
+          <Form.Label>Ghi chú</Form.Label>
           <Form.Control
             type="text"
             {...register("note")}
           ></Form.Control>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>isBanking</Form.Label>
+          <Form.Label>Ví ngân hàng</Form.Label>
           <Form.Control
             type="text"
             {...register("isBanking")}
           ></Form.Control>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>qr Code URL</Form.Label>
+          <Form.Label>URL mã QR</Form.Label>
           <Form.Control
             type="text"
             {...register("qrCodeURL")}
           ></Form.Control>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>bankName</Form.Label>
+          <Form.Label>Tên ngân hàng</Form.Label>
           <Form.Control
             type="text"
             {...register("bankName")}
           ></Form.Control>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>bankAccount</Form.Label>
+          <Form.Label>Tài khoản ngân hàng</Form.Label>
           <Form.Control
             type="text"
             {...register("bankAccount")}
           ></Form.Control>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>bankUsername</Form.Label>
+          <Form.Label>Tên tài khoản</Form.Label>
           <Form.Control
             type="text"
             {...register("bankUsername")}

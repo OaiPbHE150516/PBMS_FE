@@ -8,8 +8,8 @@ const PopupTransaction = ({
     onSubmit,
     show,
     children,
-    closeName = "Close",
-    submitName = "Submit",
+    closeName = "Hủy",
+    submitName = "Lưu",
     hasImage = false, 
 }) => {
     const modalSize = hasImage ? "xl" : "lg"; 

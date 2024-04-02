@@ -5,7 +5,7 @@ import { BsToggleOn } from "react-icons/bs";
 import { BsTrash } from "react-icons/bs";
 import { BsPencilSquare } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addWallet, getTotalWallets, getWallets, updateWallet,deleteWallet } from "../../redux/walletSlice";
+import { addWallet, getTotalWallets, getWallets, updateWallet, deleteWallet } from "../../redux/walletSlice";
 import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
 import CreateWallet from "../../components/WalletForm/CreateWallet";
@@ -29,14 +29,16 @@ const Wallet = () => {
     const deleteWalletData = wallet.find(
         (item) => item.walletID === removeIdModal
     );
-    
+
     const retrieveValues = () => {
         console.log("retrieveValues");
         dispatch(getWallets());
         dispatch(getTotalWallets());
         dispatch(getCurrency());
     };
-
+    const formatCurrency = (amount) => {
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
     const [show, showSet] = useState(false);
 
     useEffect(() => {
@@ -74,21 +76,25 @@ const Wallet = () => {
                         <div class="wallet-container" key={wallet.id}>
                             <div class="wallet">
                                 <div class="wallet-body">
-                                    <h5 class="wallet-title">{capitalizeFirstLetter(wallet.name)}<span>{wallet.balance} {wallet.currency.symbol}</span></h5>
+                                    <h5 class="wallet-title">{capitalizeFirstLetter(wallet.name)}<span>{formatCurrency(wallet.balance)} {wallet.currency.symbol}</span></h5>
                                     <h6 class="wallet-sub">Ngày tạo ví: {wallet.createTimeStr}</h6>
                                     <h6 class="wallet-sub">Đơn vị tiền: {wallet.currency.name} - {wallet.currency.symbol}</h6>
                                     <h6 class="wallet-sub">Ghi chú: {wallet.note}</h6>
                                     <div class="active-container">
-                                        <div class="active1">
-                                            <div>
-                                                <Form.Check
-                                                    className="mb-0"
-                                                    type="switch"
-                                                    reverse
-                                                    label="Active"
-                                                    size={"lg"}
-                                                    checked={wallet.currency.activeState.activeStateID === 1}
-                                                ></Form.Check>
+                                        <div class="active-container">
+                                            <div class="active1">
+                                                <div className="pe-4">
+                                                    <div>
+                                                        <Form.Check
+                                                            className="mb-0"
+                                                            type="switch"
+                                                            reverse
+                                                            label="Hoạt động"
+                                                            size={"lg"}
+                                                            defaultChecked={wallet.currency.activeState.activeStateID === 1}
+                                                        ></Form.Check>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="active2">

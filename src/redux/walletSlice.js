@@ -67,7 +67,7 @@ export const updateWallet = createAsyncThunk(
       bankAccount: fieldValue.bankAccount,
       bankUsername: fieldValue.bankUsername,
     };
-    console.log(body);
+    console.log("Sửa ví"+body);
     const response = await updateWalletServices(body);
     await dispatch(getWallets());
     await dispatch(getTotalWallets());
@@ -91,7 +91,7 @@ const walletSlice = createSlice({
   },
   reducers: {
     setValues: (state, action) => {
-      state.values = action.payload;
+      state.values = action.payload;  
     },
   },
   extraReducers: (builder) => {
