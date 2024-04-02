@@ -23,12 +23,12 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         reset
     } = useForm({
         defaultValues: {
-            walletID:"",
-            categoryID:"",
+            walletID: "",
+            categoryID: "",
             totalAmount: "",
             note: "",
             fromPerson: "",
-            toPerson:"",
+            toPerson: "",
             image: "",
             transactionDate: dayjs().format('YYYY-MM-DDTHH:mm')
         },
@@ -96,7 +96,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
 
     return (
         <PopupTransaction
-            title={'Create new Transaction'}
+            title={'Tạo giao dịch mới'}
             show={show}
             onClose={handleClose}
             onSubmit={handleSubmit(onSubmit)}
@@ -119,7 +119,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 })}
                                 size="btn-sm"
                             >
-                                Thu nhập
+                                Thu
                             </Button>
                             <Button
                                 onClick={() => {
@@ -131,7 +131,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 })}
                                 size="btn-sm"
                             >
-                                Chi tiêu
+                                Chi
                             </Button>
                         </div>
                     )}
@@ -149,7 +149,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     <select {...field} className="form-control">
                                         <option value="">Chọn hạng mục</option>
                                         {categories.map((item) => {
-                                            if (currentCategoryType === null || (item.categoryType.name === currentCategoryType)) {
+                                            if ((currentCategoryType === null || item.categoryType.name === currentCategoryType) && !item.isRoot) {
                                                 return (
                                                     <option key={item.categoryID} value={item.categoryID}>
                                                         {item.nameVN}
@@ -164,7 +164,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         <div className="col-8">
                             <Form.Label>Số tiền</Form.Label>
                             {isScanned && scan && (
-                                <Form.Control type="text" defaultValue={scan.totalAmount} {...register('totalAmount', { required: true })}/>
+                                <Form.Control type="text" defaultValue={scan.totalAmount} {...register('totalAmount', { required: true })} />
                             )}
                             {!isScanned && (
                                 <Form.Control type="text" {...register('totalAmount', { required: true })} />
@@ -172,7 +172,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         </div>
                     </div>
                 </Form.Group>
-
                 <Form.Group className="mb-2">
                     <div className="row">
                         <div className="col-4">
@@ -204,6 +203,10 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
 
                     </div>
                 </Form.Group>
+                <Form.Group className="mb-2">
+                    <Form.Label>Ghi chú</Form.Label>
+                    <Form.Control as="textarea" {...register("note")}></Form.Control>
+                </Form.Group>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                     <div style={{ flexBasis: '60%', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
@@ -227,12 +230,12 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         </Form.Group>
                     </div>
                     {isScanned && scan && imagePreview && (
-                        <div style={{ flexBasis: '70%', display: 'flex' }}>
+                        <div style={{ flexBasis: '90%', display: 'flex' }}>
                             <div style={{ marginRight: '20px' }}>
-                                <h5 style={{ marginTop: '80px' }}>Supplier</h5>
+                                <h5 style={{ marginTop: '80px' }}>Nhà cung cấp</h5>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Name</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Tên</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.supplierName}
                                             type="text"
@@ -242,7 +245,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Address</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Địa chỉ</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.supplierAddress}
                                             type="text"
@@ -252,39 +255,39 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Phone</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">SĐT</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.supplierPhone}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                               
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
-                                <h5 style={{ marginTop: '20px' }}>Receiver</h5>
+                                <h5 style={{ marginTop: '20px' }}>Người nhận</h5>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Name</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Tên</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.receiverName}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Address</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Địa chỉ</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.receiverAddress}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                          
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
-                                <h5 style={{ marginTop: '20px' }}>Amount</h5>
+                                <h5 style={{ marginTop: '20px' }}>Số tiền</h5>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
                                         <InputGroup.Text id="inputGroupPrepend">Net</InputGroup.Text>
@@ -292,46 +295,46 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             defaultValue={scan.netAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                        
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Tax</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Thuế</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.taxAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Total</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Số tiền</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.totalAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Payment terms</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Điều khoản</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.paymentTerms}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            
+
                                         />
                                     </InputGroup>
                                 </Form.Group>
                             </div>
-                            <div style={{ flexBasis: '80%', marginTop: '60px' }}>
-                                <h3>Product</h3>
+                            <div style={{ flexBasis: '50%', marginTop: '80px' }}>
+                                <h5>Sản phẩm</h5>
                                 <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                                     <thead>
                                         <tr>

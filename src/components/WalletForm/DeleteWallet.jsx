@@ -4,15 +4,15 @@ import Popup from '../Popup';
 const DeleteWallet = ({name, balance, note, onClose, show, onSubmit = () => {}}) => {
   return (
       <Popup
-          title={`Delete “${name}”`}
+          title={`Xóa ví “${name}”`}
           show={show}
           onClose={onClose}
           onSubmit={onSubmit}
       >
           <div>
-            <p>Wallet name: <b>{name}</b></p>
-            <p>Balance: {balance}</p>
-            <p>Note: {note}</p>
+            <p>Tên ví: <b>{name}</b></p>
+            <p>Số dư: {balance}</p>
+            <p>Ghi chú: {note}</p>
           </div>
       </Popup>
   );

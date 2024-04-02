@@ -14,7 +14,7 @@ export const addTransactionwithoutInvoice = createAsyncThunk(
       categoryID: fieldValue.categoryID,
       totalAmount: fieldValue.totalAmount,
       transactionDate: fieldValue.transactionDate+'Z',
-      note:"",
+      note:fieldValue.note,
       fromPerson:"",
       toPerson:"",
       imageURL:"",
