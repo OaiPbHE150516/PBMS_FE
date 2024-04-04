@@ -6,6 +6,7 @@ export const getInvoiceScan = createAsyncThunk("get-invoicescan", async (image) 
     const formData = new FormData();
     formData.append("file", image);
     const response = await scanInvoiceServices(formData);
+    console.log(response);
     return response.data;
   } catch (error) {
     throw error;
