@@ -8,6 +8,7 @@ import CreateTransaction from '../../components/TransactionForm/CreateTransactio
 import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
+import { addInvoiceTransaction } from "../../redux/transactionSlice";
 
 const Transaction = () => {
 
@@ -42,7 +43,21 @@ const Transaction = () => {
     const selectedPageSize = parseInt(event.target.value, 10);
     setPageSize(selectedPageSize);
   };
+  const scan = useSelector((state) => state.scan.values);
   const [show, showSet] = useState(false);
+  const handleCreateTransaction = (fieldValue) => {
+    if (!fieldValue.image) {
+      dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
+        .unwrap()
+        .then(() => showSet(false));
+        console.log("không có ảnh");
+    } else {
+      dispatch(addInvoiceTransaction({ accountID: accountID, fieldValue: fieldValue,scan }))
+      .unwrap()
+      .then(() => showSet(false));
+      console.log("có ảnh");
+    }
+  };
   return (
     <div className='Transaction'>
       <PageTitle title="Giao dịch" />
@@ -57,11 +72,7 @@ const Transaction = () => {
         <CreateTransaction
           show={show}
           showSet={showSet}
-          onSubmit={(fieldValue) =>
-            dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
-              .unwrap()
-              .then(() => showSet(false))
-          }
+          onSubmit={handleCreateTransaction}
         />
         <Button
           size="btn-lg"

@@ -21,3 +21,10 @@ export const addTransactionwithoutInvoice = async (data) => {
   console.log(response);
   return response.data;
 };
+export const addInvoiceTransaction = async (data) => {
+  const response = await axios.post(
+    API.MANAGE_TRANSACTION + "/api/transaction/create", data
+  );
+  console.log(response);
+  return response.data;
+};
