@@ -14,7 +14,7 @@ import calendarSlice from "./calendarSlice";
 import scanInvoiceSlice from "./scanInvoiceSlice";
 import overviewLastTransactionSlice from "./overviewLastTransactionSlice";
 import profileSlice from "./profileSlice";
-
+import fileSlice from "./fileSlice";
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   value: valueSlice.reducer,
@@ -30,7 +30,8 @@ const rootReducers = combineReducers({
   calendar: calendarSlice.reducer,
   scan: scanInvoiceSlice.reducer,
   lastTransaction: overviewLastTransactionSlice.reducer,
-  profile: profileSlice.reducer
+  profile: profileSlice.reducer,
+  file: fileSlice.reducer,
 });
 
 const store = configureStore({

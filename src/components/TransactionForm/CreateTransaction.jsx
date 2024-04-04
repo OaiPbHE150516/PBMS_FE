@@ -8,12 +8,15 @@ import useAppSelector from '../../hooks/useAppSelector';
 import PopupTransaction from '../PopupTransaction';
 import dayjs from 'dayjs';
 import { getInvoiceScan } from "../../redux/scanInvoiceSlice";
+import { fileInvoiceName } from "../../redux/fileSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from 'react-bootstrap';
 
 const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const dispatch = useDispatch();
     const scan = useSelector((state) => state.scan.values)
+    const file = useSelector((state) => state.file.values)
+    const accountID = useSelector((state) => state.authen.user?.accountID);
     const {
         register,
         handleSubmit,
@@ -55,13 +58,31 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
             setValue('totalAmount', scan.totalAmount);
         }
     }, [isScanned, scan, setValue]);
+    const filenameRandom = (length = 10) => {
+        const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let randomFileName = '';
 
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomFileName += characters[randomIndex];
+        }
+
+        return randomFileName;
+    };
+    const filename = filenameRandom();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
         setValue('image', file);
 
         if (file) {
+            const formData = new FormData();
+            formData.append("AccountID", accountID);
+            formData.append("File", file);
+            formData.append("FileName", filename);
+
+            dispatch(fileInvoiceName(formData));
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 setIsScanning(true);
@@ -69,11 +90,12 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                 dispatch(getInvoiceScan(file)).then(() => {
                     setIsScanning(false);
                     setHasScanned(true);
-                })
+                });
             };
             reader.readAsDataURL(file);
         }
     };
+
 
     const hasImage = !!imagePreview;
 
@@ -141,7 +163,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         </div>
                     )}
                 />
-
                 <Form.Group className="mb-2" style={{ marginTop: '10px' }}>
                     <div className="row">
                         <div className="col-4">
@@ -214,16 +235,21 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                             <Form.Control
                                 type="datetime-local"
                                 {...register('transactionDate', { required: true })}
-                            // value={time}
                             />
                         </div>
 
                     </div>
                 </Form.Group>
-                <Form.Group className="mb-2">
+                <Form.Group className="mb-8">
                     <Form.Label>Ghi chú</Form.Label>
                     <Form.Control as="textarea" {...register("note")}></Form.Control>
                 </Form.Group>
+                {file && isScanned && (
+                    <Form.Group className="col-4" >
+                        <Form.Label>file</Form.Label>
+                        <Form.Control defaultValue={file} type="text" {...register("invoiceImageURL")} />
+                    </Form.Group>
+                )}
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                     <div style={{ flexBasis: '60%', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
@@ -246,7 +272,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                             )}
                         </Form.Group>
                     </div>
-
                     {isScanned && scan && imagePreview && (
                         <div style={{ flexBasis: '90%', display: 'flex' }}>
                             <div style={{ marginRight: '20px' }}>
