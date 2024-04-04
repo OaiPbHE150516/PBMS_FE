@@ -38,18 +38,18 @@ export const sidebars = [
     path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,
   },
-  {
-    text: "Giao dịch dự kiến",
-    icon: <BsReceipt />,
-    path: ROUTE_CONSTANTS.EXPECTED_PAGE,
-    exact: true,
-  },
-  {
-    text: "Biểu đồ",
-    icon: <TbChartHistogram />,
-    path: ROUTE_CONSTANTS.CHART_PAGE,
-    exact: true,
-  },
+  // {
+  //   text: "Giao dịch dự kiến",
+  //   icon: <BsReceipt />,
+  //   path: ROUTE_CONSTANTS.EXPECTED_PAGE,
+  //   exact: true,
+  // },
+  // {
+  //   text: "Biểu đồ",
+  //   icon: <TbChartHistogram />,
+  //   path: ROUTE_CONSTANTS.CHART_PAGE,
+  //   exact: true,
+  // },
   {
     text: "Lịch",
     icon: <BsCalendar2Week />,
@@ -62,18 +62,18 @@ export const sidebars = [
     path: ROUTE_CONSTANTS.COLLABORATOR_PAGE,
     exact: true,
   },
-  {
-    text: "Khoản vay",
-    icon: <BsBank2 />,
-    path: ROUTE_CONSTANTS.LOAN_PAGE,
-    exact: true,
-  },
-  {
-    text: "Báo cáo",
-    icon: <BsFileEarmarkZip />,
-    path: ROUTE_CONSTANTS.REPORT_PAGE,
-    exact: true,
-  },
+  // {
+  //   text: "Khoản vay",
+  //   icon: <BsBank2 />,
+  //   path: ROUTE_CONSTANTS.LOAN_PAGE,
+  //   exact: true,
+  // },
+  // {
+  //   text: "Báo cáo",
+  //   icon: <BsFileEarmarkZip />,
+  //   path: ROUTE_CONSTANTS.REPORT_PAGE,
+  //   exact: true,
+  // },
   {
     text: "Cài đặt",
     icon: <BsFillGearFill />,
