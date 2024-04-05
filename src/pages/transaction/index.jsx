@@ -9,12 +9,18 @@ import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
 import { addInvoiceTransaction } from "../../redux/transactionSlice";
+import DetailTransaction from '../../components/TransactionForm/DetailTransaction';
+import { updateWallet, deleteWallet } from "../../redux/walletSlice";
 
 const Transaction = () => {
 
   const dispatch = useDispatch();
   const transactions = useSelector((state) => state.transaction.values);
   const accountID = useSelector((state) => state.authen.user?.accountID);
+  const [editIdModal, editIdModalSet] = useState(false);
+  const TransactionData = transactions.resultDTO && transactions.resultDTO.find(
+    (item) => item.transactionID === editIdModal
+  );
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -50,11 +56,11 @@ const Transaction = () => {
       dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
         .unwrap()
         .then(() => showSet(false));
-        console.log("không có ảnh");
+      console.log("không có ảnh");
     } else {
-      dispatch(addInvoiceTransaction({ accountID: accountID, fieldValue: fieldValue,scan }))
-      .unwrap()
-      .then(() => showSet(false));
+      dispatch(addInvoiceTransaction({ accountID: accountID, fieldValue: fieldValue, scan }))
+        .unwrap()
+        .then(() => showSet(false));
       console.log("có ảnh");
     }
   };
@@ -100,7 +106,17 @@ const Transaction = () => {
             </thead>
             <tbody>
               {Array.isArray(transactions.resultDTO) && transactions.resultDTO.map((transaction, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={() => editIdModalSet()}>
+                  {TransactionData && (
+                    <DetailTransaction
+                      data={TransactionData}
+                      show={Boolean(editIdModal)}
+                      onClose={() => editIdModalSet(false)}
+                      // onSubmit={() =>
+                      //   dispatch(updateWallet({ accountID: accountID, transactionID: editIdModal }))
+                      //     .unwrap()
+                      //     .then(() => editIdModalSet(false))}
+                    />)}
                   <td>
                     {showCheckboxes && <input type="checkbox" />}
                   </td>

@@ -370,8 +370,8 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                                     <span
                                                         style={{ fontSize: '10px', padding: '8px' }}
                                                         contentEditable
-                                                        onBlur={(e) => register(`productInInvoices[${index}].quantity`, { value: e.target.innerText, required: true })}
-                                                        dangerouslySetInnerHTML={{ __html: product.quantity }}
+                                                        onBlur={(e) => register(`productInInvoices[${index}].quanity`, { value: e.target.innerText, required: true })}
+                                                        dangerouslySetInnerHTML={{ __html: product.quanity }}
                                                     />
                                                 </td>
                                                 <td style={{ fontSize: '10px', padding: '8px' }}>

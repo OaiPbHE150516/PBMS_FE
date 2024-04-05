@@ -14,7 +14,6 @@ import DeleteWallet from "../../components/WalletForm/DeleteWallet";
 import { getCurrency } from "../../redux/currencySlice";
 const Wallet = () => {
     const dispatch = useDispatch();
-
     const wallet = useSelector((state) => state.wallet.values);
     const totalwallets = useSelector((state) => state.totalwallet.values);
     const accountID = useSelector((state) => state.authen.user?.accountID);
