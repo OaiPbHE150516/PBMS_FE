@@ -8,12 +8,15 @@ import useAppSelector from '../../hooks/useAppSelector';
 import PopupTransaction from '../PopupTransaction';
 import dayjs from 'dayjs';
 import { getInvoiceScan } from "../../redux/scanInvoiceSlice";
+import { fileInvoiceName } from "../../redux/fileSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from 'react-bootstrap';
 
 const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const dispatch = useDispatch();
     const scan = useSelector((state) => state.scan.values)
+    const file = useSelector((state) => state.file.values)
+    const accountID = useSelector((state) => state.authen.user?.accountID);
     const {
         register,
         handleSubmit,
@@ -23,14 +26,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         reset
     } = useForm({
         defaultValues: {
-            walletID:"",
-            categoryID:"",
+            walletID: "",
+            categoryID: "",
             totalAmount: "",
             note: "",
             fromPerson: "",
-            toPerson:"",
+            toPerson: "",
             image: "",
-            transactionDate: dayjs().format('YYYY-MM-DDTHH:mm')
+            transactionDate: dayjs().format('YYYY-MM-DDTHH:mm:ss')
         },
     });
     const [time, setTime] = useState(dayjs().format('YYYY-MM-DDTHH:mm'));
@@ -50,13 +53,36 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         label: item.name,
         value: item.walletID,
     }));
+    useEffect(() => {
+        if (isScanned && scan && scan.totalAmount) {
+            setValue('totalAmount', scan.totalAmount);
+        }
+    }, [isScanned, scan, setValue]);
+    const filenameRandom = (length = 10) => {
+        const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let randomFileName = '';
 
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomFileName += characters[randomIndex];
+        }
+
+        return randomFileName;
+    };
+    const filename = filenameRandom();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
         setValue('image', file);
 
         if (file) {
+            const formData = new FormData();
+            formData.append("AccountID", accountID);
+            formData.append("File", file);
+            formData.append("FileName", filename);
+
+            dispatch(fileInvoiceName(formData));
+
             const reader = new FileReader();
             reader.onloadend = () => {
                 setIsScanning(true);
@@ -64,11 +90,12 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                 dispatch(getInvoiceScan(file)).then(() => {
                     setIsScanning(false);
                     setHasScanned(true);
-                })
+                });
             };
             reader.readAsDataURL(file);
         }
     };
+
 
     const hasImage = !!imagePreview;
 
@@ -89,14 +116,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         if (isScanned && scan && scan.invoiceDate) {
             setTime(scan.invoiceDate);
         } else {
-            setTime(dayjs().format('YYYY-MM-DDTHH:mm'));
+            setTime(dayjs().format('YYYY-MM-DDTHH:mm:ss'));
         }
     }, [isScanned, scan]);
 
 
     return (
         <PopupTransaction
-            title={'Create new Transaction'}
+            title={'Tạo giao dịch mới'}
             show={show}
             onClose={handleClose}
             onSubmit={handleSubmit(onSubmit)}
@@ -119,7 +146,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 })}
                                 size="btn-sm"
                             >
-                                Thu nhập
+                                Thu
                             </Button>
                             <Button
                                 onClick={() => {
@@ -131,12 +158,11 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 })}
                                 size="btn-sm"
                             >
-                                Chi tiêu
+                                Chi
                             </Button>
                         </div>
                     )}
                 />
-
                 <Form.Group className="mb-2" style={{ marginTop: '10px' }}>
                     <div className="row">
                         <div className="col-4">
@@ -149,7 +175,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     <select {...field} className="form-control">
                                         <option value="">Chọn hạng mục</option>
                                         {categories.map((item) => {
-                                            if (currentCategoryType === null || (item.categoryType.name === currentCategoryType)) {
+                                            if ((currentCategoryType === null || item.categoryType.name === currentCategoryType) && !item.isRoot) {
                                                 return (
                                                     <option key={item.categoryID} value={item.categoryID}>
                                                         {item.nameVN}
@@ -163,16 +189,27 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         </div>
                         <div className="col-8">
                             <Form.Label>Số tiền</Form.Label>
-                            {isScanned && scan && (
-                                <Form.Control type="text" defaultValue={scan.totalAmount} {...register('totalAmount', { required: true })}/>
-                            )}
-                            {!isScanned && (
-                                <Form.Control type="text" {...register('totalAmount', { required: true })} />
-                            )}
+                            <Controller
+                                control={control}
+                                name="totalAmount"
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                    <>
+                                        {isScanned && scan ? (
+                                            <FormControl
+                                                {...field}
+                                                type="text"
+                                                defaultValue={scan.totalAmount}
+                                            />
+                                        ) : (
+                                            <Form.Control {...field} type="text" />
+                                        )}
+                                    </>
+                                )}
+                            />
                         </div>
                     </div>
                 </Form.Group>
-
                 <Form.Group className="mb-2">
                     <div className="row">
                         <div className="col-4">
@@ -198,12 +235,21 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                             <Form.Control
                                 type="datetime-local"
                                 {...register('transactionDate', { required: true })}
-                                value={time}
                             />
                         </div>
 
                     </div>
                 </Form.Group>
+                <Form.Group className="mb-8">
+                    <Form.Label>Ghi chú</Form.Label>
+                    <Form.Control as="textarea" {...register("note")}></Form.Control>
+                </Form.Group>
+                {file && isScanned && (
+                    <Form.Group className="col-4" >
+                        <Form.Label>file</Form.Label>
+                        <Form.Control defaultValue={file} type="text" {...register("invoiceImageURL")} />
+                    </Form.Group>
+                )}
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                     <div style={{ flexBasis: '60%', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
@@ -227,64 +273,43 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         </Form.Group>
                     </div>
                     {isScanned && scan && imagePreview && (
-                        <div style={{ flexBasis: '70%', display: 'flex' }}>
+                        <div style={{ flexBasis: '90%', display: 'flex' }}>
                             <div style={{ marginRight: '20px' }}>
-                                <h5 style={{ marginTop: '80px' }}>Supplier</h5>
+                                <h5 style={{ marginTop: '80px' }}>Nhà cung cấp</h5>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Name</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Tên</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.supplierName}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
+                                            {...register('supplierName', { required: true })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Address</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Địa chỉ</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.supplierAddress}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
+                                            {...register('supplierAddress', { required: true })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Phone</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">SĐT</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.supplierPhone}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                               
+                                            {...register('supplierPhone')}
                                         />
                                     </InputGroup>
                                 </Form.Group>
-                                <h5 style={{ marginTop: '20px' }}>Receiver</h5>
-                                <Form.Group controlId="formName">
-                                    <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Name</InputGroup.Text>
-                                        <FormControl
-                                            defaultValue={scan.receiverName}
-                                            type="text"
-                                            aria-describedby="inputGroupPrepend"
-                                            
-                                        />
-                                    </InputGroup>
-                                </Form.Group>
-                                <Form.Group controlId="formName">
-                                    <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Address</InputGroup.Text>
-                                        <FormControl
-                                            defaultValue={scan.receiverAddress}
-                                            type="text"
-                                            aria-describedby="inputGroupPrepend"
-                                          
-                                        />
-                                    </InputGroup>
-                                </Form.Group>
-                                <h5 style={{ marginTop: '20px' }}>Amount</h5>
+                                <h5 style={{ marginTop: '20px' }}>Số tiền</h5>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
                                         <InputGroup.Text id="inputGroupPrepend">Net</InputGroup.Text>
@@ -292,46 +317,34 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             defaultValue={scan.netAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                        
+                                            {...register('netAmount', { required: true })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Tax</InputGroup.Text>
-                                        <FormControl
-                                            defaultValue={scan.taxAmount}
-                                            type="text"
-                                            aria-describedby="inputGroupPrepend"
-                                            
-                                        />
-                                    </InputGroup>
-                                </Form.Group>
-                                <Form.Group controlId="formName">
-                                    <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Total</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Số tiền</InputGroup.Text>
                                         <FormControl
                                             defaultValue={scan.totalAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            
                                         />
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Payment terms</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">Thuế</InputGroup.Text>
                                         <FormControl
-                                            defaultValue={scan.paymentTerms}
+                                            defaultValue={scan.taxAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            
+                                            {...register('taxAmount', { required: true })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
                             </div>
-                            <div style={{ flexBasis: '80%', marginTop: '60px' }}>
-                                <h3>Product</h3>
+                            <div style={{ flexBasis: '70%', marginTop: '80px' }}>
+                                <h5>Sản phẩm</h5>
                                 <table style={{ borderCollapse: 'collapse', width: '100%' }}>
                                     <thead>
                                         <tr>
@@ -339,15 +352,53 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Số lượng</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Đơn giá</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Thành tiền</th>
+                                            <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {Array.isArray(scan.productInInvoices) && scan.productInInvoices.map((scan, index) => (
-                                            <tr>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>{scan.productName}</td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>{scan.quanity}</td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>{scan.unitPrice}</td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>{scan.totalAmount}</td>
+                                        {Array.isArray(scan.productInInvoices) && scan.productInInvoices.map((product, index) => (
+                                            <tr key={index}>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                    <span
+                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        contentEditable
+                                                        onBlur={(e) => register(`productInInvoices[${index}].productName`, { value: e.target.innerText, required: true })}
+                                                        dangerouslySetInnerHTML={{ __html: product.productName }}
+                                                    />
+                                                </td>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                    <span
+                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        contentEditable
+                                                        onBlur={(e) => register(`productInInvoices[${index}].quanity`, { value: e.target.innerText, required: true })}
+                                                        dangerouslySetInnerHTML={{ __html: product.quanity }}
+                                                    />
+                                                </td>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                    <span
+                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        contentEditable
+                                                        onBlur={(e) => register(`productInInvoices[${index}].unitPrice`, { value: e.target.innerText, required: true })}
+                                                        dangerouslySetInnerHTML={{ __html: product.unitPrice }}
+                                                    />
+                                                </td>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                    <span
+                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        contentEditable
+                                                        onBlur={(e) => register(`productInInvoices[${index}].totalAmount`, { value: e.target.innerText, required: true })}
+                                                        dangerouslySetInnerHTML={{ __html: product.totalAmount }}
+                                                    />
+                                                </td>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                    <span
+                                                        style={{ fontSize: '10px' }}
+                                                        contentEditable
+                                                        onBlur={(e) => register(`productInInvoices[${index}].tag`, { value: e.target.innerText, required: true })}
+                                                        dangerouslySetInnerHTML={{ __html: product.tag }}
+                                                    />
+                                                </td>
+
                                             </tr>
                                         ))}
                                     </tbody>

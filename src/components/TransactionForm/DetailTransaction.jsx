@@ -8,8 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch, useSelector } from "react-redux";
 
-const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
-  const wallet = useAppSelector((state) => state.wallet.values);
+const DetailTransaction = ({ show, onClose, data, onSubmit }) => {
   const {
     control,
     register,
@@ -83,4 +82,4 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   );
 };
 
-export default UpdateWallet;
+export default DetailTransaction;

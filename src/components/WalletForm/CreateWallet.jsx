@@ -32,7 +32,7 @@ const CreateWallet = ({ show, showSet, onSubmit = () => { } }) => {
 
     return (
         <Popup
-            title={"Create new wallet"}
+            title={"Tạo ví mới"}
             show={show}
             onClose={() => showSet(false)}
             onSubmit={handleSubmit(onSubmit)}
@@ -58,7 +58,7 @@ const CreateWallet = ({ show, showSet, onSubmit = () => { } }) => {
                         rules={{ required: true }}
                         render={({ field }) => (
                             <select {...field} className="form-control">
-                                <option value="">Select Currency</option>
+                                <option value="">Chọn đơn vị tiền</option>
                                 {currencyOptions.map((item) => (
                                     <option key={item.value} value={item.value}>
                                         {item.label}

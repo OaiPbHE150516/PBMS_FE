@@ -33,7 +33,7 @@ const categorySlice = createSlice({
         state.values = action.payload;
       })
       .addCase(getCategories.rejected, (state, action) => {
-        console.log("rejected get budgets");
+        console.log("rejected get categories");
       })
       // add case for create category
       .addCase(createCategory.fulfilled, (state, action) => {

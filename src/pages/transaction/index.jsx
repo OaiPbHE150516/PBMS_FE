@@ -8,16 +8,27 @@ import CreateTransaction from '../../components/TransactionForm/CreateTransactio
 import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
+import { addInvoiceTransaction } from "../../redux/transactionSlice";
+import DetailTransaction from '../../components/TransactionForm/DetailTransaction';
+import { updateWallet, deleteWallet } from "../../redux/walletSlice";
 
 const Transaction = () => {
+
   const dispatch = useDispatch();
   const transactions = useSelector((state) => state.transaction.values);
   const accountID = useSelector((state) => state.authen.user?.accountID);
+  const [editIdModal, editIdModalSet] = useState(false);
+  const TransactionData = transactions.resultDTO && transactions.resultDTO.find(
+    (item) => item.transactionID === editIdModal
+  );
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const retrieveValues = () => {
     dispatch(getTransaction({ pageNumber: currentPage, pageSize }));
+  };
+  const formatCurrency = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   useEffect(() => {
@@ -38,32 +49,42 @@ const Transaction = () => {
     const selectedPageSize = parseInt(event.target.value, 10);
     setPageSize(selectedPageSize);
   };
+  const scan = useSelector((state) => state.scan.values);
   const [show, showSet] = useState(false);
+  const handleCreateTransaction = (fieldValue) => {
+    if (!fieldValue.image) {
+      dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
+        .unwrap()
+        .then(() => showSet(false));
+      console.log("không có ảnh");
+    } else {
+      dispatch(addInvoiceTransaction({ accountID: accountID, fieldValue: fieldValue, scan }))
+        .unwrap()
+        .then(() => showSet(false));
+      console.log("có ảnh");
+    }
+  };
   return (
     <div className='Transaction'>
-      <PageTitle title="Transaction" />
+      <PageTitle title="Giao dịch" />
       <div className="addTransaction">
         <Button
           size="btn-lg"
           onClick={() => showSet(!show)}
           className="active bold btn-light"
         >
-          Create new Transaction
+          Tạo giao dịch mới
         </Button>
         <CreateTransaction
           show={show}
           showSet={showSet}
-        onSubmit={(fieldValue) =>
-          dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
-            .unwrap()
-            .then(() => showSet(false))
-        }
+          onSubmit={handleCreateTransaction}
         />
         <Button
           size="btn-lg"
           className="active bold btn-light"
         >
-          List category
+          Các danh mục
         </Button>
       </div>
       <div className="transactiontable">
@@ -75,32 +96,41 @@ const Transaction = () => {
                   {showCheckboxes}
                   #
                 </th>
-                <th scope="col">Time</th>
-                <th scope="col">Category</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Wallet</th>
-                <th scope="col">Description</th>
-                <th scope="col">Infor</th>
+                <th scope="col">Thời gian</th>
+                <th scope="col">Danh mục</th>
+                <th scope="col">Số tiền</th>
+                <th scope="col">Ví</th>
+                <th scope="col">Ghi chú</th>
+                <th scope="col">Thông tin</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray(transactions.resultDTO) && transactions.resultDTO.map((transaction, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={() => editIdModalSet()}>
+                  {TransactionData && (
+                    <DetailTransaction
+                      data={TransactionData}
+                      show={Boolean(editIdModal)}
+                      onClose={() => editIdModalSet(false)}
+                      // onSubmit={() =>
+                      //   dispatch(updateWallet({ accountID: accountID, transactionID: editIdModal }))
+                      //     .unwrap()
+                      //     .then(() => editIdModalSet(false))}
+                    />)}
                   <td>
                     {showCheckboxes && <input type="checkbox" />}
                   </td>
-                  <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}, ${transaction.transactionDateStr}` : transaction.transactionDateStr}</td>
+                  <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}` : `${transaction.transactionDateStr, transaction.transactionDateStr}`}</td>
                   <td>{transaction.category.nameVN}</td>
                   <td>
                     {transaction.category.categoryType.categoryTypeID === 1 ? (
-                      <span style={{ color: '#4CAF50' }}>+{transaction.totalAmount}</span>
+                      <span style={{ color: '#4CAF50' }}>+{formatCurrency(transaction.totalAmount)}</span>
                     ) : transaction.category.categoryType.categoryTypeID === 2 ? (
-                      <span style={{ color: 'red' }}>-{transaction.totalAmount}</span>
+                      <span style={{ color: 'red' }}>-{formatCurrency(transaction.totalAmount)}</span>
                     ) : (
-                      <span>{transaction.totalAmount}</span>
+                      <span>{formatCurrency(transaction.totalAmount)}</span>
                     )}
                   </td>
-
                   <td style={{ width: "150px" }}>
                     {transaction.wallet.name}
                   </td>
@@ -123,7 +153,7 @@ const Transaction = () => {
             </tbody>
           </table>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <a style={{ marginLeft: '20px', marginRight: '10px' }}>Show</a>
+            <a style={{ marginLeft: '20px', marginRight: '10px' }}>Hiển thị</a>
             <select
               className="form-select"
               style={{ width: '70px' }}
@@ -134,7 +164,7 @@ const Transaction = () => {
               <option value="20">20</option>
               <option value="30">30</option>
             </select>
-            <a style={{ marginLeft: '10px' }}>entries per page</a>
+            <a style={{ marginLeft: '10px' }}>giao dịch trên mỗi trang</a>
             <ul className="pagination justify-content-end" style={{ marginLeft: 'auto' }}>
               <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                 <button
