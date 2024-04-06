@@ -15,13 +15,15 @@ import useAppSelector from "../../hooks/useAppSelector";
 import * as dayjs from "dayjs";
 import { getTransaction } from "../../redux/transactionSlice";
 import { get7LastTransaction } from "../../redux/overviewLastTransactionSlice";
+import { getBudgets } from "../../redux/budgetSlice";
 
 const OverViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
   const totalWallets = useAppSelector((state) => state.totalwallet.values);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTotalWallets());
-  }, [dispatch]);
+  }, [user]);
   return (
     <div class="col-xxl-6 col-md-6 card_Overview_Wallet">
       <div class="card info-card sales-card">
@@ -41,13 +43,13 @@ const OverViewCard = () => {
   );
 };
 
-const WalletViewCard = (data) => {
+const WalletViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
   const wallets = useAppSelector((state) => state.wallet.values);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getWallets());
-  }, []);
-
+  }, [user]);
   return (
     <div class="col-xxl-6 col-md-6 card_Overview_Wallet">
       <div class="card info-card revenue-card">
@@ -166,24 +168,31 @@ const NextMonthViewCard = () => {
 };
 
 const Last7DaysViewCard = () => {
-  const lastTransaction = useAppSelector((state) => state.lastTransaction.values);
+  const user = useAppSelector((state) => state.authen.user);
+  const lastTransaction = useAppSelector(
+    (state) => state.lastTransaction.values
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(get7LastTransaction());
-  }, [dispatch]);
+  }, [user]);
 
   const last7WeekData = [
     {
       series: [
         {
           name: "Thu nhập",
-          data: Object.entries(lastTransaction).map(([key, transaction]) => transaction.totalAmountIn),
+          data: Object.entries(lastTransaction).map(
+            ([key, transaction]) => transaction.totalAmountIn
+          ),
           color: "#00FF00",
         },
         {
           name: "Chi tiêu",
-          data: Object.entries(lastTransaction).map(([key, transaction]) => transaction.totalAmountOut),
+          data: Object.entries(lastTransaction).map(
+            ([key, transaction]) => transaction.totalAmountOut
+          ),
           color: "#FF0000",
         },
       ],
@@ -208,7 +217,10 @@ const Last7DaysViewCard = () => {
           colors: ["transparent"],
         },
         xaxis: {
-          categories: Object.entries(lastTransaction).map(([key, transaction]) => `${transaction.dayDetail.dayStr}, ${transaction.dayDetail.monthYearStr}`),
+          categories: Object.entries(lastTransaction).map(
+            ([key, transaction]) =>
+              `${transaction.dayDetail.dayStr}, ${transaction.dayDetail.monthYearStr}`
+          ),
         },
         fill: {
           opacity: 1,
@@ -216,7 +228,10 @@ const Last7DaysViewCard = () => {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+              return val.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              });
             },
           },
         },
@@ -325,15 +340,13 @@ const MostTransactionViewCard = () => {
 };
 
 const BudgetListViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
   const budgets = useAppSelector((state) => state.budget.values);
   const dispatch = useDispatch();
-  const retrieveValues = () => {
-    dispatch(getWallets());
-};
+  useEffect(() => {
+    dispatch(getBudgets());
+  }, [user]);
 
-useEffect(() => {
-    retrieveValues();
-}, []);
   return (
     <div class="col-6">
       <div class="card top-selling overflow-auto">

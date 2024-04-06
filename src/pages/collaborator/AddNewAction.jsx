@@ -36,7 +36,7 @@ export const AddNewAction = ({ data, collabID }) => {
         ></img>
         <div className="">
           <p className="mb-0 bold">{data.accountName}</p>
-          <p className="mb-0 small">{data.roleID}</p>
+          {/* <p className="mb-0 small">{data.roleID}</p> */}
         </div>
       </div>
       <Form className="c-form d-flex align-items-center flex-grow-1">
