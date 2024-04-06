@@ -1,41 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { FormErrorMessage } from "../BudgetForm/FormErrorMessage";
 import { useForm } from "react-hook-form";
 import Popup from "../Popup";
 import logo from "../../assets/Logo.png";
 import { FaLongArrowAltRight } from "react-icons/fa";
-const DevideMoney = ({ show, showSet, onSubmit = () => {} }) => {
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors, isValid },
-    setValue,
-  } = useForm({
-    defaultValues: {
-      name: "",
-      description: "",
-      imageURL: "",
-      totalAmount: 0,
-    },
-  });
+import useAppSelector from "../../hooks/useAppSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { addDivideMoney, getInforDivide } from "../../redux/divideMoneySlice";
+const DevideMoney = ({ show, showSet, collabFundID }) => {
 
-  const handleImageSelect = (event) => {
-    const files = event.target.files;
-    if (files && files.length) {
-      const imageURL = URL.createObjectURL(files[0]);
-      setValue("imageURL", imageURL);
+  const divideMoney = useAppSelector((state) => state.divideMoney.values);
+  const accountID = useSelector((state) => state.authen.user?.accountID);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getInforDivide(collabFundID));
+  }, [collabFundID, dispatch]);
+
+  const onSubmit = async () => {
+    try {
+      await dispatch(
+        addDivideMoney({ accountID: accountID, fieldValue: { collabFundID: collabFundID } })
+      );
+      showSet(false);
+    } catch (error) {
+      console.error("Error adding divide money:", error);
     }
   };
+  
+  const listDVMI = divideMoney.listDVMI;
+  const cfdividingmoney_result = divideMoney.cfdividingmoney_result;
+  const cfdm_detail_result = divideMoney.cfdm_detail_result;
+
+  let allTotalTransactions = 0;
+  listDVMI.forEach((item) => {
+    allTotalTransactions += item.transactionCount;
+  });
 
   return (
     <Popup
       title={"Chia tiền cho các bên"}
       show={show}
       onClose={() => showSet(false)}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onSubmit}
     >
       <div class=" tableListItem">
         <table class="table table-striped">
@@ -50,130 +58,81 @@ const DevideMoney = ({ show, showSet, onSubmit = () => {} }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Bá Oai</td>
-              <td>150.000 đ</td>
-              <td>5</td>
-              <td>150.000 - 113.000 = 37.000 đ</td>
-            </tr>
-            <tr>
-              <td>Thành Long</td>
-              <td>150.000 đ</td>
-              <td>5</td>
-              <td>150.000 - 113.000 = 37.000 đ</td>
-            </tr>
-            <tr>
-              <td>Đình Việt</td>
-              <td>150.000 đ</td>
-              <td>5</td>
-              <td>150.000 - 113.000 = 37.000 đ</td>
-            </tr>
+            {listDVMI.map((item, index) => (
+              <tr>
+                <td>{item.account.accountName}</td>
+                <td>{item.totalAmount.toLocaleString("vi-VN")}</td>
+                <td>{item.transactionCount}</td>
+                <td>
+                  {item.totalAmount.toLocaleString("vi-VN")} -{" "}
+                  {cfdividingmoney_result.averageAmount.toLocaleString("vi-VN")}{" "}
+                  ={" "}
+                  {(
+                    item.totalAmount - cfdividingmoney_result.averageAmount
+                  ).toLocaleString("vi-VN")}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
       <div className=" detailDivideMoney">
         <div className="row">
-          <div className="col-md-6 summaryTotal">
+          <div className="col-md-5 summaryTotal">
             <table class="table table-striped">
               <tbody>
                 <tr>
                   <th style={{ textAlign: "right" }}>Tổng số giao dịch:</th>
-                  <td>16</td>
+                  <td>{allTotalTransactions}</td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>Tổng số tiền (T):</th>
-                  <td>150.000 đ</td>
+                  <td>
+                    {cfdividingmoney_result.totalAmount.toLocaleString("vi-VN")}
+                  </td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>Số người tham gia (N):</th>
-                  <td>5</td>
+                  <td>{cfdividingmoney_result.numberParticipant}</td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>
                     Tiền trung bình cộng (Ti):
                   </th>
-                  <td>113.000 đ</td>
+                  <td>
+                    {cfdividingmoney_result.averageAmount.toLocaleString(
+                      "vi-VN"
+                    )}
+                  </td>
                 </tr>
                 <tr>
                   <th style={{ textAlign: "right" }}>Số dư (S):</th>
-                  <td>3.000 đ</td>
+                  <td>{cfdividingmoney_result.remainAmount}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div className="col-md-6 listDivideMoney">
-            <div className="row divideItem">
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-              <div className="col-lg-2">
-                <div>37.000 đ</div>
-                <div>
-                  <FaLongArrowAltRight />
+          <div className="col-md-7 listDivideMoney">
+            {cfdm_detail_result.map((item, index) => (
+              <div className="row divideItem">
+                <div className="col-lg-5">
+                  <input type="checkbox" />
+                  <img src={logo} />
+                  <span>{item.fromAccount.accountName}</span>
+                </div>
+                <div className="col-lg-2">
+                  <div>{item.dividingAmount.toLocaleString("vi-VN")} đ</div>
+                  <div>
+                    <FaLongArrowAltRight />
+                  </div>
+                </div>
+                <div className="col-lg-5">
+                  <input type="checkbox" />
+                  <img src={logo} />
+                  <span>{item.toAccount.accountName}</span>
                 </div>
               </div>
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-            </div>
-            <div className="row divideItem">
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-              <div className="col-lg-2">
-                <div>37.000 đ</div>
-                <div>
-                  <FaLongArrowAltRight />
-                </div>
-              </div>
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-            </div>
-            <div className="row divideItem">
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-              <div className="col-lg-2">
-                <div>37.000 đ</div>
-                <div>
-                  <FaLongArrowAltRight />
-                </div>
-              </div>
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-            </div>
-            <div className="row divideItem">
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-              <div className="col-lg-2">
-                <div>37.000 đ</div>
-                <div>
-                  <FaLongArrowAltRight />
-                </div>
-              </div>
-              <div className="col-lg-5">
-                <input type="checkbox"/>
-                <img src={logo} />
-                <span>Công Chức</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

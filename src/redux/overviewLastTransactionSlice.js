@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {get7LastTransaction as LastTransactionServices} from "../services/overviewLastTransactionServices";
 
-export const get7LastTransaction = createAsyncThunk("get-last-transaction", async () => {
-  const response = await LastTransactionServices();
+export const get7LastTransaction = createAsyncThunk("get-last-transaction", async (_, {getState}) => {
+  const user = getState().authen.user;
+  const response = await LastTransactionServices(user);
   return response;
 });
 

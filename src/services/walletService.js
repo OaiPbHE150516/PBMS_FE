@@ -7,16 +7,17 @@ const config = {
   },
 };
 
-export const getWallets = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+export const getWallets = async (user) => {
+  if (!user) return [];
   const response = await axios.get(
     API.MANAGE_WALLET + `/api/wallet/get/account/${user.accountID}`
   );
   console.log(response);
   return response.data;
 };
-export const getTotalWallets = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+
+export const getTotalWallets = async (user) => {
+  if (!user) return [];
   const response = await axios.get(
     API.MANAGE_WALLET + `/api/wallet/get/total-amount/${user.accountID}`
   );
@@ -40,10 +41,10 @@ export const updateWallet = async (data) => {
   console.log(response);
   return response.data;
 };
-export const deleteWallet = async (walletID,accountID) => {
+export const deleteWallet = async (walletID, accountID) => {
   const response = await axios.delete(
     API.MANAGE_WALLET + "/api/wallet/delete",
-    { data: {walletID,accountID}} 
+    { data: { walletID, accountID } }
   );
   console.log(response);
   return response.data;

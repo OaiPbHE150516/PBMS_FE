@@ -4,8 +4,9 @@ import { addBudgets as addBudgetServices } from "../services/budgetServices";
 import { updateBudgets as updateBudgetServices } from "../services/budgetServices";
 import { removeBudgets as removeBudgetServices } from "../services/budgetServices";
 
-export const getBudgets = createAsyncThunk("get-budgets", async (accountID) => {
-  const response = await budgetServices(accountID);
+export const getBudgets = createAsyncThunk("get-budgets", async (_, {getState}) => {
+  const user = getState().authen.user;
+  const response = await budgetServices(user);
   return response;
 });
 

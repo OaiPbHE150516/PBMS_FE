@@ -4,14 +4,19 @@ import { getTotalWallets as totalwalletServices } from "../services/walletServic
 import { addWallet as addWalletServices } from "../services/walletService";
 import { updateWallet as updateWalletServices } from "../services/walletService";
 import { deleteWallet as deleteWalletServices } from "../services/walletService";
-export const getWallets = createAsyncThunk("get-wallets", async () => {
-  const response = await walletServices();
+
+export const getWallets = createAsyncThunk("get-wallets", async (_, {getState}) => {
+  const user = getState().authen.user;
+  const response = await walletServices(user);
   return response;
 });
-export const getTotalWallets = createAsyncThunk("get-totalwallets", async (accountID) => {
-  const response = await totalwalletServices(accountID);
+
+export const getTotalWallets = createAsyncThunk("get-totalwallets", async (_, {getState}) => {
+  const user = getState().authen.user;
+  const response = await totalwalletServices(user);
   return response;
 });
+
 export const addWallet = createAsyncThunk(
   "add-wallet",
   async ({ accountID, fieldValue }, { dispatch }) => {
@@ -28,26 +33,7 @@ export const addWallet = createAsyncThunk(
     return response;
   }
 );
-export const totalwalletSlice = createSlice({
-  name: "totalwallet",
-  initialState: {
-    values: [],
-  },
-  reducers: {
-    setValues: (state, action) => {
-      state.values = action.payload;
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getTotalWallets.fulfilled, (state, action) => {
-        state.values = action.payload;
-      })
-      .addCase(getTotalWallets.rejected, (state, action) => {
-        console.log("rejected");
-      })
-  },
-});
+
 export const updateWallet = createAsyncThunk(
   "update-wallet",
   async ({ accountID, walletID, fieldValue }, { dispatch }) => {
@@ -84,6 +70,28 @@ export const deleteWallet = createAsyncThunk(
     return response;
   }
 );
+
+export const totalwalletSlice = createSlice({
+  name: "total-wallet",
+  initialState: {
+    values: [],
+  },
+  reducers: {
+    setValues: (state, action) => {
+      state.values = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getTotalWallets.fulfilled, (state, action) => {
+        state.values = action.payload;
+      })
+      .addCase(getTotalWallets.rejected, (state, action) => {
+        console.log("rejected");
+      })
+  },
+});
+
 const walletSlice = createSlice({
   name: "wallet",
   initialState: {

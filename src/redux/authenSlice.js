@@ -10,14 +10,14 @@ export const signin = createAsyncThunk("signin", async (token) => {
 const authenSlice = createSlice({
   name: "authen",
   initialState: {
-    user: sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : null,
+    user: sessionStorage.getItem("user")
+      ? JSON.parse(sessionStorage.getItem("user"))
+      : null,
   },
   reducers: {
     signOut: (state, action) => {
       state.user = null;
       sessionStorage.removeItem("user");
-
-      localStorage.removeItem("currentPage");
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -27,7 +27,7 @@ const authenSlice = createSlice({
     builder
       .addCase(signin.fulfilled, (state, action) => {
         console.log("done");
-        const user  = action.payload;
+        const user = action.payload;
         if (user == null) {
           const { message } = action.payload;
           toast.warning(message);

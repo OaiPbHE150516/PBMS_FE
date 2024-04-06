@@ -24,7 +24,7 @@ function ItemMember() {
         <p className="mb-0 bold">Member 1</p>
         <p className="mb-0 small">Member 1</p>
       </div>
-      <Button>Invite</Button>
+      <Button>Thêm</Button>
     </div>
   );
 }
@@ -33,7 +33,7 @@ function AddNewMemberPopup({ show, onClose }) {
   return (
     <Popup show={show} onClose={onClose}>
       <div>
-        <h3>Attendees</h3>
+        <h3>Thêm thành viên</h3>
         <Form className="c-form">
           <Form.Group className="mb-3">
             <MultipleSelect
@@ -50,8 +50,8 @@ function AddNewMemberPopup({ show, onClose }) {
           </Form.Group>
           <Form.Group className="mb-3 border border-dark">
             <ItemMember />
-            <hr className="border-b border-dark opacity-100 m-0" />
-            <ItemMember />
+            {/* <hr className="border-b border-dark opacity-100 m-0" />
+            <ItemMember /> */}
           </Form.Group>
         </Form>
       </div>
@@ -59,7 +59,7 @@ function AddNewMemberPopup({ show, onClose }) {
   );
 }
 
-const MemberTab = ({ collabID, data }) => {
+const MemberTab = ({ collabID }) => {
   const [showAddNewPopup, showAddNewPopupSet] = useState(false);
   const members = useAppSelector((state) => state.member.values);
   const dispatch = useDispatch();
