@@ -57,7 +57,7 @@ export const sidebars = [
     exact: true,
   },
   {
-    text: "Quỹ cộng tác",
+    text: "Chi tiêu chung",
     icon: <BsFillPeopleFill />,
     path: ROUTE_CONSTANTS.COLLABORATOR_PAGE,
     exact: true,
