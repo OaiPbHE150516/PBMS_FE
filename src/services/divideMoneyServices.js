@@ -18,6 +18,7 @@ export const getInforDivide = async (collabFundID) => {
 };
 
 export const addDivideMoney = async (body) => {
+  debugger
   try {
     const response = await axios.post(
       API.MANAGE_COLLABORATOR + `/api/collabfund/divide-money`,

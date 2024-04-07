@@ -16,6 +16,9 @@ import * as dayjs from "dayjs";
 import { getTransaction } from "../../redux/transactionSlice";
 import { get7LastTransaction } from "../../redux/overviewLastTransactionSlice";
 import { getBudgets } from "../../redux/budgetSlice";
+import { getMostTransaction } from "../../redux/overviewMostTransactionSlice";
+import { filterTransactionLastMonth } from "../../redux/filterTransactionLastSlice";
+import { filterTransactionThisMonth } from "../../redux/filterTransactionThisSlice";
 
 const OverViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
@@ -32,8 +35,14 @@ const OverViewCard = () => {
           <table class="table">
             <tbody>
               <tr>
-                <th>Tổng tiền trong ví</th>
-                <th className="tdMoney">{totalWallets.totalBalance}</th>
+                {user != null ? (
+                  <>
+                    <th>Tổng tiền trong ví</th>
+                    <th className="tdMoney">{totalWallets.totalBalance}</th>
+                  </>
+                ) : (
+                  <></>
+                )}
               </tr>
             </tbody>
           </table>
@@ -57,18 +66,25 @@ const WalletViewCard = () => {
           <h5 class="card-title">Ví</h5>
           <table class="table">
             <tbody>
-              {wallets.map((item) => (
-                <tr>
-                  <td>{item.name}</td>
-                  <td
-                    className={
-                      item.balance < 0 ? "tdMoney red" : "tdMoney green"
-                    }
-                  >
-                    {item.balance.toLocaleString("vi-VN")} đ
-                  </td>
-                </tr>
-              ))}
+              {user != null ? (
+                <>
+                  {" "}
+                  {wallets.map((item) => (
+                    <tr>
+                      <td>{item.name}</td>
+                      <td
+                        className={
+                          item.balance < 0 ? "tdMoney red" : "tdMoney green"
+                        }
+                      >
+                        {item.balance.toLocaleString("vi-VN")} đ
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              ) : (
+                <></>
+              )}
             </tbody>
           </table>
         </div>
@@ -78,90 +94,186 @@ const WalletViewCard = () => {
 };
 
 const LastMonthViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
+  const filterLastMonth = useAppSelector(
+    (state) => state.filterTransactionLast
+  );
+  const currentDate = new Date();
+  const month = currentDate.getMonth();
+  const year = currentDate.getFullYear();
+
+  const series = filterLastMonth.categoryWithTransactionData.map(
+    (item) => item.percentage
+  );
+  const labels = filterLastMonth.categoryWithTransactionData.map(
+    (item) => item.categoryType.name
+  );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(filterTransactionLastMonth({ month, year }));
+  }, [month, year, user]);
+
+  const lastMonthTransaction = [
+    {
+      series: series,
+      options: {
+        chart: {
+          width: 380,
+          type: "donut",
+        },
+        labels: labels,
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ];
   return (
     <div class="col-lg-4 card_Month">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Tháng trước</h5>
-          <ReactApexChart
-            options={thisMonthData[0].options}
-            series={thisMonthData[0].series}
-            type={thisMonthData[0].options.chart.type}
-          />
+          {user != null ? (
+            <>
+              <ReactApexChart
+                options={lastMonthTransaction[0].options}
+                series={lastMonthTransaction[0].series}
+                type={lastMonthTransaction[0].options.chart.type}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
-        <div class="card-body">
-          <table class="table">
-            <tbody>
-              {walletData.map((item) => (
-                <tr>
-                  <td className={item.money < 0 ? "red" : "green"}>
-                    {item.money.toLocaleString("vi-VN")} đ
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {user != null ? (
+          <>
+            <div class="card-body">
+              <table class="table">
+                <tbody>
+                  {filterLastMonth.categoryWithTransactionData.map(
+                    (item, index) => (
+                      <tr key={index}>
+                        <th>
+                          {item.categoryType.name}
+                        </th>
+                        <td className="tdMoney">
+                          {item.totalAmountStr}
+                        </td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 };
 
 const ThisMonthViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
+  const filterThisMonth = useAppSelector(
+    (state) => state.filterTransactionThis
+  );
+
+  const currentDate = new Date();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+
+  const series = filterThisMonth.categoryWithTransactionData.map(
+    (item) => item.percentage
+  );
+  const labels = filterThisMonth.categoryWithTransactionData.map(
+    (item) => item.categoryType.name
+  );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(filterTransactionThisMonth({ month, year }));
+  }, [month, year, user]);
+
+  const thisMonthTransaction = [
+    {
+      series: series,
+      options: {
+        chart: {
+          width: 380,
+          type: "donut",
+        },
+        labels: labels,
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ];
   return (
     <div class="col-lg-4 card_Month">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Tháng hiện tại</h5>
-          <ReactApexChart
-            options={thisMonthData[0].options}
-            series={thisMonthData[0].series}
-            type={thisMonthData[0].options.chart.type}
-          />
+          {user != null ? (
+            <>
+              <ReactApexChart
+                options={thisMonthTransaction[0].options}
+                series={thisMonthTransaction[0].series}
+                type={thisMonthTransaction[0].options.chart.type}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
-        <div class="card-body">
-          <table class="table">
-            <tbody>
-              {walletData.map((item) => (
-                <tr>
-                  <td className={item.money < 0 ? "red" : "green"}>
-                    {item.money.toLocaleString("vi-VN")} đ
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const NextMonthViewCard = () => {
-  return (
-    <div class="col-lg-4 card_Month">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Tháng tới</h5>
-          <ReactApexChart
-            options={thisMonthData[0].options}
-            series={thisMonthData[0].series}
-            type={thisMonthData[0].options.chart.type}
-          />
-        </div>
-        <div class="card-body">
-          <table class="table">
-            <tbody>
-              {walletData.map((item) => (
-                <tr>
-                  <td className={item.money < 0 ? "red" : "green"}>
-                    {item.money.toLocaleString("vi-VN")} đ
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {user != null ? (
+          <>
+            {" "}
+            <div class="card-body">
+              <table class="table">
+                <tbody>
+                {filterThisMonth.categoryWithTransactionData.map(
+                    (item, index) => (
+                      <tr key={index}>
+                        <th>
+                          {item.categoryType.name}
+                        </th>
+                        <td className="tdMoney">
+                          {item.totalAmountStr}
+                        </td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
@@ -243,96 +355,111 @@ const Last7DaysViewCard = () => {
     <div className="col-6">
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title">Các ngày gần nhất</h5>
+          <h5 className="card-title">7 gần nhất</h5>
         </div>
-        <ReactApexChart
-          options={last7WeekData[0].options}
-          series={last7WeekData[0].series}
-          type={last7WeekData[0].options.chart.type}
-          height={350}
-        />
+        {user != null ? (
+          <>
+            <ReactApexChart
+              options={last7WeekData[0].options}
+              series={last7WeekData[0].series}
+              type={last7WeekData[0].options.chart.type}
+              height={350}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 };
 
 const SurplusViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
   return (
     <div className="col-6">
       <div className="card">
         <div class="card-body">
           <h5 class="card-title">Số dư</h5>
         </div>
-        <ReactApexChart
-          options={surplusData[0].options}
-          series={surplusData[0].series}
-          type={surplusData[0].options.chart.type}
-          height={350}
-        />
+        {user != null ? (
+          <>
+            <ReactApexChart
+              options={surplusData[0].options}
+              series={surplusData[0].series}
+              type={surplusData[0].options.chart.type}
+              height={350}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
 };
 
 const MostTransactionViewCard = () => {
+  const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
-  const transactions = useSelector((state) => state.transaction.values);
-
-  const retrieveValues = () => {
-    dispatch(getTransaction());
-  };
-
+  const mostTransactions = useSelector((state) => state.mostTransaction.values);
+  const number = 5;
   useEffect(() => {
-    retrieveValues();
-  }, []);
+    dispatch(getMostTransaction(number));
+  }, [user, number]);
 
   return (
     <div class="col-6">
       <div class="card top-selling overflow-auto">
         <div class="card-body pb-0">
           <h5 class="card-title">Các giao dịch gần nhất</h5>
-
-          <table class="table table-borderless">
-            <thead>
-              <tr>
-                <th scope="col">Thời gian</th>
-                <th scope="col" className="thCate">
-                  Danh mục
-                </th>
-                <th scope="col">Ví</th>
-                <th scope="col">Số tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.isArray(transactions.resultDTO) &&
-                transactions.resultDTO.map((transaction, index) => (
+          {user != null ? (
+            <>
+              <table class="table table-borderless">
+                <thead>
                   <tr>
-                    <td>{transaction.transactionDateMinus}</td>
-                    <td
-                      className={
-                        parseFloat(transaction.totalAmount) < 0
-                          ? "tdCateRed"
-                          : "tdCateGreen"
-                      }
-                    >
-                      <div>
-                        <td>{transaction.category.nameVN}</td>
-                      </div>
-                    </td>
-                    <td>{transaction.wallet.name}</td>
-                    <td
-                      className={
-                        parseFloat(transaction.totalAmount) < 0
-                          ? "red"
-                          : "green"
-                      }
-                    >
-                      {transaction.totalAmount.toLocaleString("vi-VN")}
-                    </td>
+                    <th scope="col">Thời gian</th>
+                    <th scope="col" className="thCate">
+                      Danh mục
+                    </th>
+                    <th scope="col">Ví</th>
+                    <th scope="col">Số tiền</th>
                   </tr>
-                ))}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {mostTransactions.map((transaction, index) => (
+                    <tr>
+                      <td>{transaction.transactionDateMinus}</td>
+                      <td
+                        className={
+                          parseFloat(transaction.category.categoryTypeID) !== 1
+                            ? "tdCateRed"
+                            : "tdCateGreen"
+                        }
+                      >
+                        <div>
+                          <td>{transaction.category.nameVN}</td>
+                        </div>
+                      </td>
+                      <td>{transaction.wallet.name}</td>
+                      <td
+                        className={
+                          parseFloat(transaction.category.categoryTypeID) !== 1
+                            ? "red"
+                            : "green"
+                        }
+                      >
+                        {transaction.category.categoryTypeID !== 1 ? "-" : ""}
+                        {transaction.totalAmount.toLocaleString("vi-VN")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
@@ -352,57 +479,65 @@ const BudgetListViewCard = () => {
       <div class="card top-selling overflow-auto">
         <div class="card-body">
           <h5 class="card-title">Ngân sách</h5>
-          <table class="table table-borderless">
-            <tbody>
-              {budgets.map((item) => (
-                <tr>
-                  <th scope="row">
-                    <img src={logo} alt="" />
-                  </th>
-                  <td style={{ width: "100%" }}>
-                    <table class="table table-borderless">
-                      <tbody>
-                        <tr>
-                          <td scope="col" className="tdStartDay">
-                            {dayjs(item.beginDate).format("DD/MM/YYYY")}
-                          </td>
-                          <th scope="col" className="thPercent">
-                            {item.percentProgress} %
-                          </th>
-                          <td scope="col" className="tdEndDay">
-                            {dayjs(item.endDate).format("DD/MM/YYYY")}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colSpan={3}>
-                            <div class="progress">
-                              <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style={{ width: `${item.percentProgress}%` }}
-                                aria-valuenow="25"
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              ></div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td scope="col" className="tdStartDay">
-                            0 đ
-                          </td>
-                          <th></th>
-                          <td scope="col" className="tdEndDay">
-                            {item.targetAmount.toLocaleString("vi-VN")} đ
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {user != null ? (
+            <>
+              <table class="table table-borderless">
+                <tbody>
+                  {budgets.map((item) => (
+                    <tr>
+                      <th scope="row">
+                        <img src={logo} alt="" />
+                      </th>
+                      <td style={{ width: "100%" }}>
+                        <table class="table table-borderless">
+                          <tbody>
+                            <tr>
+                              <td scope="col" className="tdStartDay">
+                                {dayjs(item.beginDate).format("DD/MM/YYYY")}
+                              </td>
+                              <th scope="col" className="thPercent">
+                                {item.percentProgress} %
+                              </th>
+                              <td scope="col" className="tdEndDay">
+                                {dayjs(item.endDate).format("DD/MM/YYYY")}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colSpan={3}>
+                                <div class="progress">
+                                  <div
+                                    class="progress-bar"
+                                    role="progressbar"
+                                    style={{
+                                      width: `${item.percentProgress}%`,
+                                    }}
+                                    aria-valuenow="25"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  ></div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td scope="col" className="tdStartDay">
+                                0 đ
+                              </td>
+                              <th></th>
+                              <td scope="col" className="tdEndDay">
+                                {item.targetAmount.toLocaleString("vi-VN")} đ
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
@@ -430,14 +565,11 @@ const Overview = () => {
 
           <div className="col-md-8">
             <div className="row Month">
-              <div className="col-lg-4">
+              <div className="col-lg-6">
                 <LastMonthViewCard />
               </div>
-              <div className="col-lg-4">
+              <div className="col-lg-6">
                 <ThisMonthViewCard />
-              </div>
-              <div className="col-lg-4">
-                <NextMonthViewCard />
               </div>
             </div>
           </div>

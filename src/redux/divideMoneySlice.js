@@ -10,7 +10,7 @@ export const getInforDivide = createAsyncThunk(
       const response = await getInforDivideServices(collabFundID);
       return response;
     } catch (error) {
-      toast.error("Failed to fetch information."); 
+      toast.error("Failed to fetch information.");
       throw error;
     }
   }
@@ -18,18 +18,18 @@ export const getInforDivide = createAsyncThunk(
 
 export const addDivideMoney = createAsyncThunk(
   "add-divide-money",
-  async ({ accountID, fieldValue }, {dispatch}) => {
+  async ({ accountID, fieldValue }, { dispatch }) => {
     try {
       const body = {
         accountID: accountID,
         collabFundID: fieldValue.collabFundID,
       };
       const response = await addDivideMoneyServices(body);
-      toast.success("Money divided successfully."); 
-      await dispatch(getInforDivide())
+      toast.success("Money divided successfully.");
+      await dispatch(getInforDivide());
       return response;
     } catch (error) {
-      toast.error("Failed to divide money."); 
+      toast.error("Failed to divide money.");
       throw error;
     }
   }
@@ -38,17 +38,23 @@ export const addDivideMoney = createAsyncThunk(
 const divideMoneySlice = createSlice({
   name: "collaborator",
   initialState: {
-    values: [],
+    listDVMI: [],
+    cfdividingmoney_result: [],
+    cfdm_detail_result: [],
   },
   reducers: {
     setValues: (state, action) => {
-      state.values = action.payload;
+      state.listDVMI = action.payload.listDVMI;
+      state.cfdividingmoney_result = action.payload.cfdividingmoney_result;
+      state.cfdm_detail_result = action.payload.cfdm_detail_result;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getInforDivide.fulfilled, (state, action) => {
-        state.values = action.payload;
+        state.listDVMI = action.payload.listDVMI;
+        state.cfdividingmoney_result = action.payload.cfdividingmoney_result;
+        state.cfdm_detail_result = action.payload.cfdm_detail_result;
       })
       .addCase(getInforDivide.rejected, (state, action) => {
         console.log("rejected get divide money");
