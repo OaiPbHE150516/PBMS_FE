@@ -8,9 +8,9 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { addDivideMoney, getInforDivide } from "../../redux/divideMoneySlice";
-const DevideMoney = ({ show, showSet, collabFundID }) => {
 
-  const divideMoney = useAppSelector((state) => state.divideMoney.values);
+const DevideMoney = ({ show, showSet, collabFundID }) => {
+  const divideMoney = useAppSelector((state) => state.divideMoney);
   const accountID = useSelector((state) => state.authen.user?.accountID);
   const dispatch = useDispatch();
   
@@ -88,7 +88,7 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
                 <tr>
                   <th style={{ textAlign: "right" }}>Tổng số tiền (T):</th>
                   <td>
-                    {cfdividingmoney_result.totalAmount.toLocaleString("vi-VN")}
+                    {cfdividingmoney_result.totalAmountStr}
                   </td>
                 </tr>
                 <tr>
@@ -100,9 +100,7 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
                     Tiền trung bình cộng (Ti):
                   </th>
                   <td>
-                    {cfdividingmoney_result.averageAmount.toLocaleString(
-                      "vi-VN"
-                    )}
+                    {cfdividingmoney_result.averageAmountStr}
                   </td>
                 </tr>
                 <tr>
