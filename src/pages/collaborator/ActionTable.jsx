@@ -2,11 +2,12 @@ import React from "react";
 import MemberTab from "./MemberTab";
 import { ActionCard } from "./ActionCard";
 import { AddNewAction } from "./AddNewAction";
+import useAppSelector from "../../hooks/useAppSelector";
 
 export const ActionTable = ({ collabID }) => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = useAppSelector((state) => state.authen.user);
   return (
-    <div class="card h-100 pt-3">
+    <div class="card pt-3">
       <div class="card-body d-flex flex-column">
         <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
           <li class="nav-item flex-fill" role="presentation">
@@ -49,18 +50,24 @@ export const ActionTable = ({ collabID }) => {
             </button>
           </li>
         </ul>
-        <div class="tab-content pt-2 h-100" id="myTabjustifiedContent">
+        <div class="tab-content pt-2" id="myTabjustifiedContent">
           <div
-            class="tab-pane fade show active h-100"
+            class="tab-pane fade show active"
             id="action-justified"
             role="tabpanel"
             aria-labelledby="action-tab"
           >
-            <div className="d-flex flex-column h-100">
-              <div className="flex-grow-1">
+            <div className="d-flex flex-column">
+              <div
+                className="flex-grow-1"
+                style={{ maxHeight: "500px", overflowY: "auto" }}
+              >
                 <ActionCard collabID={collabID} />
               </div>
-              <AddNewAction data={user} collabID={collabID} />
+              <br />
+              <div>
+                <AddNewAction data={user} collabID={collabID} />
+              </div>
             </div>
           </div>
           <div

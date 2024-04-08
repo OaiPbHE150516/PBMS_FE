@@ -26,15 +26,14 @@
     };
     
     return (
-      
       <div className="Callaborator">
-        <PageTitle title="Quỹ cộng tác" />
+        <PageTitle title="Chi tiêu chung" />
         <Button
           size="btn-lg"
           onClick={() => showSet(!show)}
           className="active bold btn-light"
         >
-          Tạo quỹ cộng tác mới
+          Tạo khoản chi tiêu chung
         </Button>
 
         <CreateCollabFund

@@ -7,6 +7,7 @@ import * as dayjs from "dayjs";
 
 export const ActionCard = ({ collabID }) => {
   const actions = useAppSelector((state) => state.action.values);
+  console.log("Actions", actions);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getActionsOfCollab(collabID));
@@ -22,7 +23,7 @@ export const ActionCard = ({ collabID }) => {
                 <div class="col-md-4 c-card-member-comment">
                   <img
                     src={item.account.pictureURL}
-                    class="img-fluid rounded-start"
+                    class="img-fluid rounded-start img_logo"
                     alt="..."
                   />
                   <div class="card-body py-0">
@@ -30,6 +31,16 @@ export const ActionCard = ({ collabID }) => {
                       {item.account.accountName}
                     </p>
                     <p class="card-text">{item.note}</p>
+                    {item.transaction ? (
+                      <>
+                        <img
+                          src={item.transaction.imageURL}
+                          className="img_trans"
+                        />
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
                 <div class="col-md-8 c-card-time-money">

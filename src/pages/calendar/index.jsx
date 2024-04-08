@@ -77,7 +77,7 @@ const Calendar = () => {
                             : "red"
                         }
                       >
-                        {transaction.category.categoryTypeID !== 1 ? "-" : ""}
+                        {transaction.category.categoryTypeID !== 1 ? "-" : "+"}
                         {transaction.totalAmount.toLocaleString("vi-VN")} đ
                       </td>
                     </tr>
@@ -96,21 +96,26 @@ const Calendar = () => {
                 <>
                   <div>
                     {arg.event.extendedProps.totalAmount > 0 ? (
-                      <div className="green">
-                        <IoMdArrowDropup />
-                        {arg.event.extendedProps.totalAmount.toLocaleString(
-                          "vi-VN"
-                        )}{" "}
-                        đ
-                      </div>
+                      <>
+                        {" "}
+                        <div className="green">
+                          <IoMdArrowDropup />
+                          {arg.event.extendedProps.totalAmount.toLocaleString(
+                            "vi-VN"
+                          )}{" "}
+                          đ
+                        </div>
+                      </>
                     ) : (
-                      <div className="red">
-                        <IoMdArrowDropdown />
-                        {arg.event.extendedProps.totalAmount.toLocaleString(
-                          "vi-VN"
-                        )}{" "}
-                        đ
-                      </div>
+                      <>
+                        <div className="red">
+                          <IoMdArrowDropdown />
+                          {arg.event.extendedProps.totalAmount.toLocaleString(
+                            "vi-VN"
+                          )}{" "}
+                          đ
+                        </div>
+                      </>
                     )}
                   </div>
                 </>
