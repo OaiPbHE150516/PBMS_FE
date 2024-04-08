@@ -24,7 +24,6 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
 
         if (isDuplicate) {
             setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
-            reset(); 
         } else {
             setDuplicateNameError('');
             onSubmit(data);
@@ -36,11 +35,6 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
     const handleCancel = () => {
         reset(); 
         showSet(false); 
-    };
-
-    const handleReset = () => {
-        setDuplicateNameError('');
-        setFormData({ name: '', balance: '' });
     };
 
     return (
