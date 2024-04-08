@@ -14,6 +14,14 @@ export const getTransaction = async (pageNumber,pageSize) => {
   console.log(response);
   return response.data;
 };
+export const getDetailTransaction = async (transactionID) => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const response = await axios.get(
+    API.MANAGE_TRANSACTION + `/api/transaction/get/${transactionID}/${user.accountID}`
+  );
+  console.log("Trả về",response);
+  return response.data;
+};
 export const addTransactionwithoutInvoice = async (data) => {
   const response = await axios.post(
     API.MANAGE_TRANSACTION + "/api/transaction/create/withoutinvoice", data
