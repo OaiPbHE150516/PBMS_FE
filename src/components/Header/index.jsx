@@ -55,8 +55,6 @@ const Header = ({ onToggleSidebar }) => {
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 disptach(signin(credentialResponse.credential));
-                // disptach(signin(user.accountName));
-                // console.log("ok: ", credentialResponse);
               }}
               onError={() => {
                 console.log("Login Failed");

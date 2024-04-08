@@ -20,6 +20,7 @@ import divideMoneySlice from "./divideMoneySlice";
 import overviewMostTransactionSlice from "./overviewMostTransactionSlice";
 import filterTransactionThisSlice from "./filterTransactionThisSlice";
 import filterTransactionLastSlice from "./filterTransactionLastSlice";
+import balanceHistorySlice from "./balanceHistorySlice";
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   value: valueSlice.reducer,
@@ -41,7 +42,8 @@ const rootReducers = combineReducers({
   file: fileSlice.reducer,
   mostTransaction: overviewMostTransactionSlice.reducer,
   filterTransactionLast: filterTransactionLastSlice.reducer,
-  filterTransactionThis: filterTransactionThisSlice.reducer
+  filterTransactionThis: filterTransactionThisSlice.reducer,
+  balanceHistory: balanceHistorySlice.reducer,
 });
 
 const store = configureStore({
