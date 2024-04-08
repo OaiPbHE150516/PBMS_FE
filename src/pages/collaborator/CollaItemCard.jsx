@@ -3,6 +3,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
 import UpdateCollabFund from "../../components/CollabFundForm/UpdateCollabFund";
 import DevideMoney from "../../components/CollabFundForm/DevideMoney";
+import { addDivideMoney } from "../../redux/divideMoneySlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const CollaItemCard = ({ data, onItemClick }) => {
   const [repeat, repeatSet] = useState(true);
@@ -10,7 +12,6 @@ export const CollaItemCard = ({ data, onItemClick }) => {
     onItemClick(data.collabFundID);
   };
 
-  console.log(data);
   const formatNumber = (number) => {
     return number.toLocaleString("vi-VN");
   };
@@ -23,6 +24,10 @@ export const CollaItemCard = ({ data, onItemClick }) => {
 
   const [showFormUpdate, setShowFormUpdate] = useState(false);
   const [showDivideForm, setShowDivideForm] = useState(false);
+
+  const dispatch = useDispatch();
+  const [show, showSet] = useState(false);
+  const accountID = useSelector((state) => state.authen.user?.accountID);
 
   return (
     <div class="card mb-3 cardItem overflow-hidden" onClick={handleClick}>
@@ -89,8 +94,11 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 show={showDivideForm}
                 showSet={setShowDivideForm}
                 onSubmit={(fieldValue) => {
-                  // Handle form submission logic here
+                  dispatch(addDivideMoney({accountID: accountID, fieldValue: fieldValue}))
+                  .unwrap()
+                  .then(() => showSet(false))
                 }}
+                collabFundID={data.collabFundID}
               />
             )}
 

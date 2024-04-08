@@ -5,35 +5,69 @@ import "../../css/Profile.css";
 import dayjs from "dayjs";
 import useAppSelector from "../../hooks/useAppSelector";
 import Button from "../../components/Button";
-import { getProfileInfor } from "../../redux/profileSlice";
+import { getProfileInfor, updateBudgets, updateProfileInfo } from "../../redux/profileSlice";
+import { coverImage } from "../../redux/coverImageSlice";
 
 const Profile = () => {
   const user = useAppSelector((state) => state.profile.values);
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({});
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [coverImageName, setCoverImageName] = useState(null);
 
   useEffect(() => {
     dispatch(getProfileInfor());
-  }, []);
+  }, [dispatch]);
 
-  console.log(user);
-
-  const handleEdit = () => {
+  const handleEdit = async () => {
     setIsEditing(true);
-    setEditedUser(user); // Copy user data for editing
+    setEditedUser(user); 
+
+    try{
+      const coverImageName = await dispatch(coverImage()); 
+      setCoverImageName(coverImageName);
+    } catch (error) {
+      console.error("Error while coverImage:", error);
+    }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedUser((prevUser) => ({
       ...prevUser,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const saveChanges = () => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const saveChanges = async () => {
     setIsEditing(false);
+
+    const updatedUserData = {
+      ...editedUser,
+      pictureURL: coverImageName  
+    };
+
+    try {
+      const response = await updateProfileInfo(updatedUserData);
+      console.log("Profile updated successfully:", response);
+      dispatch(getProfileInfor());
+      // await dispatch(updateProfileInfo(updatedUserData));
+    } catch (error) {
+      console.error("Error while updating profile:", error);
+    }
   };
 
   return (
@@ -44,9 +78,21 @@ const Profile = () => {
           <div className="card">
             <div className="card-body">
               <div className="row informationUser">
-                <div className="col-md-4">
-                  <img src={user.pictureURL} alt="" />
-                </div>
+                {isEditing ? (
+                  <div className="col-md-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                    {imageUrl && <img src={imageUrl} alt="Chosen" />}
+                  </div>
+                ) : (
+                  <div className="col-md-4">
+                    <img src={user.pictureURL} alt="" />
+                  </div>
+                )}
+
                 <div className="col-md-8">
                   <h3 className="name">Thông tin chi tiết</h3>
                   {isEditing ? (

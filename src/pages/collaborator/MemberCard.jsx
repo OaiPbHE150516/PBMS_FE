@@ -10,7 +10,11 @@ const MemberCard=({data}) => {
           <img src={data.pictureURL} class="img-fluid rounded-start" alt="..." />
           <div class="card-body py-0">
             <p class="card-text c-card-member mb-2">{data.accountName}</p>
-            <p class="card-text">Chủ quỹ</p>
+            {data.isFundholder ? (
+              <p className="card-text">Chủ quỹ</p>
+            ) : (
+              <p className="card-text">Thành viên</p>
+            )}
           </div>
         </div>
         <div class="col-md-8 c-card-time-money">

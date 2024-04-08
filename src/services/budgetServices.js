@@ -7,8 +7,8 @@ const config = {
   },
 };
 
-export const getBudgets = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+export const getBudgets = async (user) => {
+  if (!user) return [];
   const response = await axios.get(
     API.MANAGE_BUDGET + `/api/budget/get/all/${user.accountID}`
   );

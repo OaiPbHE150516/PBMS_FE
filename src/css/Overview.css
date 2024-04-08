@@ -52,3 +52,8 @@
 .Overview_Wallet .card_Overview_Wallet{
   width: 100%;
 }
+.welcome{
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}

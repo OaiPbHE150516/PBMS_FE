@@ -16,7 +16,7 @@ export const getProfile = async () => {
   return response.data;
 };
 
-export const updateBudgets = async (data) => {
+export const updateProfile = async (data) => {
   const response = await axios.post(
     API.MANAGE_PROFILE + "/api/profile/update",
     data
@@ -24,3 +24,12 @@ export const updateBudgets = async (data) => {
   console.log(data);
   return response.data;
 };
+
+export const getAccountByKey = async (key) => {
+  const response = await axios.post(
+    API.MANAGE_PROFILE + `/api/profile/search/${key}`,
+  );
+  console.log(response);
+  return response.data;
+};
+

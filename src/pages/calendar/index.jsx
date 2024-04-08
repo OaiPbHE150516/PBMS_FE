@@ -7,7 +7,7 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
 import { getCalendars } from "../../redux/calendarSlice";
-import viLocale from '@fullcalendar/core/locales/vi';
+import viLocale from "@fullcalendar/core/locales/vi";
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [displayedTransactions, setDisplayedTransactions] = useState([]);
@@ -70,7 +70,14 @@ const Calendar = () => {
                       <td>{transaction.transactionDateMinus}</td>
                       <td>{transaction.category.nameVN}</td>
                       <td>{transaction.wallet.name}</td>
-                      <td className={transaction.totalAmount > 0 ? "green" : "red"}>
+                      <td
+                        className={
+                          transaction.category.categoryTypeID === 1
+                            ? "green"
+                            : "red"
+                        }
+                      >
+                        {transaction.category.categoryTypeID !== 1 ? "-" : ""}
                         {transaction.totalAmount.toLocaleString("vi-VN")} đ
                       </td>
                     </tr>
@@ -91,21 +98,27 @@ const Calendar = () => {
                     {arg.event.extendedProps.totalAmount > 0 ? (
                       <div className="green">
                         <IoMdArrowDropup />
-                        {arg.event.extendedProps.totalAmount.toLocaleString("vi-VN")} đ
+                        {arg.event.extendedProps.totalAmount.toLocaleString(
+                          "vi-VN"
+                        )}{" "}
+                        đ
                       </div>
                     ) : (
                       <div className="red">
                         <IoMdArrowDropdown />
-                        {arg.event.extendedProps.totalAmount.toLocaleString("vi-VN")} đ
+                        {arg.event.extendedProps.totalAmount.toLocaleString(
+                          "vi-VN"
+                        )}{" "}
+                        đ
                       </div>
                     )}
                   </div>
                 </>
               )}
               headerToolbar={{
-                start: 'prev',
-                center: 'title',
-                end: 'next'
+                start: "prev",
+                center: "title",
+                end: "next",
               }}
               dayCellDidMount={(arg) => {
                 const cellDate =

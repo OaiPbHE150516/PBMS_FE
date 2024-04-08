@@ -7,12 +7,10 @@ const config = {
   },
 };
 
-const signin = async (token) => {
-  const response = await axios.post(API.AUTHEN.SIGN_IN, token, config);
+export const coverImage = async () => {
+  const response = await axios.get(
+    API.COVER_IMAGE + `/api/file/upload/collabfund/imagecover`
+  );
   console.log(response);
   return response.data;
-};
-
-export default {
-  signin,
 };
