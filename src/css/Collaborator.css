@@ -57,7 +57,7 @@
     background: #EFEDE4;
     border: 1px solid #000000 !important;
 }
-.cardActionItem img{
+.cardActionItem .img_logo{
     height: 50px !important;
     border: 1px solid #000000;
     border-radius: 50% !important;
@@ -99,4 +99,7 @@
 .listDivideMoney .divideItem{
     border: 1px solid #000000;
     margin-bottom: 10px;
+}
+.img_trans{
+    height: 200px;
 }

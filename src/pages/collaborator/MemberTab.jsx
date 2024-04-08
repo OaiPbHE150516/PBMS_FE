@@ -15,7 +15,7 @@ function ItemMember() {
         <img
           src={logo}
           alt=""
-          className="rounded-full border border-dark"
+          className="rounded-full border border-dark img_logo"
           width={50}
           height={50}
         />
@@ -50,8 +50,6 @@ function AddNewMemberPopup({ show, onClose }) {
           </Form.Group>
           <Form.Group className="mb-3 border border-dark">
             <ItemMember />
-            {/* <hr className="border-b border-dark opacity-100 m-0" />
-            <ItemMember /> */}
           </Form.Group>
         </Form>
       </div>

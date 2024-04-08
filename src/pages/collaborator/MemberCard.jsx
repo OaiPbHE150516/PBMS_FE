@@ -7,7 +7,7 @@ const MemberCard=({data}) => {
     <div class="card mb-3 cardActionItem">
       <div class="row g-0 ps-2 py-2">
         <div class="col-md-4 c-card-member-comment">
-          <img src={data.pictureURL} class="img-fluid rounded-start" alt="..." />
+          <img src={data.pictureURL} class="img-fluid rounded-start img_logo" alt="..." />
           <div class="card-body py-0">
             <p class="card-text c-card-member mb-2">{data.accountName}</p>
             {data.isFundholder ? (
