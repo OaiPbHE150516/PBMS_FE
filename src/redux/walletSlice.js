@@ -19,7 +19,7 @@ export const addWallet = createAsyncThunk(
       accountID: accountID,
       name: fieldValue.name,
       balance: fieldValue.balance,
-      currencyID: fieldValue.currencyID,
+      currencyID: 2,
     };
     console.log(body);
     const response = await addWalletServices(body);

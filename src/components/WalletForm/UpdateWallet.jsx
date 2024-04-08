@@ -21,6 +21,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
     },
   });
   console.log({ isDirty })
+  console.log({ data })
   return (
     <Popup
       title={"Chỉnh sửa ví"}

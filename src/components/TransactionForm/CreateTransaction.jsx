@@ -345,14 +345,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                             </div>
                             <div style={{ flexBasis: '70%', marginTop: '80px' }}>
                                 <h5>Sản phẩm</h5>
-                                <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                                <table className="table table-striped table-bordered table-hover" style={{ borderCollapse: 'collapse', width: '100%' }}>
                                     <thead>
                                         <tr>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Tên sản phẩm</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Số lượng</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Đơn giá</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Thành tiền</th>
-                                            <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th>
+                                            {/* <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th> */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -390,14 +390,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                                         dangerouslySetInnerHTML={{ __html: product.totalAmount }}
                                                     />
                                                 </td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                {/* <td style={{ fontSize: '10px', padding: '8px' }}>
                                                     <span
                                                         style={{ fontSize: '10px' }}
                                                         contentEditable
                                                         onBlur={(e) => register(`productInInvoices[${index}].tag`, { value: e.target.innerText, required: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.tag }}
                                                     />
-                                                </td>
+                                                </td> */}
 
                                             </tr>
                                         ))}

@@ -81,7 +81,7 @@ const Wallet = () => {
                                     <h6 class="wallet-sub">Ghi chú: {wallet.note}</h6>
                                     <div class="active-container">
                                         <div class="active-container">
-                                            <div class="active1">
+                                            {/* <div class="active1">
                                                 <div className="pe-4">
                                                     <div>
                                                         <Form.Check
@@ -94,7 +94,7 @@ const Wallet = () => {
                                                         ></Form.Check>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <div class="active2">
                                             {wallet && (

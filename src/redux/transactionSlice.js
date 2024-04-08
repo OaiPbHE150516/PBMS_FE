@@ -1,9 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getTransaction as transactionServices } from "../services/transactionServices";
+import { getDetailTransaction as transactionDetailServices } from "../services/transactionServices";
 import { addTransactionwithoutInvoice as addTransactionwithoutInvoiceServices } from "../services/transactionServices";
 import { addInvoiceTransaction as addInvoiceTransactionServices } from "../services/transactionServices";
 export const getTransaction = createAsyncThunk("get-transaction", async ({ pageNumber, pageSize }) => {
   const response = await transactionServices(pageNumber, pageSize);
+  return response;
+});
+export const getDetailTransaction = createAsyncThunk("get-detailtransaction", async ({transactionID}) => {
+  const response = await transactionDetailServices(transactionID);
   return response;
 });
 export const addTransactionwithoutInvoice = createAsyncThunk(
@@ -68,8 +73,6 @@ export const addInvoiceTransaction = createAsyncThunk(
     return response;
   }
 );
-
-
 const transactionSlice = createSlice({
   name: "transaction",
   initialState: {

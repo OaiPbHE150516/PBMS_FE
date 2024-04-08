@@ -1,76 +1,78 @@
-import clsx from 'clsx';
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import Form from 'react-bootstrap/Form';
-import Button from '../Button';
-import MultipleSelect from '../MultipleSelect';
-import Popup from '../Popup';
-import { useForm, Controller } from "react-hook-form";
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
+import PopupWallet from '../PopupWallet';
+import { useForm } from 'react-hook-form';
 import useAppSelector from "../../hooks/useAppSelector";
 
-
-const CreateWallet = ({ show, showSet, onSubmit = () => { } }) => {
+const CreateWallet = ({ show, showSet, onSubmit }) => {
     const {
         register,
         handleSubmit,
-        control,
-        formState: { errors, isValid },
-    } = useForm({
-        defaultValues: {
-            name: "",
-            balance: "",
-            currencyID: "",
-        },
-    });
-    const currency = useAppSelector((state) => state.currency.values);
-    console.log('Currency:', currency);
-    
-    const currencyOptions = currency?.map((item) => ({
-      label: item.name,
-      value: item.currencyID,
-    })) ?? [];
+        formState: { errors },
+        reset 
+    } = useForm();
+
+    const wallet = useAppSelector((state) => state.wallet.values);
+
+    const [duplicateNameError, setDuplicateNameError] = useState('');
+    const [formData, setFormData] = useState({ name: '', balance: '' });
+
+    const handleFormSubmit = (data) => {
+        const { name } = data;
+
+        const isDuplicate = wallet.some(walletItem => walletItem.name === name);
+
+        if (isDuplicate) {
+            setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
+            reset(); 
+        } else {
+            setDuplicateNameError('');
+            onSubmit(data);
+            reset(); 
+            showSet(false); 
+        }
+    };
+
+    const handleCancel = () => {
+        reset(); 
+        showSet(false); 
+    };
+
+    const handleReset = () => {
+        setDuplicateNameError('');
+        setFormData({ name: '', balance: '' });
+    };
 
     return (
-        <Popup
-            title={"Tạo ví mới"}
+        <PopupWallet
+            title="Tạo ví mới"
             show={show}
-            onClose={() => showSet(false)}
-            onSubmit={handleSubmit(onSubmit)}
+            onClose={() => handleCancel()}
+            onSubmit={handleSubmit(handleFormSubmit)}
         >
             <Form className="c-form">
                 <Form.Group className="mb-2">
                     <Form.Label>Tên ví</Form.Label>
-                    <Form.Control type="text"
-                        {...register("name", { required: true })}>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group className="mb-2">
-                    <Form.Label>Số dư</Form.Label>
-                    <Form.Control type="text"
-                        {...register("balance", { required: true })}>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group className="mb-2">
-                    <Form.Label>Đơn vị tiền tệ</Form.Label>
-                    <Controller
-                        control={control}
-                        name="currencyID"
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <select {...field} className="form-control">
-                                <option value="">Chọn đơn vị tiền</option>
-                                {currencyOptions.map((item) => (
-                                    <option key={item.value} value={item.value}>
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </select>
-                        )}
+                    <Form.Control
+                        type="text"
+                        {...register('name', { required: true })}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
                     />
+                    {errors.name && <span className="text-danger">Không được để trống</span>}
+                    {duplicateNameError && <span className="text-danger">{duplicateNameError}</span>}
+                </Form.Group>
+                <Form.Group className="mb-2">
+                    <Form.Label>Số dư hiện tại</Form.Label>
+                    <Form.Control
+                        type="text"
+                        {...register('balance', { required: true })}
+                        onChange={(e) => setFormData({ ...formData, balance: e.target.value })} 
+                    />
+                    {errors.balance && <span className="text-danger">Không được để trống</span>}
                 </Form.Group>
             </Form>
-        </Popup>
+        </PopupWallet>
     );
 };
 
-export default CreateWallet
+export default CreateWallet;
