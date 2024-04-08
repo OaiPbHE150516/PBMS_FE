@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PageTitle } from "../../components";
+import { PageHelper, PageTitle } from "../../components";
 import "../../css/Budget.css";
 import Button from "../../components/Button";
 import CreateBudget from "../../components/BudgetForm/CreateBudget";
@@ -17,14 +17,14 @@ const Budget = () => {
   const [editIdModal, editIdModalSet] = useState(false);
   const [removeIdModal, removeIdModalSet] = useState(false);
 
+  const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
   const budgets = useAppSelector((state) => state.budget.values);
-  const accountID = useSelector((state) => state.authen.user?.accountID);
   useEffect(() => {
     dispatch(getBudgets());
     dispatch(getCategories());
     dispatch(getWallets());
-  }, []);
+  }, [user]);
 
   const OtherBudget = budgets.filter((item) => {
     return item.budgetTypeID === 0;
@@ -46,96 +46,112 @@ const Budget = () => {
 
   return (
     <div className="Budget">
-      <PageTitle title="Ngân sách" />
-      <Button
-        size="btn-lg"
-        onClick={() => showSet(!show)}
-        className="active bold btn-light"
-      >
-        Tạo ngân sách mới
-      </Button>
+      {user ? (
+        <>
+          <PageTitle title="Ngân sách" />
+          <Button
+            size="btn-lg"
+            onClick={() => showSet(!show)}
+            className="active bold btn-light"
+          >
+            Tạo ngân sách mới
+          </Button>
 
-      <CreateBudget
-        show={show}
-        showSet={showSet}
-        onSubmit={(fieldValue) =>
-          dispatch(addBudgets({accountID: accountID, fieldValue: fieldValue}))
-            .unwrap()
-            .then(() => showSet(false))
-        }
-      />
-      {updateBudgetData && (
-        <UpdateBudget
-          data={updateBudgetData}
-          show={Boolean(editIdModal)}
-          onClose={() => editIdModalSet(false)}
-          onSubmit={(fieldValue) => {console.log({fieldValue})}}
-        />
-      )}
-      {deleteBudgetData && (
-        <DeleteBudget
-          name={deleteBudgetData.budgetName}
-          amount={deleteBudgetData.targetAmountStr}
-          period={deleteBudgetData.budgetType.typeName + " budget"}
-          note={deleteBudgetData.note}
-          show={Boolean(removeIdModal)}
-          onClose={() => removeIdModalSet(false)}
-          onSubmit={() =>
-            dispatch(removeBudgets())
-              .unwrap()
-              .then(() => showSet(false))}
-          data={deleteBudgetData}
-        />
-      )}
+          <CreateBudget
+            show={show}
+            showSet={showSet}
+            onSubmit={(fieldValue) =>
+              dispatch(
+                addBudgets({
+                  accountID: user.accountID,
+                  fieldValue: fieldValue,
+                })
+              )
+                .unwrap()
+                .then(() => showSet(false))
+            }
+          />
+          {updateBudgetData && (
+            <UpdateBudget
+              data={updateBudgetData}
+              show={Boolean(editIdModal)}
+              onClose={() => editIdModalSet(false)}
+              onSubmit={(fieldValue) => {
+                console.log({ fieldValue });
+              }}
+            />
+          )}
+          {deleteBudgetData && (
+            <DeleteBudget
+              name={deleteBudgetData.budgetName}
+              amount={deleteBudgetData.targetAmountStr}
+              period={deleteBudgetData.budgetType.typeName + " budget"}
+              note={deleteBudgetData.note}
+              show={Boolean(removeIdModal)}
+              onClose={() => removeIdModalSet(false)}
+              onSubmit={() =>
+                dispatch(removeBudgets())
+                  .unwrap()
+                  .then(() => showSet(false))
+              }
+              data={deleteBudgetData}
+            />
+          )}
 
-      <div className="mt-5">
-        {MonthlyBudget.length > 0 && (
-          <>
-            <h3 className="mb-3 text-center h3">Ngân sách hàng tháng</h3>
-            {MonthlyBudget.map((item) => (
-              <div className="mb-4" key={item.budgetID}>
-                <CardBudget
-                  onDelete={() => removeIdModalSet(item.budgetID)}
-                  onEdit={() => editIdModalSet(item.budgetID)}
-                  onReload={() => {}}
-                  data={item}
-                />
-              </div>
-            ))}
-          </>
-        )}
-        {WeeklyBudget.length > 0 && (
-          <>
-            <h3 className="mb-3 text-center h3">Ngân sách hàng tuần</h3>
-            {WeeklyBudget.map((item) => (
-              <div className="mb-4" key={item.budgetID}>
-                <CardBudget
-                  onDelete={() => removeIdModalSet(item.budgetID)}
-                  onEdit={() => editIdModalSet(item.budgetID)}
-                  onReload={() => {}}
-                  data={item}
-                />
-              </div>
-            ))}
-          </>
-        )}
-        {/* Other */}
-        {OtherBudget.length > 0 && (
-          <>
-            <h3 className="mb-3 text-center h3">Ngân sách khác</h3>
-            {OtherBudget.map((item) => (
-              <div className="mb-4" key={item.budgetID}>
-                <CardBudget
-                  onDelete={() => removeIdModalSet(item.budgetID)}
-                  onEdit={() => editIdModalSet(item.budgetID)}
-                  onReload={() => {}}
-                  data={item}
-                />
-              </div>
-            ))}
-          </>
-        )}
-      </div>
+          <div className="mt-5">
+            {MonthlyBudget.length > 0 && (
+              <>
+                <h3 className="mb-3 text-center h3">Ngân sách hàng tháng</h3>
+                {MonthlyBudget.map((item) => (
+                  <div className="mb-4" key={item.budgetID}>
+                    <CardBudget
+                      onDelete={() => removeIdModalSet(item.budgetID)}
+                      onEdit={() => editIdModalSet(item.budgetID)}
+                      onReload={() => {}}
+                      data={item}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+            {WeeklyBudget.length > 0 && (
+              <>
+                <h3 className="mb-3 text-center h3">Ngân sách hàng tuần</h3>
+                {WeeklyBudget.map((item) => (
+                  <div className="mb-4" key={item.budgetID}>
+                    <CardBudget
+                      onDelete={() => removeIdModalSet(item.budgetID)}
+                      onEdit={() => editIdModalSet(item.budgetID)}
+                      onReload={() => {}}
+                      data={item}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+            {/* Other */}
+            {OtherBudget.length > 0 && (
+              <>
+                <h3 className="mb-3 text-center h3">Ngân sách khác</h3>
+                {OtherBudget.map((item) => (
+                  <div className="mb-4" key={item.budgetID}>
+                    <CardBudget
+                      onDelete={() => removeIdModalSet(item.budgetID)}
+                      onEdit={() => editIdModalSet(item.budgetID)}
+                      onReload={() => {}}
+                      data={item}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <PageHelper/>
+        </>
+      )}
     </div>
   );
 };

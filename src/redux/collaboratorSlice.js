@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCollaborators as getCollaboratorsServices } from "../services/collaboratorServices";
 import { addCollaborators as addCollaboratorsServices } from "../services/collaboratorServices";
-import {getInforDivide as getInforDivideServices } from "../services/collaboratorServices";
+import { getInforDivide as getInforDivideServices } from "../services/collaboratorServices";
 
 export const getCollaborator = createAsyncThunk(
   "get-collaborators",
-  async (accountID) => {
-    const response = await getCollaboratorsServices(accountID);
+  async (_, { getState }) => {
+    const user = getState().authen.user;
+    const response = await getCollaboratorsServices(user);
     return response;
   }
 );

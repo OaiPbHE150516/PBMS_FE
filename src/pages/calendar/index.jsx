@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { PageTitle } from "../../components";
+import { PageHelper, PageTitle } from "../../components";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "../../css/Calendar.css";
@@ -8,18 +8,20 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
 import { getCalendars } from "../../redux/calendarSlice";
 import viLocale from "@fullcalendar/core/locales/vi";
+
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [displayedTransactions, setDisplayedTransactions] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
+  const user = useAppSelector((state) => state.authen.user);
   const events = useAppSelector((state) => state.calendar.values);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCalendars({ month: currentMonth, year: currentYear }));
-  }, [currentMonth, currentYear]);
+  }, [currentMonth, currentYear, user]);
 
   const handleEventClick = (info) => {
     const clickedDateEvents = events.find((event) => {
@@ -49,104 +51,114 @@ const Calendar = () => {
 
   return (
     <div className="Calendar">
-      <PageTitle title="Lịch" />
-      <section className="section dashboard">
-        <div className="row">
-          <div className="col-lg-3 listTrans card">
-            <div className="card-body">
-              <h5 className="card-title">Các giao dịch</h5>
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Thời gian</th>
-                    <th scope="col">Danh mục</th>
-                    <th scope="col">Ví</th>
-                    <th scope="col">số tiền</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {displayedTransactions.map((transaction, index) => (
-                    <tr key={index}>
-                      <td>{transaction.transactionDateMinus}</td>
-                      <td>{transaction.category.nameVN}</td>
-                      <td>{transaction.wallet.name}</td>
-                      <td
-                        className={
-                          transaction.category.categoryTypeID === 1
-                            ? "green"
-                            : "red"
-                        }
-                      >
-                        {transaction.category.categoryTypeID !== 1 ? "-" : "+"}
-                        {transaction.totalAmount.toLocaleString("vi-VN")} đ
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      {user ? (
+        <>
+          <PageTitle title="Lịch" />
+          <section className="section dashboard">
+            <div className="row">
+              <div className="col-lg-3 listTrans card">
+                <div className="card-body">
+                  <h5 className="card-title">Các giao dịch</h5>
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Danh mục</th>
+                        <th scope="col">Ví</th>
+                        <th scope="col">số tiền</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {displayedTransactions.map((transaction, index) => (
+                        <tr key={index}>
+                          <td>{transaction.transactionDateMinus}</td>
+                          <td>{transaction.category.nameVN}</td>
+                          <td>{transaction.wallet.name}</td>
+                          <td
+                            className={
+                              transaction.category.categoryTypeID === 1
+                                ? "green"
+                                : "red"
+                            }
+                          >
+                            {transaction.category.categoryTypeID !== 1
+                              ? "-"
+                              : "+"}
+                            {transaction.totalAmount.toLocaleString("vi-VN")} đ
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-lg-8 fullCalendar card">
+                <FullCalendar
+                  plugins={[dayGridPlugin]}
+                  initialView="dayGridMonth"
+                  events={events}
+                  eventClick={handleEventClick}
+                  eventContent={(arg) => (
+                    <>
+                      <div>
+                        {arg.event.extendedProps.totalAmount > 0 ? (
+                          <>
+                            {" "}
+                            <div className="green">
+                              <IoMdArrowDropup />
+                              {arg.event.extendedProps.totalAmount.toLocaleString(
+                                "vi-VN"
+                              )}{" "}
+                              đ
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="red">
+                              <IoMdArrowDropdown />
+                              {arg.event.extendedProps.totalAmount.toLocaleString(
+                                "vi-VN"
+                              )}{" "}
+                              đ
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </>
+                  )}
+                  headerToolbar={{
+                    start: "prev",
+                    center: "title",
+                    end: "next",
+                  }}
+                  dayCellDidMount={(arg) => {
+                    const cellDate =
+                      arg.date.getFullYear() +
+                      "-" +
+                      (arg.date.getMonth() + 1).toString().padStart(2, "0") +
+                      "-" +
+                      arg.date.getDate().toString().padStart(2, "0");
+                    arg.el.setAttribute("data-date", cellDate);
+                    arg.el.addEventListener("click", () => {
+                      const selectedDate = arg.el.getAttribute("data-date");
+                      setSelectedDate(selectedDate);
+                    });
+                  }}
+                  datesSet={(info) => {
+                    setCurrentMonth(info.view.currentStart.getMonth() + 1);
+                    setCurrentYear(info.view.currentStart.getFullYear());
+                  }}
+                  locale={viLocale}
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-lg-8 fullCalendar card">
-            <FullCalendar
-              plugins={[dayGridPlugin]}
-              initialView="dayGridMonth"
-              events={events}
-              eventClick={handleEventClick}
-              eventContent={(arg) => (
-                <>
-                  <div>
-                    {arg.event.extendedProps.totalAmount > 0 ? (
-                      <>
-                        {" "}
-                        <div className="green">
-                          <IoMdArrowDropup />
-                          {arg.event.extendedProps.totalAmount.toLocaleString(
-                            "vi-VN"
-                          )}{" "}
-                          đ
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="red">
-                          <IoMdArrowDropdown />
-                          {arg.event.extendedProps.totalAmount.toLocaleString(
-                            "vi-VN"
-                          )}{" "}
-                          đ
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-              headerToolbar={{
-                start: "prev",
-                center: "title",
-                end: "next",
-              }}
-              dayCellDidMount={(arg) => {
-                const cellDate =
-                  arg.date.getFullYear() +
-                  "-" +
-                  (arg.date.getMonth() + 1).toString().padStart(2, "0") +
-                  "-" +
-                  arg.date.getDate().toString().padStart(2, "0");
-                arg.el.setAttribute("data-date", cellDate);
-                arg.el.addEventListener("click", () => {
-                  const selectedDate = arg.el.getAttribute("data-date");
-                  setSelectedDate(selectedDate);
-                });
-              }}
-              datesSet={(info) => {
-                setCurrentMonth(info.view.currentStart.getMonth() + 1);
-                setCurrentYear(info.view.currentStart.getFullYear());
-              }}
-              locale={viLocale}
-            />
-          </div>
-        </div>
-      </section>
+          </section>
+        </>
+      ) : (
+          <>
+           <PageHelper/>
+          </>
+      )}
     </div>
   );
 };
