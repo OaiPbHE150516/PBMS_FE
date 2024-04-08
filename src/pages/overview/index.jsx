@@ -19,6 +19,9 @@ import { getBudgets } from "../../redux/budgetSlice";
 import { getMostTransaction } from "../../redux/overviewMostTransactionSlice";
 import { filterTransactionLastMonth } from "../../redux/filterTransactionLastSlice";
 import { filterTransactionThisMonth } from "../../redux/filterTransactionThisSlice";
+import { GoogleLogin } from "@react-oauth/google";
+import { signin } from "../../redux/authenSlice";
+import { getBalanceHistory } from "../../redux/balanceHistorySlice";
 
 const OverViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
@@ -95,6 +98,7 @@ const LastMonthViewCard = () => {
   const labels = filterLastMonth.categoryWithTransactionData.map(
     (item) => item.categoryType.name
   );
+  const labelColors = ['#00E396', '#FF0000','#FFE15D'];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -110,6 +114,7 @@ const LastMonthViewCard = () => {
           type: "donut",
         },
         labels: labels,
+        colors: labelColors,
         responsive: [
           {
             breakpoint: 480,
@@ -184,6 +189,7 @@ const ThisMonthViewCard = () => {
   const labels = filterThisMonth.categoryWithTransactionData.map(
     (item) => item.categoryType.name
   );
+  const labelColors = ['#00E396', '#FF0000','#FFE15D'];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -199,6 +205,7 @@ const ThisMonthViewCard = () => {
           type: "donut",
         },
         labels: labels,
+        colors: labelColors,
         responsive: [
           {
             breakpoint: 480,
@@ -346,6 +353,65 @@ const Last7DaysViewCard = () => {
 
 const SurplusViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
+  const balanceHistory = useAppSelector((state) => state.balanceHistory);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBalanceHistory());
+  }, [user]);
+
+  const date = balanceHistory.listAfter.map((item) => item.date);
+
+  const totalAmount = balanceHistory.listAfter.map((item) => item.totalAmount);
+
+  const balanceData = [
+    {
+      series: [
+        {
+          name: "Total Amount",
+          data: totalAmount,
+        },
+      ],
+      options: {
+        chart: {
+          height: 350,
+          type: "line",
+          zoom: {
+            enabled: false,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "straight",
+        },
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"],
+            opacity: 0.5,
+          },
+        },
+        xaxis: {
+          categories: date,
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return val.toLocaleString("vi-VN");
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            formatter: function (val) {
+              return val.toLocaleString("vi-VN");
+            },
+          },
+        },
+      },
+    },
+  ];
   return (
     <div className="col-6">
       <div className="card">
@@ -353,9 +419,9 @@ const SurplusViewCard = () => {
           <h5 class="card-title">Số dư</h5>
         </div>
         <ReactApexChart
-          options={surplusData[0].options}
-          series={surplusData[0].series}
-          type={surplusData[0].options.chart.type}
+          options={balanceData[0].options}
+          series={balanceData[0].series}
+          type={balanceData[0].options.chart.type}
           height={350}
         />
       </div>
@@ -404,8 +470,8 @@ const MostTransactionViewCard = () => {
                   <td
                     className={
                       parseFloat(transaction.category.categoryTypeID) !== 1
-                        ? "tdCateRed"
-                        : "tdCateGreen"
+                        ? "red money"
+                        : "green money"
                     }
                   >
                     <div>
@@ -416,11 +482,11 @@ const MostTransactionViewCard = () => {
                   <td
                     className={
                       parseFloat(transaction.category.categoryTypeID) !== 1
-                        ? "red"
-                        : "green"
+                        ? "red money"
+                        : "green money"
                     }
                   >
-                    {transaction.category.categoryTypeID !== 1 ? "-" : ""}
+                    {transaction.category.categoryTypeID !== 1 ? "-" : "+"}
                     {transaction.totalAmountStr}
                   </td>
                 </tr>
@@ -461,7 +527,7 @@ const BudgetListViewCard = () => {
                             {dayjs(item.beginDate).format("DD/MM/YYYY")}
                           </td>
                           <th scope="col" className="thPercent">
-                            {item.percentProgress} %
+                            {item.percentProgressStr}
                           </th>
                           <td scope="col" className="tdEndDay">
                             {dayjs(item.endDate).format("DD/MM/YYYY")}
@@ -469,14 +535,14 @@ const BudgetListViewCard = () => {
                         </tr>
                         <tr>
                           <td colSpan={3}>
-                            <div class="progress">
+                            <div className="progress">
                               <div
-                                class="progress-bar"
+                                className="progress-bar progress-bar-striped progress-bar-animated"
                                 role="progressbar"
                                 style={{
                                   width: `${item.percentProgress}%`,
                                 }}
-                                aria-valuenow="25"
+                                aria-valuenow={item.percentProgress}
                                 aria-valuemin="0"
                                 aria-valuemax="100"
                               ></div>
@@ -484,13 +550,13 @@ const BudgetListViewCard = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td scope="col" className="tdStartDay">
-                            {item.currentAmountStr}
-                          </td>
-                          <th></th>
-                          <td scope="col" className="tdEndDay">
+                          <th scope="col" className="tdStartDay">
+                            0 đ
+                          </th>
+                          <th className="thPercent">{item.currentAmountStr}</th>
+                          <th scope="col" className="tdEndDay">
                             {item.targetAmountStr}
-                          </td>
+                          </th>
                         </tr>
                       </tbody>
                     </table>
@@ -506,13 +572,13 @@ const BudgetListViewCard = () => {
 };
 
 const Overview = () => {
+  const disptach = useDispatch();
   const user = useAppSelector((state) => state.authen.user);
   return (
     <div className="Overview">
-      <PageTitle title="Tổng quan" />
       {user ? (
         <>
-          {" "}
+          <PageTitle title="Tổng quan" />
           <section className="section dashboard">
             <div className="row">
               <div className="col-md-4">
@@ -555,7 +621,18 @@ const Overview = () => {
         </>
       ) : (
         <>
-          <h1 className="welcome">Vui lòng đăng nhập để sử dụng ứng dụng</h1>
+          <section className="section dashboard title_div">
+            <h1 className="welcome">Chào mừng bạn đã đến với PTS</h1>
+            <h1 className="welcome">Vui lòng đăng nhập để trải nghiệm</h1>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                disptach(signin(credentialResponse.credential));
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </section>
         </>
       )}
     </div>
