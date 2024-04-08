@@ -98,7 +98,7 @@ const LastMonthViewCard = () => {
   const labels = filterLastMonth.categoryWithTransactionData.map(
     (item) => item.categoryType.name
   );
-  const labelColors = ['#00E396', '#FF0000','#FFE15D'];
+  const labelColors = ["#00E396", "#FF0000", "#FFE15D"];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -189,7 +189,7 @@ const ThisMonthViewCard = () => {
   const labels = filterThisMonth.categoryWithTransactionData.map(
     (item) => item.categoryType.name
   );
-  const labelColors = ['#00E396', '#FF0000','#FFE15D'];
+  const labelColors = ["#00E396", "#FF0000", "#FFE15D"];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -535,16 +535,13 @@ const BudgetListViewCard = () => {
                         </tr>
                         <tr>
                           <td colSpan={3}>
-                            <div className="progress">
+                            <div className="container">
                               <div
-                                className="progress-bar progress-bar-striped progress-bar-animated"
-                                role="progressbar"
-                                style={{
-                                  width: `${item.percentProgress}%`,
-                                }}
-                                aria-valuenow={item.percentProgress}
-                                aria-valuemin="0"
-                                aria-valuemax="100"
+                                className="progress-bar progress-layer-1"
+                              ></div>
+                              <div
+                                className="progress-bar progress-layer-2"
+                                style={{ width: `${Math.max(0, 100 - item.percentProgress)}%` }}
                               ></div>
                             </div>
                           </td>
