@@ -3,8 +3,9 @@ import { getCalendars as CalendarsServices } from "../services/calendarServices"
 
 export const getCalendars = createAsyncThunk(
   "get-calendars",
-  async ({ month, year }) => {
-    const response = await CalendarsServices(month, year);
+  async ({ month, year }, {getState}) => {
+    const user = getState().authen.user;
+    const response = await CalendarsServices(month, year, user);
     return response;
   }
 );

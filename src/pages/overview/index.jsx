@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../css/Overview.css";
-import { PageTitle } from "../../components";
+import { PageHelper, PageTitle } from "../../components";
 import ReactApexChart from "react-apexcharts";
 import {
   lastWeekData,
@@ -536,12 +536,15 @@ const BudgetListViewCard = () => {
                         <tr>
                           <td colSpan={3}>
                             <div className="container">
-                              <div
-                                className="progress-bar progress-layer-1"
-                              ></div>
+                              <div className="progress-bar progress-layer-1"></div>
                               <div
                                 className="progress-bar progress-layer-2"
-                                style={{ width: `${Math.max(0, 100 - item.percentProgress)}%` }}
+                                style={{
+                                  width: `${Math.max(
+                                    0,
+                                    100 - item.percentProgress
+                                  )}%`,
+                                }}
                               ></div>
                             </div>
                           </td>
@@ -569,7 +572,7 @@ const BudgetListViewCard = () => {
 };
 
 const Overview = () => {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const user = useAppSelector((state) => state.authen.user);
   return (
     <div className="Overview">
@@ -618,18 +621,7 @@ const Overview = () => {
         </>
       ) : (
         <>
-          <section className="section dashboard title_div">
-            <h1 className="welcome">Chào mừng bạn đã đến với PTS</h1>
-            <h1 className="welcome">Vui lòng đăng nhập để trải nghiệm</h1>
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                disptach(signin(credentialResponse.credential));
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-          </section>
+          <PageHelper />
         </>
       )}
     </div>

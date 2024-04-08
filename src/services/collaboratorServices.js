@@ -7,8 +7,7 @@ const config = {
   },
 };
 
-export const getCollaborators = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+export const getCollaborators = async (user) => {
   const response = await axios.get(
     API.MANAGE_COLLABORATOR + `/api/collabfund/get/all/${user.accountID}`
   );

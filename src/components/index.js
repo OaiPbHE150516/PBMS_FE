@@ -6,5 +6,5 @@ import Profile from './Profile';
 import Searchbar from './Searchbar';
 
 import Notification from './Notification';
-
-export {Header, Sidebar, Main , PageTitle, Profile, Searchbar, Notification};
+import PageHelper from './PageHelper';
+export {Header, Sidebar, Main , PageTitle, Profile, Searchbar, Notification, PageHelper};

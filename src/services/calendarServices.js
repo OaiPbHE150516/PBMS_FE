@@ -7,8 +7,7 @@ const config = {
   },
 };
 
-export const getCalendars = async (month, year) => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+export const getCalendars = async (month, year, user) => {
   const response = await axios.get(
     API.MANAGE_CALENDAR + `/api/transaction/get/calendar/${user.accountID}/${month}/${year}`
   );
