@@ -9,18 +9,41 @@ import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
 import { addInvoiceTransaction } from "../../redux/transactionSlice";
+import { getDetailTransaction } from "../../redux/transactionSlice";
 import DetailTransaction from '../../components/TransactionForm/DetailTransaction';
-import { updateWallet, deleteWallet } from "../../redux/walletSlice";
 
 const Transaction = () => {
 
   const dispatch = useDispatch();
   const transactions = useSelector((state) => state.transaction.values);
   const accountID = useSelector((state) => state.authen.user?.accountID);
-  const [editIdModal, editIdModalSet] = useState(false);
-  const TransactionData = transactions.resultDTO && transactions.resultDTO.find(
-    (item) => item.transactionID === editIdModal
-  );
+  const [editIdModal, setEditIdModal] = useState(null);
+  const [transactionData, setTransactionData] = useState(null);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchTransactionData = async () => {
+      try {
+        const data = await dispatch(getDetailTransaction({ transactionID: editIdModal }));
+        setTransactionData(data);
+        setIsDataLoaded(true);
+      } catch (error) {
+        console.error("Error fetching transaction data:", error);
+        setIsDataLoaded(true); // Đặt lại isDataLoaded thành true nếu có lỗi xảy ra để tránh lặp vô hạn
+      }
+    };
+
+    if (editIdModal !== null) {
+      setIsDataLoaded(false); // Đặt lại isDataLoaded thành false khi editIdModal thay đổi
+      fetchTransactionData();
+    }
+  }, [editIdModal]);
+
+  const handleEditIdModalSet = (id) => {
+    setEditIdModal(id);
+  };
+
+
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -50,36 +73,33 @@ const Transaction = () => {
     setPageSize(selectedPageSize);
   };
   const scan = useSelector((state) => state.scan.values);
-  const [show, showSet] = useState(false);
+  const [showCreateTransactionForm, setShowCreateTransactionForm] = useState(false);
+
   const handleCreateTransaction = (fieldValue) => {
     if (!fieldValue.image) {
       dispatch(addTransactionwithoutInvoice({ accountID: accountID, fieldValue: fieldValue }))
         .unwrap()
-        .then(() => showSet(false));
+        .then(() => setShowCreateTransactionForm(false));
       console.log("không có ảnh");
     } else {
       dispatch(addInvoiceTransaction({ accountID: accountID, fieldValue: fieldValue, scan }))
         .unwrap()
-        .then(() => showSet(false));
+        .then(() => setShowCreateTransactionForm(false));
       console.log("có ảnh");
     }
   };
+
   return (
     <div className='Transaction'>
       <PageTitle title="Giao dịch" />
       <div className="addTransaction">
         <Button
           size="btn-lg"
-          onClick={() => showSet(!show)}
+          onClick={() => setShowCreateTransactionForm(true)}
           className="active bold btn-light"
         >
           Tạo giao dịch mới
         </Button>
-        <CreateTransaction
-          show={show}
-          showSet={showSet}
-          onSubmit={handleCreateTransaction}
-        />
         <Button
           size="btn-lg"
           className="active bold btn-light"
@@ -87,6 +107,13 @@ const Transaction = () => {
           Các danh mục
         </Button>
       </div>
+      {showCreateTransactionForm && (
+        <CreateTransaction
+          show={showCreateTransactionForm}
+          showSet={setShowCreateTransactionForm}
+          onSubmit={handleCreateTransaction}
+        />
+      )}
       <div className="transactiontable">
         <div className="transactiontable-body">
           <table className="table table-hover">
@@ -106,17 +133,7 @@ const Transaction = () => {
             </thead>
             <tbody>
               {Array.isArray(transactions.resultDTO) && transactions.resultDTO.map((transaction, index) => (
-                <tr key={index} onClick={() => editIdModalSet()}>
-                  {TransactionData && (
-                    <DetailTransaction
-                      data={TransactionData}
-                      show={Boolean(editIdModal)}
-                      onClose={() => editIdModalSet(false)}
-                      // onSubmit={() =>
-                      //   dispatch(updateWallet({ accountID: accountID, transactionID: editIdModal }))
-                      //     .unwrap()
-                      //     .then(() => editIdModalSet(false))}
-                    />)}
+                <tr key={index} onClick={() => setEditIdModal(transaction.transactionID)}>
                   <td>
                     {showCheckboxes && <input type="checkbox" />}
                   </td>
@@ -218,6 +235,13 @@ const Transaction = () => {
           </div>
         </div>
       </div>
+      {editIdModal && isDataLoaded && (
+        <DetailTransaction
+          data={transactionData}
+          show={Boolean(editIdModal)}
+          onClose={() => setEditIdModal(null)}
+        />
+      )}
     </div>
   );
 };
