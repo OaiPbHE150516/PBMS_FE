@@ -7,7 +7,7 @@ import * as dayjs from "dayjs";
 
 export const ActionCard = ({ collabID }) => {
   const actions = useAppSelector((state) => state.action.values);
-  console.log("Actions", actions);
+  const reversedActions = [...actions].reverse();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getActionsOfCollab(collabID));
@@ -15,7 +15,7 @@ export const ActionCard = ({ collabID }) => {
 
   return (
     <div class="card mb-3 cardActionItem">
-      {actions.map((item) => {
+      {reversedActions.map((item) => {
         return (
           <>
             <div class="card mb-3 cardActionItem">

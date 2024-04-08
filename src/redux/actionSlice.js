@@ -17,7 +17,7 @@ export const addActionNoTrans = createAsyncThunk(
       filename: "",
       };
     const response = await NewActionsOfCollabNoTransServices(body);
-    await dispatch(getActionsOfCollab())
+    await dispatch(getActionsOfCollab(body.collabFundID))
     return response;
   }
 );
