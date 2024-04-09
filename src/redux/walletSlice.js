@@ -4,6 +4,7 @@ import { getTotalWallets as totalwalletServices } from "../services/walletServic
 import { addWallet as addWalletServices } from "../services/walletService";
 import { updateWallet as updateWalletServices } from "../services/walletService";
 import { deleteWallet as deleteWalletServices } from "../services/walletService";
+import { updateStateWallet as updateStateWalletServices } from "../services/walletService";
 
 export const getWallets = createAsyncThunk("get-wallets", async (_, {getState}) => {
   const user = getState().authen.user;
@@ -30,6 +31,20 @@ export const addWallet = createAsyncThunk(
     const response = await addWalletServices(body);
     await dispatch(getWallets())
     await dispatch(getTotalWallets())
+    return response;
+  }
+);
+export const updateStateWallet = createAsyncThunk(
+  "update-Statewallet",
+  async ({ accountID, walletID, activeStateID }, { dispatch }) => {
+    const body = {
+      accountID: accountID,
+      walletID: walletID,
+      activeStateID: activeStateID,
+    };
+    console.log("Sửa state ví"+body);
+    const response = await updateStateWalletServices(body);
+    await dispatch(getTotalWallets());
     return response;
   }
 );

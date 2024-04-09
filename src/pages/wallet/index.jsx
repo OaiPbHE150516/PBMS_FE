@@ -5,7 +5,7 @@ import { BsToggleOn } from "react-icons/bs";
 import { BsTrash } from "react-icons/bs";
 import { BsPencilSquare } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { addWallet, getTotalWallets, getWallets, updateWallet, deleteWallet } from "../../redux/walletSlice";
+import { addWallet, getTotalWallets, getWallets, updateWallet, deleteWallet, updateStateWallet } from "../../redux/walletSlice";
 import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
 import CreateWallet from "../../components/WalletForm/CreateWallet";
@@ -39,6 +39,15 @@ const Wallet = () => {
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
     const [show, showSet] = useState(false);
+    const handleToggleActiveState = async (walletID, activeStateID) => {
+        try {
+            const newActiveStateID = activeStateID === 1 ? 1 : 2; 
+            console.log("Sửa state ví", accountID, walletID, newActiveStateID);
+            await dispatch(updateStateWallet({ accountID, walletID, activeStateID: newActiveStateID}));
+        } catch (error) {
+            console.error('Error updating wallet state:', error);
+        }
+    };
 
     useEffect(() => {
         retrieveValues();
@@ -81,7 +90,7 @@ const Wallet = () => {
                                     <h6 class="wallet-sub">Ghi chú: {wallet.note}</h6>
                                     <div class="active-container">
                                         <div class="active-container">
-                                            {/* <div class="active1">
+                                             <div class="active1">
                                                 <div className="pe-4">
                                                     <div>
                                                         <Form.Check
@@ -90,11 +99,12 @@ const Wallet = () => {
                                                             reverse
                                                             label="Hoạt động"
                                                             size={"lg"}
-                                                            defaultChecked={wallet.currency.activeState.activeStateID === 1}
+                                                            defaultChecked={wallet.activeState.activeStateID === 1}
+                                                            onChange={(e) => handleToggleActiveState(wallet.walletID, e.target.checked ? 1 : 0)}
                                                         ></Form.Check>
                                                     </div>
                                                 </div>
-                                            </div> */}
+                                            </div>
                                         </div>
                                         <div class="active2">
                                             {wallet && (
