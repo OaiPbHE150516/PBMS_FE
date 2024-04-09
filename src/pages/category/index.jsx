@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PageTitle } from "../../components";
+import { PageHelper,PageTitle } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryByType } from "../../redux/categorySlice";
 import Button from "../../components/Button";
@@ -9,7 +9,7 @@ const Category = () => {
   const categories = useSelector((state) => state.category.values);
   const dispatch = useDispatch();
   const [expandedItems, setExpandedItems] = useState([]);
-
+  const user = useSelector((state) => state.authen.user);
   React.useEffect(() => {
     dispatch(getCategoryByType());
   }, []);
@@ -49,37 +49,45 @@ const Category = () => {
   return (
     <div>
       <div className="Category">
-        <PageTitle title="Hạng mục" />
-        <Button size="btn-lg" className="active bold btn-light">
-          Hạng mục mới
-        </Button>
-        <div className="row" style={{ marginTop: "20px" }}>
-          <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục thu</h5>
-                {renderCategoryTree(incomeCategories?.children)}
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục chi</h5>
-                {renderCategoryTree(expenseCategories?.children)}
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Khác</h5>
-                {renderCategoryTree(otherCategories?.children)}
-              </div>
-            </div>
+      {user ? (
+  <>
+    <PageTitle title="Hạng mục" />
+    <Button size="btn-lg" className="active bold btn-light">
+      Hạng mục mới
+    </Button>
+    <div className="row" style={{ marginTop: "20px" }}>
+      <div className="col-lg-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục thu</h5>
+            {renderCategoryTree(incomeCategories?.children)}
           </div>
         </div>
       </div>
+      <div className="col-lg-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục chi</h5>
+            {renderCategoryTree(expenseCategories?.children)}
+          </div>
+        </div>
+      </div>
+      <div className="col-lg-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Khác</h5>
+            {renderCategoryTree(otherCategories?.children)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </>
+) : (
+  <>
+    <PageHelper/>
+  </>
+)}
+</div>
     </div>
   );
 };
