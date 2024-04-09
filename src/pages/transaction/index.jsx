@@ -141,9 +141,9 @@ const Transaction = () => {
                   <td>{transaction.category.nameVN}</td>
                   <td>
                     {transaction.category.categoryType.categoryTypeID === 1 ? (
-                      <span style={{ color: '#4CAF50' }}>+{formatCurrency(transaction.totalAmount)}</span>
+                      <span style={{ color: '#4CAF50' }}>+{transaction.totalAmountStr}</span>
                     ) : transaction.category.categoryType.categoryTypeID === 2 ? (
-                      <span style={{ color: 'red' }}>-{formatCurrency(transaction.totalAmount)}</span>
+                      <span style={{ color: 'red' }}>-{transaction.totalAmountStr}</span>
                     ) : (
                       <span>{formatCurrency(transaction.totalAmount)}</span>
                     )}

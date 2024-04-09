@@ -6,6 +6,10 @@ export const getCategories = createAsyncThunk("get-categories", async () => {
   const response = await categoryServices.getCategories();
   return response;
 });
+export const getCategoryByType = createAsyncThunk("get-typecategories", async () => {
+  const response = await categoryServices.getCategoryByType();
+  return response;
+});
 
 // middleware to create a category
 export const createCategory = createAsyncThunk(
@@ -27,7 +31,6 @@ const categorySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // response from middleware
     builder
       .addCase(getCategories.fulfilled, (state, action) => {
         state.values = action.payload;
@@ -35,7 +38,9 @@ const categorySlice = createSlice({
       .addCase(getCategories.rejected, (state, action) => {
         console.log("rejected get categories");
       })
-      // add case for create category
+      .addCase(getCategoryByType.fulfilled, (state, action) => {
+        state.values = action.payload;
+      })
       .addCase(createCategory.fulfilled, (state, action) => {
         console.log("done create category");
         toast.success("Create category success");
