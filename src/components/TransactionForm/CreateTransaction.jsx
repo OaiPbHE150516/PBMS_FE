@@ -23,7 +23,8 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         control,
         setValue,
         formState: { errors, isValid },
-        reset
+        reset,
+        watch
     } = useForm({
         defaultValues: {
             walletID: "",
@@ -36,6 +37,12 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
             transactionDate: dayjs().format('YYYY-MM-DDTHH:mm:ss')
         },
     });
+    useEffect(() => {
+        if (show) {
+            reset(); 
+            console.log("đã reset form")
+        }
+    }, [show, reset]);
     const [time, setTime] = useState(dayjs().format('YYYY-MM-DDTHH:mm'));
     const [currentCategoryType, setCurrentCategoryType] = useState(null);
     const [isScanning, setIsScanning] = useState(false);
@@ -52,6 +59,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const walletOptions = wallets.map((item) => ({
         label: item.name,
         value: item.walletID,
+        balance: item.balance,
     }));
     useEffect(() => {
         if (isScanned && scan && scan.totalAmount) {
@@ -72,7 +80,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const filename = filenameRandom();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-
         setValue('image', file);
 
         if (file) {
@@ -80,7 +87,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
             formData.append("AccountID", accountID);
             formData.append("File", file);
             formData.append("FileName", filename);
-
             dispatch(fileInvoiceName(formData));
 
             const reader = new FileReader();
@@ -119,6 +125,32 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
             setTime(dayjs().format('YYYY-MM-DDTHH:mm:ss'));
         }
     }, [isScanned, scan]);
+    useEffect(() => {
+        console.log("Default values:", {
+            walletID: watch('walletID'),
+            categoryID: watch('categoryID'),
+            totalAmount: watch('totalAmount'),
+            note: watch('note'),
+            fromPerson: watch('fromPerson'),
+            toPerson: watch('toPerson'),
+            image: watch('image'),
+            transactionDate: watch('transactionDate'),
+        });
+    }, []);
+    const clearCache = () => {
+        
+        setIsScanned(false);
+        setHasScanned(false);
+        setImagePreview(null);
+        dispatch(getInvoiceScan(null)); 
+    };
+    
+    
+    useEffect(() => {
+        if (show) {
+            clearCache();
+        }
+    }, [show]);
 
 
     return (
@@ -244,12 +276,12 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                     <Form.Label>Ghi chú</Form.Label>
                     <Form.Control as="textarea" {...register("note")}></Form.Control>
                 </Form.Group>
-                {file && isScanned && (
+                {/* {file && isScanned && (
                     <Form.Group className="col-4" >
                         <Form.Label>file</Form.Label>
                         <Form.Control defaultValue={file} type="text" {...register('invoiceImageURL')} />
                     </Form.Group>
-                )}
+                )} */}
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                     <div style={{ flexBasis: '60%', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
@@ -272,7 +304,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                             )}
                         </Form.Group>
                     </div>
-                    {isScanned && scan && imagePreview && (
+                    {isScanned && scan && imagePreview && file && (
                         <div style={{ flexBasis: '90%', display: 'flex' }}>
                             <div style={{ marginRight: '20px' }}>
                                 <h5 style={{ marginTop: '80px' }}>Nhà cung cấp</h5>
@@ -339,6 +371,17 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
                                             {...register('taxAmount', { required: true })}
+                                        />
+                                    </InputGroup>
+                                </Form.Group>
+                                <Form.Group controlId="formName">
+                                    <InputGroup className="mb-3">
+                                        <InputGroup.Text id="inputGroupPrepend">File</InputGroup.Text>
+                                        <FormControl
+                                            value={file}
+                                            type="text"
+                                            aria-describedby="inputGroupPrepend"
+                                            {...register('invoiceImageURL', { required: true })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
