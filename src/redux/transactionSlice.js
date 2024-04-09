@@ -54,7 +54,7 @@ export const addInvoiceTransaction = createAsyncThunk(
       note: fieldValue.note,
       fromPerson: "1",
       toPerson: "1",
-      imageURL: "1",
+      imageURL:  fieldValue.invoiceImageURL,
       invoice: {
         supplierAddress: fieldValue.supplierAddress,
         supplierName: fieldValue.supplierName,

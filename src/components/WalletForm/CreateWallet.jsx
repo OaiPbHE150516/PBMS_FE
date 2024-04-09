@@ -15,13 +15,20 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
     const wallet = useAppSelector((state) => state.wallet.values);
 
     const [duplicateNameError, setDuplicateNameError] = useState('');
+    const [vowelNameError, setvowelNameError] = useState('');
     const [formData, setFormData] = useState({ name: '', balance: '' });
 
     const handleFormSubmit = (data) => {
-        const { name } = data;
-
+        const { name, balance } = data;
+    
+        if (parseFloat(balance) < 0) {
+            // Nếu số tiền là âm, hiển thị thông báo lỗi
+            setvowelNameError('Số tiền không được âm.');
+            return;
+        }
+    
         const isDuplicate = wallet.some(walletItem => walletItem.name === name);
-
+    
         if (isDuplicate) {
             setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
         } else {
@@ -31,6 +38,7 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
             showSet(false); 
         }
     };
+    
 
     const handleCancel = () => {
         reset(); 
@@ -63,10 +71,10 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
                         onChange={(e) => setFormData({ ...formData, balance: e.target.value })} 
                     />
                     {errors.balance && <span className="text-danger">Không được để trống</span>}
+                    {vowelNameError && <span className="text-danger">{vowelNameError}</span>}
                 </Form.Group>
             </Form>
         </PopupWallet>
     );
 };
-
 export default CreateWallet;

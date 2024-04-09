@@ -52,10 +52,7 @@ export const updateStateWallet = createAsyncThunk(
 export const updateWallet = createAsyncThunk(
   "update-wallet",
   async ({ accountID, walletID, fieldValue }, { dispatch }) => {
-    const isBanking =
-      typeof fieldValue.isBanking === "string"
-        ? fieldValue.isBanking.toLowerCase() === "true"
-        : Boolean(fieldValue.isBanking);
+    const isBanking = !!fieldValue.isBanking; 
 
     const body = {
       accountID: accountID,
@@ -68,7 +65,8 @@ export const updateWallet = createAsyncThunk(
       bankAccount: fieldValue.bankAccount,
       bankUsername: fieldValue.bankUsername,
     };
-    console.log("Sửa ví"+body);
+
+    console.log("Sửa ví", body);
     const response = await updateWalletServices(body);
     await dispatch(getWallets());
     await dispatch(getTotalWallets());
@@ -76,6 +74,7 @@ export const updateWallet = createAsyncThunk(
     return response;
   }
 );
+
 export const deleteWallet = createAsyncThunk(
   'delete-wallet',
   async ({ accountID, walletID}, { dispatch }) => { 

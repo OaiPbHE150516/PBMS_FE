@@ -247,7 +247,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                 {file && isScanned && (
                     <Form.Group className="col-4" >
                         <Form.Label>file</Form.Label>
-                        <Form.Control defaultValue={file} type="text" {...register("invoiceImageURL")} />
+                        <Form.Control defaultValue={file} type="text" {...register('invoiceImageURL')} />
                     </Form.Group>
                 )}
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
