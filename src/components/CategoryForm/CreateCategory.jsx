@@ -16,8 +16,6 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
         formState: { errors },
         reset
     } = useForm();
-    const dispatch = useDispatch();
-    const wallet = useAppSelector((state) => state.wallet.values);
     const categories = useAppSelector((state) => state.category.values);
     const [currentCategoryType, setCurrentCategoryType] = useState(null);
     useEffect(() => {
