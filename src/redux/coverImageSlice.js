@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { coverImage as coverImageServices} from "../services/coverImageServices";
+import { coverImage as CoverImageServices } from "../services/coverImageServices";
 
 export const coverImage = createAsyncThunk(
   "cover-image",
-  async () => {
-    const response = await coverImageServices();
+  async ({ fileImg }) => {
+    const response = await CoverImageServices(fileImg);
     return response;
   }
 );
@@ -12,7 +12,7 @@ export const coverImage = createAsyncThunk(
 const coverImageSlice = createSlice({
   name: "coverImage",
   initialState: {
-    values: [], 
+    values: [],
   },
   reducers: {
     setValues: (state, action) => {
@@ -21,7 +21,7 @@ const coverImageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(coverImage.fulfilled, (state, action) => {
+      .addCase(coverImage.fulfilled, (state, action) => {
         state.values = action.payload;
       })
       .addCase(coverImage.rejected, (state, action) => {
