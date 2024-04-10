@@ -8,7 +8,8 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
     register,
     handleSubmit,
     setValue,
-    watch
+    watch,
+    reset
   } = useForm({
     defaultValues: {
       ...data,
@@ -18,6 +19,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   const [isChecked, setIsChecked] = useState(data.isBanking);
 
   const isBanking = watch("isBanking");
+
   React.useEffect(() => {
     setValue("isBanking", isChecked);
   }, [isChecked, setValue]);
@@ -25,6 +27,16 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   const handleRadioClick = () => {
     setIsChecked(!isChecked);
   };
+
+  React.useEffect(() => {
+    if (!isChecked) {
+      reset({
+        bankName: "",
+        bankAccount: "",
+        bankUsername: ""
+      });
+    }
+  }, [isChecked, reset]);
 
   return (
     <Popup
