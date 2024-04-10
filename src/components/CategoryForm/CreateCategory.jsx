@@ -85,7 +85,9 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
                         name="categoryID"
                         rules={{ required: true }}
                         render={({ field }) => (
+
                             <select {...field} className="form-control">
+                                <option value="">Chọn hạng mục</option>
                                 {categories.map((category) => {
                                     if (currentCategoryType === null || category.nameVN === currentCategoryType) {
                                         if (category.children.length === 0) {
@@ -94,7 +96,7 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
                                                     {category.nameVN}
                                                 </option>
                                             );
-                                        } else if (category.isRoot) { // Chỉ hiển thị các hạng mục gốc của loại hiện tại
+                                        } else if (category.isRoot) { 
                                             return (
                                                 <optgroup key={category.categoryID} label={category.nameVN}>
                                                     {category.children.map((childCategory) => {
