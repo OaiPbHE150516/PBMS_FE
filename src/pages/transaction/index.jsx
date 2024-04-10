@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import { getTransaction } from "../../redux/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CreateTransaction from '../../components/TransactionForm/CreateTransaction';
-import { getCategories } from "../../redux/categorySlice";
+import { getCategoryByType } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
 import { addInvoiceTransaction } from "../../redux/transactionSlice";
@@ -58,7 +58,7 @@ const Transaction = () => {
     retrieveValues();
   }, [currentPage, pageSize]);
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getCategoryByType());
     dispatch(getWallets());
   }, [user]);
 

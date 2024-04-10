@@ -114,16 +114,6 @@ const Wallet = () => {
                                                         <button className="icon-button" onClick={() => editIdModalSet(wallet.walletID)}>
                                                             <BsPencilSquare />
                                                         </button>)}
-                                                    {editWalletData && (
-                                                        <UpdateWallet
-                                                            data={editWalletData}
-                                                            show={Boolean(editIdModal)}
-                                                            onClose={() => editIdModalSet(false)}
-                                                            onSubmit={(fieldValue) =>
-                                                                dispatch(updateWallet({ accountID: accountID, walletID: editIdModal, fieldValue: fieldValue }))
-                                                                    .unwrap()
-                                                                    .then(() => editIdModalSet(false))}
-                                                        />)}
                                                     {wallet && (
                                                         <button className="icon-button" onClick={() => removeIdModalSet(wallet.walletID)}>
                                                             <BsTrash />
@@ -148,6 +138,16 @@ const Wallet = () => {
                                     </div>
                                 </div>
                             ))}
+                            {editWalletData && (
+                                                        <UpdateWallet
+                                                            data={editWalletData}
+                                                            show={Boolean(editIdModal)}
+                                                            onClose={() => editIdModalSet(false)}
+                                                            onSubmit={(fieldValue) =>
+                                                                dispatch(updateWallet({ accountID: accountID, walletID: editIdModal, fieldValue: fieldValue }))
+                                                                    .unwrap()
+                                                                    .then(() => editIdModalSet(false))}
+                                                        />)}
                         </div>
                     </div>
                 </>
