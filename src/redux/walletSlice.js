@@ -44,6 +44,7 @@ export const updateStateWallet = createAsyncThunk(
     };
     console.log("Sửa state ví"+body);
     const response = await updateStateWalletServices(body);
+    console.log("Sửa state ví"+response);
     await dispatch(getTotalWallets());
     return response;
   }
@@ -59,7 +60,7 @@ export const updateWallet = createAsyncThunk(
       walletID: walletID,
       name: fieldValue.name,
       note: fieldValue.note,
-      isBanking: isBanking,
+      isBanking: !!fieldValue.isBanking,
       qrCodeURL: fieldValue.qrCodeURL,
       bankName: fieldValue.bankName,
       bankAccount: fieldValue.bankAccount,
@@ -70,7 +71,6 @@ export const updateWallet = createAsyncThunk(
     const response = await updateWalletServices(body);
     await dispatch(getWallets());
     await dispatch(getTotalWallets());
-
     return response;
   }
 );

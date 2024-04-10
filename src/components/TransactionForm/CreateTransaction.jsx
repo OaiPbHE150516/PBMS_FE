@@ -376,7 +376,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">File</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">URL</InputGroup.Text>
                                         <FormControl
                                             value={file}
                                             type="text"

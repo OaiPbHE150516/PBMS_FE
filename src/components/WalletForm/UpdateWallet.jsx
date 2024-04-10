@@ -15,14 +15,12 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   });
 
   const [isChecked, setIsChecked] = useState(data.isBanking);
+  console.log("1",data.isBanking);
   const handleRadioClick = () => {
     setIsChecked(!isChecked);
     console.log(isChecked);
-    setValue("isBanking", !isChecked);
+    setValue("isBanking", isChecked);
   };
-  
-  
-
   return (
     <Popup
       title={"Chỉnh sửa ví"}
