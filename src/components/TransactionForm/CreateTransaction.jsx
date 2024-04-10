@@ -39,7 +39,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     });
     useEffect(() => {
         if (show) {
-            reset();
+            reset(); 
             console.log("đã reset form")
         }
     }, [show, reset]);
@@ -138,14 +138,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         });
     }, []);
     const clearCache = () => {
-
+        
         setIsScanned(false);
         setHasScanned(false);
         setImagePreview(null);
-        dispatch(getInvoiceScan(null));
+        dispatch(getInvoiceScan(null)); 
     };
-
-
+    
+    
     useEffect(() => {
         if (show) {
             clearCache();
@@ -207,47 +207,47 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     <select {...field} className="form-control">
                                         <option value="">Chọn hạng mục</option>
                                         {categories.map((category) => {
-                                            if (currentCategoryType === null || category.nameVN === currentCategoryType) {
-                                                if (category.children.length === 0) {
-                                                    return (
-                                                        <option key={category.categoryID} value={category.categoryID}>
-                                                            {category.nameVN}
-                                                        </option>
-                                                    );
-                                                } else if (category.isRoot) { // Chỉ hiển thị các hạng mục gốc của loại hiện tại
-                                                    return (
-                                                        <optgroup key={category.categoryID} label={category.nameVN}>
-                                                            {category.children.map((childCategory) => {
-                                                                return (
-                                                                    <React.Fragment key={childCategory.categoryID}>
-                                                                        <option value={childCategory.categoryID}>
-                                                                            {childCategory.nameVN}
-                                                                        </option>
-                                                                        {childCategory.children.map((grandChildCategory) => {
-                                                                            return (
-                                                                                <React.Fragment key={grandChildCategory.categoryID}>
-                                                                                    <option value={grandChildCategory.categoryID}>
-                                                                                        &nbsp;&nbsp;&nbsp;&nbsp;{grandChildCategory.nameVN}
+                                    if (currentCategoryType === null || category.nameVN === currentCategoryType) {
+                                        if (category.children.length === 0) {
+                                            return (
+                                                <option key={category.categoryID} value={category.categoryID}>
+                                                    {category.nameVN}
+                                                </option>
+                                            );
+                                        } else if (category.isRoot) {
+                                            return (
+                                                <optgroup key={category.categoryID} label={category.nameVN}>
+                                                    {category.children.map((childCategory) => {
+                                                        return (
+                                                            <React.Fragment key={childCategory.categoryID}>
+                                                                <option value={childCategory.categoryID}>
+                                                                    {childCategory.nameVN}
+                                                                </option>
+                                                                {childCategory.children.map((grandChildCategory) => {
+                                                                    return (
+                                                                        <React.Fragment key={grandChildCategory.categoryID}>
+                                                                            <option value={grandChildCategory.categoryID}>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;{grandChildCategory.nameVN}
+                                                                            </option>
+                                                                            {grandChildCategory.children.map((greatGrandChildCategory) => {
+                                                                                return (
+                                                                                    <option key={greatGrandChildCategory.categoryID} value={greatGrandChildCategory.categoryID}>
+                                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{greatGrandChildCategory.nameVN}
                                                                                     </option>
-                                                                                    {grandChildCategory.children.map((greatGrandChildCategory) => {
-                                                                                        return (
-                                                                                            <option key={greatGrandChildCategory.categoryID} value={greatGrandChildCategory.categoryID}>
-                                                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{greatGrandChildCategory.nameVN}
-                                                                                            </option>
-                                                                                        );
-                                                                                    })}
-                                                                                </React.Fragment>
-                                                                            );
-                                                                        })}
-                                                                    </React.Fragment>
-                                                                );
-                                                            })}
-                                                        </optgroup>
-                                                    );
-                                                }
-                                            }
-                                            return null;
-                                        })}
+                                                                                );
+                                                                            })}
+                                                                        </React.Fragment>
+                                                                    );
+                                                                })}
+                                                            </React.Fragment>
+                                                        );
+                                                    })}
+                                                </optgroup>
+                                            );
+                                        }
+                                    }
+                                    return null;
+                                })}
                                     </select>
                                 )}
                             />

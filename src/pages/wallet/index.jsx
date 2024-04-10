@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PageHelper,PageTitle } from "../../components";
+import { PageHelper, PageTitle } from "../../components";
 import "../../css/Wallet.css";
 import { BsToggleOn } from "react-icons/bs";
 import { BsTrash } from "react-icons/bs";
@@ -118,19 +118,6 @@ const Wallet = () => {
                                                         <button className="icon-button" onClick={() => removeIdModalSet(wallet.walletID)}>
                                                             <BsTrash />
                                                         </button>)}
-                                                    {deleteWalletData && (
-                                                        <DeleteWallet
-                                                            name={deleteWalletData.name}
-                                                            balance={deleteWalletData.balance + ' ' + deleteWalletData.currency.symbol}
-                                                            note={deleteWalletData.note}
-                                                            data={deleteWalletData}
-                                                            show={Boolean(removeIdModal)}
-                                                            onClose={() => removeIdModalSet(false)}
-                                                            onSubmit={() =>
-                                                                dispatch(deleteWallet({ accountID: accountID, walletID: removeIdModal }))
-                                                                    .unwrap()
-                                                                    .then(() => removeIdModalSet(false))}
-                                                        />)}
                                                 </div>
 
                                             </div>
@@ -138,16 +125,29 @@ const Wallet = () => {
                                     </div>
                                 </div>
                             ))}
+                            {deleteWalletData && (
+                                <DeleteWallet
+                                    name={deleteWalletData.name}
+                                    balance={deleteWalletData.balance + ' ' + deleteWalletData.currency.symbol}
+                                    note={deleteWalletData.note}
+                                    data={deleteWalletData}
+                                    show={Boolean(removeIdModal)}
+                                    onClose={() => removeIdModalSet(false)}
+                                    onSubmit={() =>
+                                        dispatch(deleteWallet({ accountID: accountID, walletID: removeIdModal }))
+                                            .unwrap()
+                                            .then(() => removeIdModalSet(false))}
+                                />)}
                             {editWalletData && (
-                                                        <UpdateWallet
-                                                            data={editWalletData}
-                                                            show={Boolean(editIdModal)}
-                                                            onClose={() => editIdModalSet(false)}
-                                                            onSubmit={(fieldValue) =>
-                                                                dispatch(updateWallet({ accountID: accountID, walletID: editIdModal, fieldValue: fieldValue }))
-                                                                    .unwrap()
-                                                                    .then(() => editIdModalSet(false))}
-                                                        />)}
+                                <UpdateWallet
+                                    data={editWalletData}
+                                    show={Boolean(editIdModal)}
+                                    onClose={() => editIdModalSet(false)}
+                                    onSubmit={(fieldValue) =>
+                                        dispatch(updateWallet({ accountID: accountID, walletID: editIdModal, fieldValue: fieldValue }))
+                                            .unwrap()
+                                            .then(() => editIdModalSet(false))}
+                                />)}
                         </div>
                     </div>
                 </>
