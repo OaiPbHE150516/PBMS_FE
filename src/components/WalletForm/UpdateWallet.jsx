@@ -17,8 +17,8 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   });
 
   const [isChecked, setIsChecked] = useState(data.isBanking);
-
   const isBanking = watch("isBanking");
+  const [duplicateNameError, setDuplicateNameError] = useState('');
 
   React.useEffect(() => {
     setValue("isBanking", isChecked);
@@ -38,6 +38,16 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
     }
   }, [isChecked, reset]);
 
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    const isDuplicate = data.wallet && data.wallet.some(walletItem => walletItem.name === newName);
+    if (isDuplicate) {
+      setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
+    } else {
+      setDuplicateNameError('');
+    }
+  };
+
   return (
     <Popup
       title={"Chỉnh sửa ví"}
@@ -51,7 +61,9 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
           <Form.Control
             type="text"
             {...register("name")}
+            onChange={handleNameChange}
           />
+          {duplicateNameError && <span className="text-danger">{duplicateNameError}</span>}
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
