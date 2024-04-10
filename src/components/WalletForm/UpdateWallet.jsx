@@ -7,7 +7,8 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   const {
     register,
     handleSubmit,
-    setValue 
+    setValue,
+    watch
   } = useForm({
     defaultValues: {
       ...data,
@@ -15,12 +16,16 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   });
 
   const [isChecked, setIsChecked] = useState(data.isBanking);
-  console.log("1",data.isBanking);
+
+  const isBanking = watch("isBanking");
+  React.useEffect(() => {
+    setValue("isBanking", isChecked);
+  }, [isChecked, setValue]);
+
   const handleRadioClick = () => {
     setIsChecked(!isChecked);
-    console.log(isChecked);
-    setValue("isBanking", isChecked);
   };
+
   return (
     <Popup
       title={"Chỉnh sửa ví"}
@@ -43,7 +48,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
             {...register("note")}
           />
         </Form.Group>
-        <Form.Group className="mb-2">
+        <Form.Group className="mb-2" style={{marginTop:'20px'}}>
           <div>
             <Form.Check
               type="radio"
@@ -54,34 +59,38 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
             />
           </div>
         </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>URL mã QR</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("qrCodeURL")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tên ngân hàng</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("bankName")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tài khoản ngân hàng</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("bankAccount")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tên tài khoản</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("bankUsername")}
-          />
-        </Form.Group>
+        {isBanking && (
+          <>
+            {/* <Form.Group className="mb-2">
+              <Form.Label>URL mã QR</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("qrCodeURL")}
+              />
+            </Form.Group> */}
+            <Form.Group className="mb-2">
+              <Form.Label>Tên ngân hàng</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("bankName")}
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Tài khoản ngân hàng</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("bankAccount")}
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Tên tài khoản</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("bankUsername")}
+              />
+            </Form.Group>
+          </>
+        )}
       </Form>
     </Popup>
   );

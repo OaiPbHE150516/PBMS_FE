@@ -102,12 +102,6 @@ const Transaction = () => {
             >
               Tạo giao dịch mới
             </Button>
-            <Button
-              size="btn-lg"
-              className="active bold btn-light"
-            >
-              Các danh mục
-            </Button>
           </div>
           {showCreateTransactionForm && (
             <CreateTransaction

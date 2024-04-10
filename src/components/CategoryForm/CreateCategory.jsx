@@ -86,7 +86,6 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
                         rules={{ required: true }}
                         render={({ field }) => (
                             <select {...field} className="form-control">
-                                <option value="">Chọn hạng mục</option>
                                 {categories.map((category) => {
                                     if (currentCategoryType === null || category.nameVN === currentCategoryType) {
                                         if (category.children.length === 0) {
