@@ -1,31 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Popup from "../Popup";
 import { Button, Form } from "react-bootstrap";
-import { Controller, useForm } from "react-hook-form";
-import MultipleSelect from "../MultipleSelect";
+import { useForm } from "react-hook-form";
 import { FormErrorMessage } from "../BudgetForm/FormErrorMessage";
 import logo from "../../assets/Logo.png";
+import useAppSelector from "../../hooks/useAppSelector";
+import { useDispatch } from "react-redux";
+import { searchMembersByKey } from "../../services/searchMemberSlice";
+import { BsX } from "react-icons/bs";
+import { coverImage } from "../../redux/coverImageSlice";
 
-function ItemMember() {
+function ItemMember({ member, onAddMember }) {
+  if (!member) return;
   return (
-    <div className="d-flex align-items-center gap-2 p-2">
-      <div>
-        <img
-          src={logo}
-          alt=""
-          className="rounded-full border border-dark"
-          width={50}
-          height={50}
-        />
+    <Form.Group className="mb-3 border border-dark">
+      <div className="d-flex align-items-center gap-2 p-2 ">
+        <div>
+          <img
+            src={logo}
+            alt=""
+            className="rounded-full border border-dark"
+            width={50}
+            height={50}
+          />
+        </div>
+        <div className="flex-grow-1">
+          <p className="mb-0 bold">{member.accountName}</p>
+        </div>
+        <Button onClick={() => onAddMember(member)}>Thêm</Button>
       </div>
-      <div className="flex-grow-1">
-        <p className="mb-0 bold">Member 1</p>
-        <p className="mb-0 small">Member 1</p>
-      </div>
-      <Button>Thêm</Button>
-    </div>
+    </Form.Group>
   );
 }
+
+function ItemMemberAdd({ selectedMembers, onRemoveMember }) {
+  if (selectedMembers.length === 0) return;
+  return (
+    <>
+      <Form.Label>Thành viên mới</Form.Label>
+      <Form.Group
+        className="mb-3 border border-dark"
+        style={{ maxHeight: "200px", overflowY: "auto" }}
+      >
+        {selectedMembers.map((member, index) => (
+          <>
+            <div className="d-flex align-items-center gap-2 p-2 item_member">
+              <div>
+                <div className="item_member_card">
+                  <img
+                    src={logo}
+                    alt=""
+                    className="rounded-full border border-dark"
+                    width={50}
+                    height={50}
+                  />
+                  <div className="flex-grow-1 item_member_title">
+                    <p className="mb-0 bold">{member.accountName}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="icon_remove">
+                <BsX onClick={() => onRemoveMember(index)} />
+              </div>
+            </div>
+          </>
+        ))}
+      </Form.Group>
+    </>
+  );
+}
+
 
 const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
   const {
@@ -37,45 +81,101 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
     setValue,
   } = useForm({
     defaultValues: {
+      accountID: "",
       name: "",
       description: "",
-      imageURL: "",
-      totalAmount: 0,
+      imageURL: 0,
+      accountIDs: [],
     },
   });
 
-  const handleImageSelect = (event) => {
-    const files = event.target.files;
-    if (files && files.length) {
-      const imageURL = URL.createObjectURL(files[0]);
-      setValue("imageURL", imageURL);
-    }
+  const user = useAppSelector((state) => state.authen.user);
+  const dispatch = useDispatch();
+
+  const listMemberSearch = useAppSelector((state) => state.searchMember.values);
+  const [searchKey, setSearchKey] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+
+  //Handle Members
+  const handleSearch = async () => {
+    await dispatch(searchMembersByKey(searchKey));
   };
+
+  const handleAddMember = (member) => {
+    setSelectedMembers([...selectedMembers, member]);
+    const updatedSearchResults = searchResults.filter(
+      (item) => item.accountID !== member.accountID
+    );
+    setSearchResults(updatedSearchResults);
+  };
+
+  const handleRemoveItemMemberAdd = (index) => {
+    const removedMember = selectedMembers[index];
+    const newSelectedMembers = [...selectedMembers];
+    newSelectedMembers.splice(index, 1);
+    setSelectedMembers(newSelectedMembers);
+    setSearchResults([...searchResults, removedMember]);
+  };
+  
+  useEffect(() => {
+    setSearchResults(listMemberSearch);
+  }, [listMemberSearch]);
+
+  //Handle Image
+//   const [imageName, setImageName] = useState("");
+
+  const handleShowImageSelect = (event) => {
+  const files = event.target.files;
+  if (files && files.length) {
+    const imageURL = URL.createObjectURL(files[0]);
+    setValue("imageURL", imageURL);
+    // setImageName(files[0].name);
+  }
+};
+
+//   const convertImage = useAppSelector((state) => state.coverImage.values)
+//   console.log("image name: ", imageName);
+//   console.log("image convert: ", convertImage);
+//   const handleConvert = async (imageName) => {
+//     await dispatch(coverImage(imageName));
+//   };
 
   return (
     <Popup
-      title={"Thêm quỹ chung mới"}
+      title={"Thêm khoản chi tiêu chung"}
       show={show}
       onClose={() => showSet(false)}
       onSubmit={handleSubmit(onSubmit)}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên ngân sách</Form.Label>
+          <Form.Label>Tên khoản</Form.Label>
           <Form.Control
             type="text"
             {...register("name", { required: true })}
           ></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"name"} />
         </Form.Group>
-        <Form.Label>Thành viên</Form.Label>
+        <Form.Label>Tìm kiếm thành viên</Form.Label>
         <Form.Group className="mb-3 d-flex gap-3 align-items-center">
-          <Form.Control type="text" className="flex-grow-1" />
-          <Button>Search</Button>
+          <Form.Control
+            type="text"
+            className="flex-grow-1"
+            value={searchKey}
+            onChange={(e) => setSearchKey(e.target.value)}
+          />
+          <Button onClick={handleSearch}>Tìm</Button>
         </Form.Group>
-        <Form.Group className="mb-3 border border-dark">
-          <ItemMember />
-        </Form.Group>
+        <div className="member_search_card">
+          {searchResults.map((member, index) => (
+            <ItemMember member={member} onAddMember={handleAddMember} />
+          ))}
+        </div>
+        <ItemMemberAdd
+          selectedMembers={selectedMembers}
+          onRemoveMember={handleRemoveItemMemberAdd}
+        />
         <div className="row">
           <div className="col-md-6">
             <Form.Group className="mb-2">
@@ -95,10 +195,10 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
                 type="file"
                 accept="image/*"
                 multiple
-                onChange={handleImageSelect}
+                onChange={handleShowImageSelect}
               />
             </Form.Group>
-            {watch("imageURL") && (
+            {watch("imageURL") ? (
               <div>
                 <img
                   src={watch("imageURL")}
@@ -106,7 +206,8 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
                   className="img-fluid"
                 />
               </div>
-            )}
+            ): null}
+            {/* <Button onClick={() => handleConvert(imageName)}>Covert</Button> */}
           </div>
         </div>
       </Form>

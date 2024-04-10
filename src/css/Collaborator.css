@@ -103,3 +103,25 @@
 .img_trans{
     height: 200px;
 }
+.item_member{
+    border-bottom: 1px solid #000000;
+    justify-content: space-between;
+}
+.item_member:last-child{
+    border-bottom: none;
+}
+.item_member_card{
+    display: flex;
+}
+.item_member_title{
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.member_search_card{
+    max-height: 250px;
+    overflow-y: auto;
+}
+.item_member .icon_remove:hover{
+    cursor: pointer;
+}

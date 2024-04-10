@@ -46,7 +46,7 @@ const Callaborator = () => {
             onSubmit={(fieldValue) =>
               dispatch(
                 addCollaborator({
-                  accountID: user.accountID,
+                  user: user,
                   fieldValue: fieldValue,
                 })
               )
