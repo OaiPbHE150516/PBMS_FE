@@ -338,7 +338,7 @@ const Last7DaysViewCard = () => {
     <div className="col-6">
       <div className="card">
         <div className="card-body">
-          <h5 className="card-title">7 gần nhất</h5>
+          <h5 className="card-title">7 ngày gần nhất</h5>
         </div>
         <ReactApexChart
           options={last7WeekData[0].options}
@@ -362,8 +362,9 @@ const SurplusViewCard = () => {
 
   const date = balanceHistory.listAfter.map((item) => item.date);
 
-  const totalAmount = balanceHistory.listAfter.map((item) => item.totalAmount);
+  const totalAmount = balanceHistory.listAfter.map((item) => item.totalAmountStr);
 
+  // const totalAmount = balanceHistory.listAfter.map((item) => parseFloat(item.totalAmountStr).toFixed(3));
   const balanceData = [
     {
       series: [
@@ -405,9 +406,10 @@ const SurplusViewCard = () => {
         yaxis: {
           labels: {
             formatter: function (val) {
-              return val.toLocaleString("vi-VN");
+              return val.toLocaleString("vi-VN") + ".000";
             },
           },
+          tickAmount: 10,
         },
       },
     },
@@ -456,7 +458,7 @@ const MostTransactionViewCard = () => {
             <thead>
               <tr>
                 <th scope="col">Thời gian</th>
-                <th scope="col" className="thCate">
+                <th scope="col">
                   Danh mục
                 </th>
                 <th scope="col">Ví</th>
@@ -597,10 +599,10 @@ const Overview = () => {
               <div className="col-md-8">
                 <div className="row Month">
                   <div className="col-lg-6">
-                    <LastMonthViewCard />
+                    <ThisMonthViewCard />
                   </div>
                   <div className="col-lg-6">
-                    <ThisMonthViewCard />
+                    <LastMonthViewCard />
                   </div>
                 </div>
               </div>

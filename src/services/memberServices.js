@@ -16,7 +16,7 @@ export const getMembersOfCollab = async (collabID) => {
   return response.data;
 };
 
-export const getMembersByKey = async (key) => {
+export const searchMembersByKey = async (key) => {
   const response = await axios.get(
     API.MANAGE_COLLABORATOR + `/api/profile/search/${key}`
   );

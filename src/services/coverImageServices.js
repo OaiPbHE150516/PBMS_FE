@@ -7,9 +7,10 @@ const config = {
   },
 };
 
-export const coverImage = async () => {
-  const response = await axios.get(
-    API.COVER_IMAGE + `/api/file/upload/collabfund/imagecover`
+export const coverImage = async (fileImg) => {
+  const response = await axios.post(
+    API.COVER_IMAGE + `/api/file/upload/collabfund/imagecover`,
+    fileImg
   );
   console.log(response);
   return response.data;
