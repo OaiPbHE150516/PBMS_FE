@@ -12,7 +12,6 @@ export const getCategoryByType = createAsyncThunk("get-typecategories", async ()
   return response;
 });
 
-// middleware to create a category
 export const createCategory = createAsyncThunk(
   "create-category",
   async ({ accountID, fieldValue }, { dispatch }) => {

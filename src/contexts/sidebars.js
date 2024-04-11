@@ -74,15 +74,15 @@ export const sidebars = [
   //   path: ROUTE_CONSTANTS.REPORT_PAGE,
   //   exact: true,
   // },
-  {
-    text: "Cài đặt",
-    icon: <BsFillGearFill />,
-    path: ROUTE_CONSTANTS.SETTING_PAGE,
-    exact: true,
-  },
+  // {
+  //   text: "Cài đặt",
+  //   icon: <BsFillGearFill />,
+  //   path: ROUTE_CONSTANTS.SETTING_PAGE,
+  //   exact: true,
+  // },
   // category
   {
-    text: "Danh mục",
+    text: "Hạng mục",
     icon: <MdOutlineCategory />,
     path: ROUTE_CONSTANTS.CATEGORY_PAGE,
     exact: true,

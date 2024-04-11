@@ -66,11 +66,20 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
                     <Form.Label>Số dư hiện tại</Form.Label>
                     <Form.Control
                         type="text"
-                        {...register('balance', { required: true })}
+                        {...register('balance', {
+                            required: true,
+                            pattern: {
+                                value: /^[0-9]*$/,
+                                message: "Số dư phải là số"
+                            }
+                        })}
                     />
-                    {errors.balance && <span className="text-danger">Không được để trống</span>}
+                    {errors.balance && errors.balance.type === "required" && <span className="text-danger">Không được để trống</span>}
+                    {errors.balance && errors.balance.type === "pattern" && <span className="text-danger">{errors.balance.message}</span>}
                     {vowelNameError && <span className="text-danger">{vowelNameError}</span>}
                 </Form.Group>
+
+
                 <Form.Group className="mb-2">
                     <div>
                         <Form.Check
@@ -92,7 +101,7 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-2">
-                            <Form.Label>Tài khoản ngân hàng</Form.Label>
+                            <Form.Label>Số tài khoản</Form.Label>
                             <Form.Control
                                 type="text"
                                 {...register('bankAccount', { required: true })}

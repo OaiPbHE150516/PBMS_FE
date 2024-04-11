@@ -48,12 +48,24 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
     }
   };
 
+  const handleFormSubmit = (formData) => {
+    const { name } = formData;
+    const isDuplicate = data.wallet && data.wallet.some(walletItem => walletItem.name === name);
+    if (isDuplicate) {
+      setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
+      return;
+    }
+    onSubmit(formData);
+    reset();
+    setIsChecked(false);
+  };
+
   return (
     <Popup
       title={"Chỉnh sửa ví"}
       show={show}
       onClose={() => onClose()}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <Form className="c-form">
         <Form.Group className="mb-2">
@@ -61,7 +73,10 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
           <Form.Control
             type="text"
             {...register("name")}
-            onChange={handleNameChange}
+            onChange={(e) => {
+              handleNameChange(e);
+              setDuplicateNameError('');
+            }}
           />
           {duplicateNameError && <span className="text-danger">{duplicateNameError}</span>}
         </Form.Group>
@@ -85,13 +100,6 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
         </Form.Group>
         {isBanking && (
           <>
-            {/* <Form.Group className="mb-2">
-              <Form.Label>URL mã QR</Form.Label>
-              <Form.Control
-                type="text"
-                {...register("qrCodeURL")}
-              />
-            </Form.Group> */}
             <Form.Group className="mb-2">
               <Form.Label>Tên ngân hàng</Form.Label>
               <Form.Control
@@ -100,7 +108,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
               />
             </Form.Group>
             <Form.Group className="mb-2">
-              <Form.Label>Tài khoản ngân hàng</Form.Label>
+              <Form.Label>Số tài khoản</Form.Label>
               <Form.Control
                 type="text"
                 {...register("bankAccount")}

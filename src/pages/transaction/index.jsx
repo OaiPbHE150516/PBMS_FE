@@ -124,7 +124,7 @@ const Transaction = () => {
                     <th scope="col">Số tiền</th>
                     <th scope="col">Ví</th>
                     <th scope="col">Ghi chú</th>
-                    <th scope="col">Thông tin</th>
+                    {/* <th scope="col">Thông tin</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -154,13 +154,13 @@ const Transaction = () => {
                           <>{transaction.note}</>
                         )}
                       </td>
-                      <td>
+                      {/* <td>
                         {transaction.note.length > 10 ? (
                           <>{transaction.note.substring(0, 10)}...</>
                         ) : (
                           <>{transaction.note}</>
                         )}
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
