@@ -81,14 +81,13 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setValue('image', file);
-
+    
         if (file) {
             const formData = new FormData();
             formData.append("AccountID", accountID);
             formData.append("File", file);
             formData.append("FileName", filename);
             dispatch(fileInvoiceName(formData));
-
             const reader = new FileReader();
             reader.onloadend = () => {
                 setIsScanning(true);
@@ -96,11 +95,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                 dispatch(getInvoiceScan(file)).then(() => {
                     setIsScanning(false);
                     setHasScanned(true);
+                   
                 });
             };
             reader.readAsDataURL(file);
         }
+        clearCache();
     };
+    
 
 
     const hasImage = !!imagePreview;
@@ -138,20 +140,17 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         });
     }, []);
     const clearCache = () => {
-        
         setIsScanned(false);
         setHasScanned(false);
         setImagePreview(null);
         dispatch(getInvoiceScan(null)); 
     };
     
-    
     useEffect(() => {
         if (show) {
             clearCache();
         }
     }, [show]);
-
 
     return (
         <PopupTransaction
@@ -428,7 +427,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Số lượng</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Đơn giá</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Thành tiền</th>
-                                            {/* <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th> */}
+                                            <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -466,15 +465,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                                         dangerouslySetInnerHTML={{ __html: product.totalAmount }}
                                                     />
                                                 </td>
-                                                {/* <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
                                                     <span
                                                         style={{ fontSize: '10px' }}
                                                         contentEditable
                                                         onBlur={(e) => register(`productInInvoices[${index}].tag`, { value: e.target.innerText, required: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.tag }}
                                                     />
-                                                </td> */}
-
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
