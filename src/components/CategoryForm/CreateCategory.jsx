@@ -16,11 +16,15 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
         formState: { errors },
         reset
     } = useForm();
+
     const categories = useAppSelector((state) => state.category.values);
     const [currentCategoryType, setCurrentCategoryType] = useState(null);
+    const [selectedCategoryId, setSelectedCategoryId] = useState("");
+
     useEffect(() => {
         handleCategoryTypeChange("Thu nhập");
     }, []);
+
     const handleCategoryTypeChange = (nameVN) => {
         setCurrentCategoryType(nameVN);
     };
@@ -30,12 +34,17 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
         showSet(false);
     };
 
+    const handleFormSubmit = (data) => {
+        data.categoryID = selectedCategoryId;
+        onSubmit(data);
+    };
+
     return (
         <PopupWallet
             title="Tạo hạng mục mới"
             show={show}
             onClose={() => handleCancel()}
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(handleFormSubmit)}
         >
             <Form className="c-form">
                 <Controller
@@ -85,8 +94,14 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
                         name="categoryID"
                         rules={{ required: true }}
                         render={({ field }) => (
-
-                            <select {...field} className="form-control">
+                            <select
+                                {...field}
+                                className="form-control"
+                                onChange={(event) => {
+                                    field.onChange(event.target.value);
+                                    setSelectedCategoryId(event.target.value);
+                                }}
+                            >
                                 <option value="">Chọn hạng mục</option>
                                 {categories.map((category) => {
                                     if (currentCategoryType === null || category.nameVN === currentCategoryType) {
@@ -96,7 +111,7 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
                                                     {category.nameVN}
                                                 </option>
                                             );
-                                        } else if (category.isRoot) { 
+                                        } else if (category.isRoot) {
                                             return (
                                                 <optgroup key={category.categoryID} label={category.nameVN}>
                                                     {category.children.map((childCategory) => {
@@ -130,8 +145,6 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
                                     }
                                     return null;
                                 })}
-
-
                             </select>
                         )}
                     />
@@ -140,4 +153,5 @@ const CreateCategory = ({ show, showSet, onSubmit }) => {
         </PopupWallet>
     );
 };
+
 export default CreateCategory;
