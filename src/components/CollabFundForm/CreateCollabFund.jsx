@@ -70,13 +70,13 @@ function ItemMemberAdd({ selectedMembers, onRemoveMember }) {
   );
 }
 
-
 const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
   const {
     register,
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { errors, isValid },
     setValue,
   } = useForm({
@@ -117,29 +117,33 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
     setSelectedMembers(newSelectedMembers);
     setSearchResults([...searchResults, removedMember]);
   };
-  
+
   useEffect(() => {
     setSearchResults(listMemberSearch);
   }, [listMemberSearch]);
 
   //Handle Image
-//   const [imageName, setImageName] = useState("");
+  //   const [imageName, setImageName] = useState("");
 
   const handleShowImageSelect = (event) => {
-  const files = event.target.files;
-  if (files && files.length) {
-    const imageURL = URL.createObjectURL(files[0]);
-    setValue("imageURL", imageURL);
-    // setImageName(files[0].name);
-  }
-};
+    const files = event.target.files;
+    if (files && files.length) {
+      const imageURL = URL.createObjectURL(files[0]);
+      setValue("imageURL", imageURL);
+    }
+  };
 
-//   const convertImage = useAppSelector((state) => state.coverImage.values)
-//   console.log("image name: ", imageName);
-//   console.log("image convert: ", convertImage);
-//   const handleConvert = async (imageName) => {
-//     await dispatch(coverImage(imageName));
-//   };
+  useEffect(() => {
+    if(show) return;
+    reset();
+  }, [show]);
+
+  //   const convertImage = useAppSelector((state) => state.coverImage.values)
+  //   console.log("image name: ", imageName);
+  //   console.log("image convert: ", convertImage);
+  //   const handleConvert = async (imageName) => {
+  //     await dispatch(coverImage(imageName));
+  //   };
 
   return (
     <Popup
@@ -206,7 +210,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
                   className="img-fluid"
                 />
               </div>
-            ): null}
+            ) : null}
             {/* <Button onClick={() => handleConvert(imageName)}>Covert</Button> */}
           </div>
         </div>

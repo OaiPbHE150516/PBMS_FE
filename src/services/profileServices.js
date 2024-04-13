@@ -7,8 +7,7 @@ const config = {
   },
 };
 
-export const getProfile = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+export const getProfile = async (user) => {
   const response = await axios.get(
     API.MANAGE_PROFILE + `/api/profile/get/${user.accountID}`
   );

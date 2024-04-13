@@ -20,10 +20,10 @@ const Budget = () => {
   const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
   const budgets = useAppSelector((state) => state.budget.values);
+
   useEffect(() => {
     dispatch(getBudgets());
     dispatch(getCategories());
-    dispatch(getWallets());
   }, [user]);
 
   const OtherBudget = budgets.filter((item) => {
@@ -48,13 +48,13 @@ const Budget = () => {
     <div className="Budget">
       {user ? (
         <>
-          <PageTitle title="Ngân sách" />
+          <PageTitle title="Hạng mức chi" />
           <Button
             size="btn-lg"
             onClick={() => showSet(!show)}
             className="active bold btn-light"
           >
-            Tạo ngân sách mới
+            Tạo hạng mức chi mới
           </Button>
 
           <CreateBudget
@@ -63,12 +63,12 @@ const Budget = () => {
             onSubmit={(fieldValue) =>
               dispatch(
                 addBudgets({
-                  accountID: user.accountID,
                   fieldValue: fieldValue,
                 })
               )
                 .unwrap()
                 .then(() => showSet(false))
+              // console.log(fieldValue)
             }
           />
           {updateBudgetData && (

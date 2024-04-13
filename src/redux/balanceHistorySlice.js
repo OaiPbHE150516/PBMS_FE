@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getBalanceHistory as BalanceHistoryServices } from "../services/balanceHisotoryServices";
+import { getBalanceHistory as BalanceHistoryServices, getBalanceHistoryByDate } from "../services/balanceHisotoryServices";
 
 export const getBalanceHistory = createAsyncThunk(
   "get-balance-history",
-  async (_, { getState }) => {
+  // async (_, { getState }) => {
+    async ({firstDate, lastDate}, { getState }) => {
     const user = getState().authen.user;
-    const response = await BalanceHistoryServices(user);
+    // const response = await BalanceHistoryServices(user, firstDate, lastDate);
+    const response = await getBalanceHistoryByDate(user, firstDate, lastDate);
     return response;
   }
 );

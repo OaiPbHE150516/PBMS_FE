@@ -355,16 +355,18 @@ const SurplusViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
   const balanceHistory = useAppSelector((state) => state.balanceHistory);
 
+  const firstDate = "04-01-2024";
+  const lastDate = "04-30-2024";
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getBalanceHistory());
-  }, [user]);
+    dispatch(getBalanceHistory({firstDate, lastDate}));
+  }, [user, firstDate, lastDate]);
 
   const date = balanceHistory.listAfter.map((item) => item.date);
 
-  const totalAmount = balanceHistory.listAfter.map((item) => item.totalAmountStr);
+  const totalAmount = balanceHistory.listAfter.map((item) => item.totalAmount);
 
-  // const totalAmount = balanceHistory.listAfter.map((item) => parseFloat(item.totalAmountStr).toFixed(3));
   const balanceData = [
     {
       series: [
@@ -385,7 +387,7 @@ const SurplusViewCard = () => {
           enabled: false,
         },
         stroke: {
-          curve: "straight",
+          curve: "smooth",
         },
         grid: {
           row: {
@@ -406,10 +408,10 @@ const SurplusViewCard = () => {
         yaxis: {
           labels: {
             formatter: function (val) {
-              return val.toLocaleString("vi-VN") + ".000";
+              return val.toLocaleString("vi-VN");
             },
           },
-          tickAmount: 10,
+          // tickAmount: 10,
         },
       },
     },
@@ -458,9 +460,7 @@ const MostTransactionViewCard = () => {
             <thead>
               <tr>
                 <th scope="col">Thời gian</th>
-                <th scope="col">
-                  Danh mục
-                </th>
+                <th scope="col">Danh mục</th>
                 <th scope="col">Ví</th>
                 <th scope="col">Số tiền</th>
               </tr>
