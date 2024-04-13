@@ -13,17 +13,18 @@ export const getCollaborator = createAsyncThunk(
 
 export const addCollaborator = createAsyncThunk(
   "add-collaborator",
-  async ({ user, fieldValue }, { dispatch }) => {
+  async ({fieldValue }, { dispatch }) => {
     const body = {
-      accountID: user.accountID,
+      accountID: fieldValue.accountID,
       name: fieldValue.name,
       description: fieldValue.description,
       imageURL: fieldValue.imageURL,
-      accountIDs: fieldValue.member.map((item) => item.value),
+      accountIDs: fieldValue.account.map((item) => item.accountID),
     };
-    const response = await addCollaboratorsServices(body);
-    await dispatch(getCollaborator(user));
-    return response;
+    // const response = await addCollaboratorsServices(body);
+    // await dispatch(getCollaborator(user));
+    // return response;
+    console.log("body", body)
   }
 );
 

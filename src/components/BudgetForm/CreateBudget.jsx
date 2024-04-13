@@ -66,7 +66,6 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     label: item.nameVN,
     value: item.categoryID,
   }));
-  console.log(categoryOptions)
 
   //List Wallet
   const wallets = useAppSelector((state) => state.wallet.values);

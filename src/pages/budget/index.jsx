@@ -61,14 +61,14 @@ const Budget = () => {
             show={show}
             showSet={showSet}
             onSubmit={(fieldValue) =>
-              dispatch(
-                addBudgets({
-                  fieldValue: fieldValue,
-                })
-              )
-                .unwrap()
-                .then(() => showSet(false))
-              // console.log(fieldValue)
+              // dispatch(
+              //   addBudgets({
+              //     fieldValue: fieldValue,
+              //   })
+              // )
+              //   .unwrap()
+              //   .then(() => showSet(false))
+              console.log({fieldValue})
             }
           />
           {updateBudgetData && (

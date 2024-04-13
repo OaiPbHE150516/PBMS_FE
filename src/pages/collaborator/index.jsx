@@ -44,14 +44,14 @@ const Callaborator = () => {
             show={show}
             showSet={showSet}
             onSubmit={(fieldValue) =>
-              dispatch(
-                addCollaborator({
-                  user: user,
-                  fieldValue: fieldValue,
-                })
-              )
-                .unwrap()
-                .then(() => showSet(false))
+              // dispatch(
+              //   addCollaborator({
+              //     fieldValue: fieldValue,
+              //   })
+              // )
+              //   .unwrap()
+              //   .then(() => showSet(false))
+              console.log("fieldValue", {fieldValue})
             }
           />
 
