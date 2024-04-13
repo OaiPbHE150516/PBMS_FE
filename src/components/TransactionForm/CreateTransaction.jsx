@@ -39,7 +39,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     });
     useEffect(() => {
         if (show) {
-            reset(); 
+            reset();
             console.log("đã reset form")
         }
     }, [show, reset]);
@@ -81,7 +81,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setValue('image', file);
-    
+
         if (file) {
             const formData = new FormData();
             formData.append("AccountID", accountID);
@@ -95,14 +95,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                 dispatch(getInvoiceScan(file)).then(() => {
                     setIsScanning(false);
                     setHasScanned(true);
-                   
+
                 });
             };
             reader.readAsDataURL(file);
         }
         clearCache();
     };
-    
+
 
 
     const hasImage = !!imagePreview;
@@ -143,9 +143,9 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         setIsScanned(false);
         setHasScanned(false);
         setImagePreview(null);
-        dispatch(getInvoiceScan(null)); 
+        dispatch(getInvoiceScan(null));
     };
-    
+
     useEffect(() => {
         if (show) {
             clearCache();
@@ -206,47 +206,47 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     <select {...field} className="form-control">
                                         <option value="">Chọn hạng mục</option>
                                         {categories.map((category) => {
-                                    if (currentCategoryType === null || category.nameVN === currentCategoryType) {
-                                        if (category.children.length === 0) {
-                                            return (
-                                                <option key={category.categoryID} value={category.categoryID}>
-                                                    {category.nameVN}
-                                                </option>
-                                            );
-                                        } else if (category.isRoot) {
-                                            return (
-                                                <optgroup key={category.categoryID} label={category.nameVN}>
-                                                    {category.children.map((childCategory) => {
-                                                        return (
-                                                            <React.Fragment key={childCategory.categoryID}>
-                                                                <option value={childCategory.categoryID}>
-                                                                    {childCategory.nameVN}
-                                                                </option>
-                                                                {childCategory.children.map((grandChildCategory) => {
-                                                                    return (
-                                                                        <React.Fragment key={grandChildCategory.categoryID}>
-                                                                            <option value={grandChildCategory.categoryID}>
-                                                                                &nbsp;&nbsp;&nbsp;&nbsp;{grandChildCategory.nameVN}
-                                                                            </option>
-                                                                            {grandChildCategory.children.map((greatGrandChildCategory) => {
-                                                                                return (
-                                                                                    <option key={greatGrandChildCategory.categoryID} value={greatGrandChildCategory.categoryID}>
-                                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{greatGrandChildCategory.nameVN}
+                                            if (currentCategoryType === null || category.nameVN === currentCategoryType) {
+                                                if (category.children.length === 0) {
+                                                    return (
+                                                        <option key={category.categoryID} value={category.categoryID}>
+                                                            {category.nameVN}
+                                                        </option>
+                                                    );
+                                                } else if (category.isRoot) {
+                                                    return (
+                                                        <optgroup key={category.categoryID} label={category.nameVN}>
+                                                            {category.children.map((childCategory) => {
+                                                                return (
+                                                                    <React.Fragment key={childCategory.categoryID}>
+                                                                        <option value={childCategory.categoryID}>
+                                                                            {childCategory.nameVN}
+                                                                        </option>
+                                                                        {childCategory.children.map((grandChildCategory) => {
+                                                                            return (
+                                                                                <React.Fragment key={grandChildCategory.categoryID}>
+                                                                                    <option value={grandChildCategory.categoryID}>
+                                                                                        &nbsp;&nbsp;&nbsp;&nbsp;{grandChildCategory.nameVN}
                                                                                     </option>
-                                                                                );
-                                                                            })}
-                                                                        </React.Fragment>
-                                                                    );
-                                                                })}
-                                                            </React.Fragment>
-                                                        );
-                                                    })}
-                                                </optgroup>
-                                            );
-                                        }
-                                    }
-                                    return null;
-                                })}
+                                                                                    {grandChildCategory.children.map((greatGrandChildCategory) => {
+                                                                                        return (
+                                                                                            <option key={greatGrandChildCategory.categoryID} value={greatGrandChildCategory.categoryID}>
+                                                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{greatGrandChildCategory.nameVN}
+                                                                                            </option>
+                                                                                        );
+                                                                                    })}
+                                                                                </React.Fragment>
+                                                                            );
+                                                                        })}
+                                                                    </React.Fragment>
+                                                                );
+                                                            })}
+                                                        </optgroup>
+                                                    );
+                                                }
+                                            }
+                                            return null;
+                                        })}
                                     </select>
                                 )}
                             />
@@ -256,21 +256,30 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                             <Controller
                                 control={control}
                                 name="totalAmount"
-                                rules={{ required: true }}
+                                rules={{
+                                    required: true,
+                                    validate: {
+                                        positiveNumber: (value) => parseFloat(value) >= 0 || "Số tiền không được âm"
+                                    }
+                                }}
                                 render={({ field }) => (
                                     <>
                                         {isScanned && scan ? (
                                             <FormControl
                                                 {...field}
-                                                type="text"
+                                                type="number" 
                                                 defaultValue={scan.totalAmount}
                                             />
                                         ) : (
-                                            <Form.Control {...field} type="text" />
+                                            <Form.Control {...field} type="number" /> 
+                                        )}
+                                        {errors.totalAmount && (
+                                            <div className="text-danger">{errors.totalAmount.message}</div>
                                         )}
                                     </>
                                 )}
                             />
+
                         </div>
                     </div>
                 </Form.Group>
@@ -347,7 +356,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             defaultValue={scan.supplierName}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            {...register('supplierName', { required: true })}
+                                            {...register('supplierName')}
                                         />
                                     </InputGroup>
                                 </Form.Group>
@@ -358,7 +367,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             defaultValue={scan.supplierAddress}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            {...register('supplierAddress', { required: true })}
+                                            {...register('supplierAddress')}
                                         />
                                     </InputGroup>
                                 </Form.Group>
@@ -386,13 +395,32 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
-                                    <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">Số tiền</InputGroup.Text>
-                                        <FormControl
-                                            defaultValue={scan.totalAmount}
-                                            type="text"
-                                            aria-describedby="inputGroupPrepend"
+                                    <InputGroup className="mb-3">                                    
+                                        <Controller
+                                            control={control}
+                                            name="totalAmount"
+                                            rules={{
+                                                required: true,
+                                                validate: {
+                                                    positiveNumber: (value) => parseFloat(value) >= 0 || "Số tiền không được âm"
+                                                }
+                                            }}
+                                            render={({ field }) => (
+                                                <InputGroup className="mb-3">
+                                                    <InputGroup.Text id="inputGroupPrepend">Số tiền</InputGroup.Text>
+                                                    <FormControl
+                                                        {...field}
+                                                        type="number"
+                                                        defaultValue={scan.totalAmount}
+                                                        aria-describedby="inputGroupPrepend"
+                                                    />
+                                                    {errors.totalAmount && (
+                                                        <div className="text-danger">{errors.totalAmount.message}</div>
+                                                    )}
+                                                </InputGroup>
+                                            )}
                                         />
+
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
@@ -402,7 +430,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             defaultValue={scan.taxAmount}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            {...register('taxAmount', { required: true })}
+                                            {...register('taxAmount')}
                                         />
                                     </InputGroup>
                                 </Form.Group>
@@ -413,7 +441,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             value={file}
                                             type="text"
                                             aria-describedby="inputGroupPrepend"
-                                            {...register('invoiceImageURL', { required: true })}
+                                            {...register('invoiceImageURL')}
                                         />
                                     </InputGroup>
                                 </Form.Group>
