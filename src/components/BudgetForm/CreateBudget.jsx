@@ -32,6 +32,7 @@ const getInputDateFormat = (date) => {
 };
 
 const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
+  const user = useAppSelector((state) => state.authen.user);
   const {
     register,
     handleSubmit,
@@ -41,10 +42,11 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     setValue,
   } = useForm({
     defaultValues: {
+      accountID: user.accountID,
       budgetName: "",
       targetAmount: 0,
       fromPeriod: getInputDateFormat(new Date()),
-      toPeriod: getInputDateFormat(new Date()),
+      toPeriod: getInputDateFormat(new Date()), 
       repeat: false,
       period: /** @type {'week' | 'month' | 'other'} */ ("other"),
       numberIterations: 1,
@@ -64,6 +66,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     label: item.nameVN,
     value: item.categoryID,
   }));
+  console.log(categoryOptions)
 
   //List Wallet
   const wallets = useAppSelector((state) => state.wallet.values);
@@ -111,7 +114,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
 
   return (
     <Popup
-      title={"Ngân sách mới"}
+      title={"Tạo hạng mức chi mới"}
       show={show}
       onClose={() => showSet(false)}
       onSubmit={handleSubmit(onSubmit)}
@@ -228,37 +231,6 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             Bắt đầu <b>{getMonthAndDay(new Date(fromPeriod))}</b> đến{" "}
             <b>{getMonthAndDay(new Date(toPeriod))}</b>{" "}
           </p>
-        </Form.Group>
-        <Form.Group className="d-flex mb-2 align-items-center">
-          <div className="pe-4">
-            <div>
-              <Form.Check
-                className="mb-0"
-                type="switch"
-                reverse
-                label="Lặp lại"
-                size={"lg"}
-                {...register("repeat")}
-              ></Form.Check>
-            </div>
-            <FormErrorMessage errors={errors} fieldName={"repeat"} />
-          </div>
-          {repeat && (
-            <div className="d-flex gap-2 align-items-center">
-              <Form.Label className="mb-0" style={{ whiteSpace: "nowrap" }}>
-                Số lần lặp
-              </Form.Label>
-              <Form.Control
-                size="sm"
-                type="number"
-                {...register("numberIterations")}
-              ></Form.Control>
-              <FormErrorMessage
-                errors={errors}
-                fieldName={"numberIterations"}
-              />
-            </div>
-          )}
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>

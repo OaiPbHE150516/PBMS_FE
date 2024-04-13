@@ -16,13 +16,6 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
     value: item.categoryID,
   }));
 
-  //List Wallet
-  const wallets = useAppSelector((state) => state.wallet.values);
-  const walletOptions = wallets.map((item) => ({
-    label: item.name,
-    value: item.walletID,
-  }));
-
   const {
     control,
     register,
@@ -30,7 +23,6 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
     formState: { errors, isValid, isDirty },
   } = useForm({
     defaultValues: {
-      wallet: [],
       ...data,
       categories: data.categories.map((item) => ({
         label: item.nameVN,
@@ -39,15 +31,8 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
     },
   });
 
-  console.log({isDirty})
+  // console.log({isDirty})
 
-  const [wallet, walletSet] = useState([]);
-  console.log(
-    data.categories.map((item) => ({
-      label: item.name,
-      value: item.walletID,
-    }))
-  );
   return (
     <Popup
       title={"Update Budget"}
@@ -102,22 +87,6 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
             {...register("targetAmount", { required: true })}
           ></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
-        </Form.Group>
-        <Form.Group className="mb-4">
-          <Form.Label>Wallet</Form.Label>
-          <Controller
-                rules={{ validate: (value) => Boolean(value.length) }}
-                control={control}
-                name="wallet"
-                render={({ field }) => (
-                  <MultipleSelect
-                    {...field}
-                    isMulti
-                    options={walletOptions}
-                  />
-                )}
-              />
-          <FormErrorMessage errors={errors} fieldName={"wallet"} />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Note</Form.Label>

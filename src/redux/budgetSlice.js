@@ -28,9 +28,9 @@ const getBudgetId = (period) => {
 
 export const addBudgets = createAsyncThunk(
   "add-budgets",
-  async ({ accountID, fieldValue }, { dispatch }) => {
+  async ({fieldValue }, { dispatch }) => {
     const body = {
-      accountID: accountID,
+      accountID: fieldValue.accountID,
       budgetName: fieldValue.budgetName,
       targetAmount: fieldValue.targetAmount,
       beginDate: new Date(fieldValue.fromPeriod).toISOString(),
@@ -52,21 +52,21 @@ export const updateBudgets = createAsyncThunk(
   async (fieldValue, { dispatch }) => {
     const body = {
       // accountID: "117911566377016615313",
-      accountID: "a1",
+      // accountID: "a1",
+      accountID: fieldValue.accountID,
       budgetName: fieldValue.budgetName,
       targetAmount: fieldValue.targetAmount,
       beginDate: new Date(fieldValue.fromPeriod).toISOString(),
       endDate: new Date(fieldValue.toPeriod).toISOString(),
-      budgetTypeID: getBudgetId(fieldValue.period),
       repeatInterVal: fieldValue.repeat ? fieldValue.numberIterations : 0,
       note: fieldValue.note,
       createTime: new Date().toISOString(),
       categoryIDs: fieldValue.category.map((item) => item.value),
     };
-    // console.log(body);
-    const response = await updateBudgetServices(body);
-    await dispatch(getBudgets());
-    return response;
+    console.log(body);
+    // const response = await updateBudgetServices(body);
+    // await dispatch(getBudgets());
+    // return response;
   }
 );
 

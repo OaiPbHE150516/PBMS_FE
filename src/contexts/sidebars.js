@@ -33,23 +33,12 @@ export const sidebars = [
     exact: true,
   },
   {
-    text: "Ngân sách",
+    text: "Hạng mức chi",
     icon: <BsCoin />,
     path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,
   },
-  // {
-  //   text: "Giao dịch dự kiến",
-  //   icon: <BsReceipt />,
-  //   path: ROUTE_CONSTANTS.EXPECTED_PAGE,
-  //   exact: true,
-  // },
-  // {
-  //   text: "Biểu đồ",
-  //   icon: <TbChartHistogram />,
-  //   path: ROUTE_CONSTANTS.CHART_PAGE,
-  //   exact: true,
-  // },
+
   {
     text: "Lịch",
     icon: <BsCalendar2Week />,

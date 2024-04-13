@@ -5,6 +5,7 @@ import { IoReload } from "react-icons/io5";
 import Progress from "../../components/Progress";
 import logo from "../../assets/Logo.png";
 import * as dayjs from "dayjs";
+import { Form } from "react-bootstrap";
 const Card = ({ onDelete, onEdit, onReload, data }) => {
   return (
     <div className="c-card">
@@ -29,12 +30,6 @@ const Card = ({ onDelete, onEdit, onReload, data }) => {
             <p className="mb-0 text-base">Ghi chú: {data.note}</p>
           </div>
           <div className="row ms-auto">
-            <button
-              className="btn btn-outline-light col-4 fs-5 py-0 text-dark"
-              onClick={onReload}
-            >
-              <IoReload />
-            </button>
             <button
               className="btn btn-outline-light col-4 fs-5 py-0 text-dark"
               onClick={onDelete}
