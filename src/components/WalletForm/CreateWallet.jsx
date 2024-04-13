@@ -17,9 +17,10 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
     const [duplicateNameError, setDuplicateNameError] = useState('');
     const [vowelNameError, setVowelNameError] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const [bankingFieldsError, setBankingFieldsError] = useState('');
 
     const handleFormSubmit = (data) => {
-        const { name, balance } = data;
+        const { name, balance, bankName, bankAccount, bankUsername } = data;
 
         if (parseFloat(balance) < 0) {
             setVowelNameError('Số tiền không được âm.');
@@ -32,12 +33,19 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
             setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
         } else {
             setDuplicateNameError('');
+
+            if (isChecked && (!bankName || !bankAccount || !bankUsername)) {
+                setBankingFieldsError('Vui lòng điền đầy đủ thông tin về ngân hàng');
+                return;
+            } 
+
             onSubmit(data);
             reset();
             showSet(false);
             setIsChecked(false);
         }
     };
+
 
     const handleCancel = () => {
         reset();
@@ -99,6 +107,7 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
                                 type="text"
                                 {...register('bankName', { required: true })}
                             />
+                            {errors.bankName && <span className="text-danger">Vui lòng điền đầy đủ thông tin về ngân hàng</span>}
                         </Form.Group>
                         <Form.Group className="mb-2">
                             <Form.Label>Số tài khoản</Form.Label>
@@ -106,6 +115,7 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
                                 type="text"
                                 {...register('bankAccount', { required: true })}
                             />
+                            {errors.bankAccount && <span className="text-danger">Vui lòng điền đầy đủ thông tin về ngân hàng</span>}
                         </Form.Group>
                         <Form.Group className="mb-2">
                             <Form.Label>Tên tài khoản</Form.Label>
@@ -113,7 +123,9 @@ const CreateWallet = ({ show, showSet, onSubmit }) => {
                                 type="text"
                                 {...register('bankUsername', { required: true })}
                             />
+                            {errors.bankUsername && <span className="text-danger">Vui lòng điền đầy đủ thông tin về ngân hàng</span>}
                         </Form.Group>
+
                     </>
                 )}
             </Form>

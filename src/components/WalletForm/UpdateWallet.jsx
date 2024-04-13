@@ -9,7 +9,8 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
     handleSubmit,
     setValue,
     watch,
-    reset
+    reset,
+    formState: { errors } // Add errors object from react-hook-form
   } = useForm({
     defaultValues: {
       ...data,
@@ -47,18 +48,27 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
       setDuplicateNameError('');
     }
   };
+  const [bankingFieldsError, setBankingFieldsError] = useState('');
 
   const handleFormSubmit = (formData) => {
-    const { name } = formData;
+    const { name, bankName, bankAccount, bankUsername } = formData;
     const isDuplicate = data.wallet && data.wallet.some(walletItem => walletItem.name === name);
     if (isDuplicate) {
       setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
       return;
     }
+    if (isBanking) {
+      if (!bankName || !bankAccount || !bankUsername) {
+        setBankingFieldsError('Vui lòng điền đầy đủ thông tin về ngân hàng');
+        return;
+      }
+    }
+  
     onSubmit(formData);
     reset();
     setIsChecked(false);
   };
+  
 
   return (
     <Popup
@@ -72,12 +82,13 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
           <Form.Label>Tên ví</Form.Label>
           <Form.Control
             type="text"
-            {...register("name")}
+            {...register("name", { required: true })}
             onChange={(e) => {
               handleNameChange(e);
               setDuplicateNameError('');
             }}
           />
+          {errors.name && <span className="text-danger">Tên ví không được trống</span>}
           {duplicateNameError && <span className="text-danger">{duplicateNameError}</span>}
         </Form.Group>
         <Form.Group className="mb-2">
@@ -87,7 +98,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
             {...register("note")}
           />
         </Form.Group>
-        <Form.Group className="mb-2" style={{marginTop:'20px'}}>
+        <Form.Group className="mb-2" style={{ marginTop: '20px' }}>
           <div>
             <Form.Check
               type="radio"
@@ -106,6 +117,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
                 type="text"
                 {...register("bankName")}
               />
+              {bankingFieldsError && <span className="text-danger">{bankingFieldsError}</span>}
             </Form.Group>
             <Form.Group className="mb-2">
               <Form.Label>Số tài khoản</Form.Label>
@@ -113,6 +125,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
                 type="text"
                 {...register("bankAccount")}
               />
+              {bankingFieldsError && <span className="text-danger">{bankingFieldsError}</span>}
             </Form.Group>
             <Form.Group className="mb-2">
               <Form.Label>Tên tài khoản</Form.Label>
@@ -120,6 +133,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
                 type="text"
                 {...register("bankUsername")}
               />
+               {bankingFieldsError && <span className="text-danger">{bankingFieldsError}</span>}
             </Form.Group>
           </>
         )}
