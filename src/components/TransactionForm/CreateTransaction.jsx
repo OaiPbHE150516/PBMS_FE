@@ -81,14 +81,13 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setValue('image', file);
-
+    
         if (file) {
             const formData = new FormData();
             formData.append("AccountID", accountID);
             formData.append("File", file);
             formData.append("FileName", filename);
             dispatch(fileInvoiceName(formData));
-
             const reader = new FileReader();
             reader.onloadend = () => {
                 setIsScanning(true);
@@ -96,11 +95,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                 dispatch(getInvoiceScan(file)).then(() => {
                     setIsScanning(false);
                     setHasScanned(true);
+                   
                 });
             };
             reader.readAsDataURL(file);
         }
+        clearCache();
     };
+    
 
 
     const hasImage = !!imagePreview;
@@ -138,20 +140,17 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         });
     }, []);
     const clearCache = () => {
-        
         setIsScanned(false);
         setHasScanned(false);
         setImagePreview(null);
         dispatch(getInvoiceScan(null)); 
     };
     
-    
     useEffect(() => {
         if (show) {
             clearCache();
         }
     }, [show]);
-
 
     return (
         <PopupTransaction
@@ -206,15 +205,48 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 render={({ field }) => (
                                     <select {...field} className="form-control">
                                         <option value="">Chọn hạng mục</option>
-                                        {categories.map((item) => {
-                                            if ((currentCategoryType === null || item.categoryType.name === currentCategoryType) && !item.isRoot) {
-                                                return (
-                                                    <option key={item.categoryID} value={item.categoryID}>
-                                                        {item.nameVN}
-                                                    </option>
-                                                );
-                                            }
-                                        })}
+                                        {categories.map((category) => {
+                                    if (currentCategoryType === null || category.nameVN === currentCategoryType) {
+                                        if (category.children.length === 0) {
+                                            return (
+                                                <option key={category.categoryID} value={category.categoryID}>
+                                                    {category.nameVN}
+                                                </option>
+                                            );
+                                        } else if (category.isRoot) {
+                                            return (
+                                                <optgroup key={category.categoryID} label={category.nameVN}>
+                                                    {category.children.map((childCategory) => {
+                                                        return (
+                                                            <React.Fragment key={childCategory.categoryID}>
+                                                                <option value={childCategory.categoryID}>
+                                                                    {childCategory.nameVN}
+                                                                </option>
+                                                                {childCategory.children.map((grandChildCategory) => {
+                                                                    return (
+                                                                        <React.Fragment key={grandChildCategory.categoryID}>
+                                                                            <option value={grandChildCategory.categoryID}>
+                                                                                &nbsp;&nbsp;&nbsp;&nbsp;{grandChildCategory.nameVN}
+                                                                            </option>
+                                                                            {grandChildCategory.children.map((greatGrandChildCategory) => {
+                                                                                return (
+                                                                                    <option key={greatGrandChildCategory.categoryID} value={greatGrandChildCategory.categoryID}>
+                                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{greatGrandChildCategory.nameVN}
+                                                                                    </option>
+                                                                                );
+                                                                            })}
+                                                                        </React.Fragment>
+                                                                    );
+                                                                })}
+                                                            </React.Fragment>
+                                                        );
+                                                    })}
+                                                </optgroup>
+                                            );
+                                        }
+                                    }
+                                    return null;
+                                })}
                                     </select>
                                 )}
                             />
@@ -376,7 +408,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 </Form.Group>
                                 <Form.Group controlId="formName">
                                     <InputGroup className="mb-3">
-                                        <InputGroup.Text id="inputGroupPrepend">File</InputGroup.Text>
+                                        <InputGroup.Text id="inputGroupPrepend">URL</InputGroup.Text>
                                         <FormControl
                                             value={file}
                                             type="text"
@@ -395,7 +427,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Số lượng</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Đơn giá</th>
                                             <th style={{ fontSize: '10px', padding: '8px' }}>Thành tiền</th>
-                                            {/* <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th> */}
+                                            <th style={{ fontSize: '10px', padding: '8px' }}>Tag</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -433,15 +465,14 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                                         dangerouslySetInnerHTML={{ __html: product.totalAmount }}
                                                     />
                                                 </td>
-                                                {/* <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td style={{ fontSize: '10px', padding: '8px' }}>
                                                     <span
                                                         style={{ fontSize: '10px' }}
                                                         contentEditable
                                                         onBlur={(e) => register(`productInInvoices[${index}].tag`, { value: e.target.innerText, required: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.tag }}
                                                     />
-                                                </td> */}
-
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>

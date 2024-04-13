@@ -23,14 +23,21 @@ export const addWallet = createAsyncThunk(
   async ({ accountID, fieldValue }, { dispatch }) => {
     const body = {
       accountID: accountID,
-      name: fieldValue.name,
       balance: fieldValue.balance,
       currencyID: 2,
+      name: fieldValue.name,
+      note: fieldValue.note,
+      isBanking: !!fieldValue.isBanking,
+      qrCodeURL: "String",
+      bankName: fieldValue.bankName,
+      bankAccount: fieldValue.bankAccount,
+      bankUsername: fieldValue.bankUsername,
     };
     console.log(body);
     const response = await addWalletServices(body);
     await dispatch(getWallets())
     await dispatch(getTotalWallets())
+    await dispatch(updateStateWallet({accountID: accountID, walletID: response.walletID, activeStateID: 1}))
     return response;
   }
 );
@@ -52,15 +59,14 @@ export const updateStateWallet = createAsyncThunk(
 export const updateWallet = createAsyncThunk(
   "update-wallet",
   async ({ accountID, walletID, fieldValue }, { dispatch }) => {
-    const isBanking = !!fieldValue.isBanking; 
 
     const body = {
       accountID: accountID,
       walletID: walletID,
       name: fieldValue.name,
       note: fieldValue.note,
-      isBanking: isBanking,
-      qrCodeURL: fieldValue.qrCodeURL,
+      isBanking: !!fieldValue.isBanking,
+      qrCodeURL: "fieldValue.qrCodeURL",
       bankName: fieldValue.bankName,
       bankAccount: fieldValue.bankAccount,
       bankUsername: fieldValue.bankUsername,
@@ -70,7 +76,6 @@ export const updateWallet = createAsyncThunk(
     const response = await updateWalletServices(body);
     await dispatch(getWallets());
     await dispatch(getTotalWallets());
-
     return response;
   }
 );

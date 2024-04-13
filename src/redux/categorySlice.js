@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import categoryServices from "../services/categoryServices";
+import { createCategory as createCategoryServices } from "../services/categoryServices";
 
 export const getCategories = createAsyncThunk("get-categories", async () => {
   const response = await categoryServices.getCategories();
@@ -11,11 +12,18 @@ export const getCategoryByType = createAsyncThunk("get-typecategories", async ()
   return response;
 });
 
-// middleware to create a category
 export const createCategory = createAsyncThunk(
   "create-category",
-  async (category) => {
-    const response = await categoryServices.createCategory(category);
+  async ({ accountID, fieldValue }, { dispatch }) => {
+    const body = {
+      accountID: accountID,
+      nameVN: fieldValue.nameVN,
+      nameEN: fieldValue.nameVN,
+      parentCategoryID: fieldValue.categoryID,
+    };
+    console.log(body);
+    const response = await createCategoryServices(body);
+    dispatch(getCategoryByType());
     return response;
   }
 );

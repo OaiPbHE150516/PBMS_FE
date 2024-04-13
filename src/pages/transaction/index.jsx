@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import { getTransaction } from "../../redux/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CreateTransaction from '../../components/TransactionForm/CreateTransaction';
-import { getCategories } from "../../redux/categorySlice";
+import { getCategoryByType } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 import { addTransactionwithoutInvoice } from "../../redux/transactionSlice";
 import { addInvoiceTransaction } from "../../redux/transactionSlice";
@@ -58,7 +58,7 @@ const Transaction = () => {
     retrieveValues();
   }, [currentPage, pageSize]);
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getCategoryByType());
     dispatch(getWallets());
   }, [user]);
 
@@ -102,12 +102,6 @@ const Transaction = () => {
             >
               Tạo giao dịch mới
             </Button>
-            <Button
-              size="btn-lg"
-              className="active bold btn-light"
-            >
-              Các danh mục
-            </Button>
           </div>
           {showCreateTransactionForm && (
             <CreateTransaction
@@ -130,7 +124,7 @@ const Transaction = () => {
                     <th scope="col">Số tiền</th>
                     <th scope="col">Ví</th>
                     <th scope="col">Ghi chú</th>
-                    <th scope="col">Thông tin</th>
+                    {/* <th scope="col">Thông tin</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -160,13 +154,13 @@ const Transaction = () => {
                           <>{transaction.note}</>
                         )}
                       </td>
-                      <td>
+                      {/* <td>
                         {transaction.note.length > 10 ? (
                           <>{transaction.note.substring(0, 10)}...</>
                         ) : (
                           <>{transaction.note}</>
                         )}
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>

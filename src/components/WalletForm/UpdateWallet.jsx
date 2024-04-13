@@ -7,7 +7,9 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   const {
     register,
     handleSubmit,
-    setValue 
+    setValue,
+    watch,
+    reset
   } = useForm({
     defaultValues: {
       ...data,
@@ -15,20 +17,55 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   });
 
   const [isChecked, setIsChecked] = useState(data.isBanking);
+  const isBanking = watch("isBanking");
+  const [duplicateNameError, setDuplicateNameError] = useState('');
+
+  React.useEffect(() => {
+    setValue("isBanking", isChecked);
+  }, [isChecked, setValue]);
+
   const handleRadioClick = () => {
     setIsChecked(!isChecked);
-    console.log(isChecked);
-    setValue("isBanking", !isChecked);
   };
-  
-  
+
+  React.useEffect(() => {
+    if (!isChecked) {
+      reset({
+        bankName: "",
+        bankAccount: "",
+        bankUsername: ""
+      });
+    }
+  }, [isChecked, reset]);
+
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    const isDuplicate = data.wallet && data.wallet.some(walletItem => walletItem.name === newName);
+    if (isDuplicate) {
+      setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
+    } else {
+      setDuplicateNameError('');
+    }
+  };
+
+  const handleFormSubmit = (formData) => {
+    const { name } = formData;
+    const isDuplicate = data.wallet && data.wallet.some(walletItem => walletItem.name === name);
+    if (isDuplicate) {
+      setDuplicateNameError('Tên ví đã tồn tại, vui lòng chọn tên khác.');
+      return;
+    }
+    onSubmit(formData);
+    reset();
+    setIsChecked(false);
+  };
 
   return (
     <Popup
       title={"Chỉnh sửa ví"}
       show={show}
       onClose={() => onClose()}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
     >
       <Form className="c-form">
         <Form.Group className="mb-2">
@@ -36,7 +73,12 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
           <Form.Control
             type="text"
             {...register("name")}
+            onChange={(e) => {
+              handleNameChange(e);
+              setDuplicateNameError('');
+            }}
           />
+          {duplicateNameError && <span className="text-danger">{duplicateNameError}</span>}
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
@@ -45,7 +87,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
             {...register("note")}
           />
         </Form.Group>
-        <Form.Group className="mb-2">
+        <Form.Group className="mb-2" style={{marginTop:'20px'}}>
           <div>
             <Form.Check
               type="radio"
@@ -56,34 +98,31 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
             />
           </div>
         </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>URL mã QR</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("qrCodeURL")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tên ngân hàng</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("bankName")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tài khoản ngân hàng</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("bankAccount")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Tên tài khoản</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("bankUsername")}
-          />
-        </Form.Group>
+        {isBanking && (
+          <>
+            <Form.Group className="mb-2">
+              <Form.Label>Tên ngân hàng</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("bankName")}
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Số tài khoản</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("bankAccount")}
+              />
+            </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Tên tài khoản</Form.Label>
+              <Form.Control
+                type="text"
+                {...register("bankUsername")}
+              />
+            </Form.Group>
+          </>
+        )}
       </Form>
     </Popup>
   );
