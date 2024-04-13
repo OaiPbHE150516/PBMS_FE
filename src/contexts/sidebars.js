@@ -33,7 +33,7 @@ export const sidebars = [
     exact: true,
   },
   {
-    text: "Hạng mức chi",
+    text: "Hạn mức chi",
     icon: <BsCoin />,
     path: ROUTE_CONSTANTS.BUDGET_PAGE,
     exact: true,

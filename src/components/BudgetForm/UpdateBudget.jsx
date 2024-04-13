@@ -35,14 +35,14 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
 
   return (
     <Popup
-      title={"Update Budget"}
+      title={"Chỉnh sửa hạn mức"}
       show={show}
       onClose={() => onClose()}
       onSubmit={isDirty ? handleSubmit(onSubmit) : onClose}
     >
       <Form noValidate validated={isValid} className="c-form">
         <Form.Group className="mb-2">
-          <Form.Label>Budget Name</Form.Label>
+          <Form.Label>Tên  hạn mức</Form.Label>
           <Form.Control
             type="text"
             {...register("budgetName", { required: true })}
@@ -50,7 +50,7 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
           <FormErrorMessage errors={errors} fieldName={"budgetName"} />
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Category</Form.Label>
+          <Form.Label>Hạng mục</Form.Label>
           <div className="row">
             <div className="col-9">
               <Controller
@@ -81,7 +81,7 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
           </div>
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Initial amount</Form.Label>
+          <Form.Label>Ngưỡng chi tiêu</Form.Label>
           <Form.Control
             type="number"
             {...register("targetAmount", { required: true })}
@@ -89,7 +89,7 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
           <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Note</Form.Label>
+          <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"note"} />
         </Form.Group>

@@ -113,14 +113,14 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
 
   return (
     <Popup
-      title={"Tạo hạng mức chi mới"}
+      title={"Tạo hạn mức chi mới"}
       show={show}
       onClose={() => showSet(false)}
       onSubmit={handleSubmit(onSubmit)}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên ngân sách</Form.Label>
+          <Form.Label>Tên hạn mứ<caption></caption></Form.Label>
           <Form.Control
             type="text"
             {...register("budgetName", { required: true })}
@@ -159,7 +159,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
           <FormErrorMessage errors={errors} fieldName={"category"} />
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label>Lượng ngân sách</Form.Label>
+          <Form.Label>Ngưỡng chi tiêu</Form.Label>
           <Form.Control
             type="number"
             {...register("targetAmount", { required: true })}
