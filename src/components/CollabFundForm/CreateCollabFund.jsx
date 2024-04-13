@@ -71,6 +71,7 @@ function ItemMemberAdd({ selectedMembers, onRemoveMember }) {
 }
 
 const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
+  const user = useAppSelector((state) => state.authen.user);
   const {
     register,
     handleSubmit,
@@ -79,17 +80,17 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
     reset,
     formState: { errors, isValid },
     setValue,
+    getValues,
   } = useForm({
     defaultValues: {
-      accountID: "",
+      accountID: user.accountID,
       name: "",
       description: "",
-      imageURL: 0,
-      accountIDs: [],
+      imageURL: "",
+      account: [],
     },
   });
 
-  const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
 
   const listMemberSearch = useAppSelector((state) => state.searchMember.values);
@@ -122,9 +123,12 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
     setSearchResults(listMemberSearch);
   }, [listMemberSearch]);
 
-  //Handle Image
-  //   const [imageName, setImageName] = useState("");
+  useEffect(() => {
+    const values = getValues(); // Get current form values
+    setValue("account", selectedMembers); // Update account value
+  }, [selectedMembers]);
 
+  //Handle Image
   const handleShowImageSelect = (event) => {
     const files = event.target.files;
     if (files && files.length) {

@@ -48,13 +48,13 @@ const Budget = () => {
     <div className="Budget">
       {user ? (
         <>
-          <PageTitle title="Hạng mức chi" />
+          <PageTitle title="Hạn mức chi" />
           <Button
             size="btn-lg"
             onClick={() => showSet(!show)}
             className="active bold btn-light"
           >
-            Tạo hạng mức chi mới
+            Tạo hạn mức chi mới
           </Button>
 
           <CreateBudget
@@ -68,7 +68,6 @@ const Budget = () => {
               )
                 .unwrap()
                 .then(() => showSet(false))
-              // console.log(fieldValue)
             }
           />
           {updateBudgetData && (
@@ -101,7 +100,7 @@ const Budget = () => {
           <div className="mt-5">
             {MonthlyBudget.length > 0 && (
               <>
-                <h3 className="mb-3 text-center h3">Ngân sách hàng tháng</h3>
+                <h3 className="mb-3 text-center h3">Hạn mức theo tháng</h3>
                 {MonthlyBudget.map((item) => (
                   <div className="mb-4" key={item.budgetID}>
                     <CardBudget
@@ -116,7 +115,7 @@ const Budget = () => {
             )}
             {WeeklyBudget.length > 0 && (
               <>
-                <h3 className="mb-3 text-center h3">Ngân sách hàng tuần</h3>
+                <h3 className="mb-3 text-center h3">Hạn mức theo tuần</h3>
                 {WeeklyBudget.map((item) => (
                   <div className="mb-4" key={item.budgetID}>
                     <CardBudget
@@ -132,7 +131,7 @@ const Budget = () => {
             {/* Other */}
             {OtherBudget.length > 0 && (
               <>
-                <h3 className="mb-3 text-center h3">Ngân sách khác</h3>
+                <h3 className="mb-3 text-center h3">Các hạn mức sách khác</h3>
                 {OtherBudget.map((item) => (
                   <div className="mb-4" key={item.budgetID}>
                     <CardBudget
