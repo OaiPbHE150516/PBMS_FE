@@ -15,14 +15,13 @@ const DeleteBudget = ({ data, onClose, show }) => {
 
   return (
     <Popup
-      title={`Xóa ngân sách “${data.budgetName}”`}
+      title={`Xóa hạn mức “${data.budgetName}”`}
       show={show}
       onClose={onClose}
       onSubmit={handleSubmit}
     >
       <div>
-        <p>Lượng ngân sách: <b>{data.targetAmountStr}</b></p>
-        <p>Khoảng thời gian: Ngân sách {data.budgetType.typeName}</p>
+        <p>Ngưỡng chi tiêu: <b>{data.targetAmountStr}</b></p>
         <p>Ghi chú: {data.note}</p>
       </div>
     </Popup>

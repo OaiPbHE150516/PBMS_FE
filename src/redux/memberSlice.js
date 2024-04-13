@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 
 export const getMembersOfCollab = createAsyncThunk(
   "get-membersOfCollab",
-  async (collabID) => {
-    const response = await MembersOfCollabServices(collabID);
+  async ({ collabID }, { getState }) => {
+    const user = getState().authen.user;
+    const response = await MembersOfCollabServices(collabID, user);
     return response;
   }
 );
@@ -37,17 +38,24 @@ export const addMembersToCollab = createAsyncThunk(
 const memberSlice = createSlice({
   name: "membersOfCollab",
   initialState: {
-    values: [],
+    active: [],
+    pending: [],
+    inactive: [],
   },
   reducers: {
     setValues: (state, action) => {
-      state.values = action.payload;
+      state.active = action.payload.active;
+      state.pending = action.payload.pending;
+      state.inactive = action.payload.inactive;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getMembersOfCollab.fulfilled, (state, action) => {
-        state.values = action.payload;
+        if (action.payload === undefined) return;
+        state.active = action.payload.active;
+        state.pending = action.payload.pending;
+        state.inactive = action.payload.inactive;
       })
       .addCase(getMembersOfCollab.rejected, (state, action) => {
         console.log("rejected get members");

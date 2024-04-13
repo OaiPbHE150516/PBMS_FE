@@ -59,52 +59,64 @@ function AddNewMemberPopup({ show, onClose }) {
 
 const MemberTab = ({ collabID }) => {
   const [showAddNewPopup, showAddNewPopupSet] = useState(false);
-  const members = useAppSelector((state) => state.member.values);
+  const members = useAppSelector((state) => state.member);
   const dispatch = useDispatch();
 
+  const user = useAppSelector((state) => state.authen.user);
+
   useEffect(() => {
-    dispatch(getMembersOfCollab(collabID));
-  }, [collabID]);
+    dispatch(getMembersOfCollab({ collabID }));
+  }, [collabID, user]);
 
-  const membersActive = members.filter((item) => {
-    return item.activeStateID === 1;
-  });
-  const membersInActive = members.filter((item) => {
-    return item.activeStateID === 2;
-  });
+  const memberAction = members.active || [];
+  const membersWaiting = members.pending || [];
+  const memberInactive = members.inactive || [];
 
-  const membersWaiting = members.filter((item) => {
-    return item.activeStateID === 3;
-  });
-
+  console.log("memberAction", memberAction);
+  console.log("membersWaiting", membersWaiting);
+  console.log("memberInactive", memberInactive);
   return (
     <>
       <AddNewMemberPopup
         show={showAddNewPopup}
         onClose={() => showAddNewPopupSet(false)}
       />
-      {membersActive.length > 0 && (
+
+      <h5 className="card-title text-center">Hoạt động</h5>
+      {memberAction.length > 0 ? (
         <>
-          <h5 className="card-title text-center">Hoạt động</h5>
-          {membersActive.map((item) => {
-            return <MemberCard data={item} />;
-          })}
+          {memberAction.map((item) => {
+            return <MemberCard key={item.id} data={item} />;
+          })}{" "}
+        </>
+      ) : (
+        <>
+          <div className="card-title text-center">...</div>
         </>
       )}
-      {membersInActive.length > 0 && (
+
+      <h5 className="card-title text-center">Không hoạt động</h5>
+      {memberInactive.length > 0 ? (
         <>
-          <h5 className="card-title text-center">Không hoạt động</h5>
-          {membersInActive.map((item) => {
-            return <MemberCard data={item} />;
-          })}
+          {memberInactive.map((item) => {
+            return <MemberCard key={item.id} data={item} />;
+          })}{" "}
+        </>
+      ) : (
+        <>
+          <div className="card-title text-center">...</div>
         </>
       )}
-      {membersWaiting.length > 0 && (
+      <h5 className="card-title text-center">Đang xét duyệt </h5>
+      {membersWaiting.length > 0 ? (
         <>
-          <h5 className="card-title text-center">Đang xét duyệt </h5>
           {membersWaiting.map((item) => {
-            return <MemberCard data={item} />;
-          })}
+            return <MemberCard key={item.id} data={item} />;
+          })}{" "}
+        </>
+      ) : (
+        <>
+          <div className="card-title text-center">...</div>
         </>
       )}
 

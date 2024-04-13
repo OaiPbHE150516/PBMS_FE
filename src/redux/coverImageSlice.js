@@ -3,7 +3,8 @@ import { coverImage as CoverImageServices } from "../services/coverImageServices
 
 export const coverImage = createAsyncThunk(
   "cover-image",
-  async ({ fileImg }) => {
+  async ({fileImg}) => {
+    console.log("Slice", fileImg);
     const response = await CoverImageServices(fileImg);
     return response;
   }

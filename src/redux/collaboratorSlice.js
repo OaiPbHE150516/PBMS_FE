@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCollaborators as getCollaboratorsServices } from "../services/collaboratorServices";
 import { addCollaborators as addCollaboratorsServices } from "../services/collaboratorServices";
+import { coverImage } from "../services/coverImageServices";
 
 export const getCollaborator = createAsyncThunk(
   "get-collaborators",
@@ -14,17 +15,17 @@ export const getCollaborator = createAsyncThunk(
 export const addCollaborator = createAsyncThunk(
   "add-collaborator",
   async ({fieldValue }, { dispatch }) => {
+    const imageConvert = await coverImage(fieldValue.imageFile);
     const body = {
       accountID: fieldValue.accountID,
       name: fieldValue.name,
       description: fieldValue.description,
-      imageURL: fieldValue.imageURL,
+      imageURL: imageConvert,
       accountIDs: fieldValue.account.map((item) => item.accountID),
     };
-    // const response = await addCollaboratorsServices(body);
-    // await dispatch(getCollaborator(user));
-    // return response;
-    console.log("body", body)
+    const response = await addCollaboratorsServices(body);
+    await dispatch(getCollaborator(fieldValue.user));
+    return response;
   }
 );
 

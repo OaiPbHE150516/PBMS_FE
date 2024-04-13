@@ -36,7 +36,6 @@ export const AddNewAction = ({ data, collabID }) => {
         ></img>
         <div className="">
           <p className="mb-0 bold">{data.accountName}</p>
-          {/* <p className="mb-0 small">{data.roleID}</p> */}
         </div>
       </div>
       <Form className="c-form d-flex align-items-center flex-grow-1">
@@ -47,14 +46,11 @@ export const AddNewAction = ({ data, collabID }) => {
             onChange={(e) => setActionText(e.target.value)}
           />
         </div>
-
-        <Button reset className="fs-4 px-1" >
-          <IoIosSend />
-        </Button>
         <Button reset className="fs-5 px-1">
           <FaFileImage />
+        </Button><Button reset className="fs-4 px-1" >
+          <IoIosSend onClick={handleAddAction}/>
         </Button>
-        <Button onClick={handleAddAction}> Tạo mới</Button>
       </Form>
     </div>
   );

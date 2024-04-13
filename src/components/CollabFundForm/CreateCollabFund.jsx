@@ -86,17 +86,20 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
       accountID: user.accountID,
       name: "",
       description: "",
-      imageURL: "",
-      account: [],
     },
   });
 
   const dispatch = useDispatch();
 
   const listMemberSearch = useAppSelector((state) => state.searchMember.values);
+
   const [searchKey, setSearchKey] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
+
+  const listMemberSearched = listMemberSearch.filter((item) => !selectedMembers.filter(member => member.accountID === item.accountID).length);
+  console.log("listMemberSearched", listMemberSearched);
+  console.log("selectedMembers", selectedMembers);
 
   //Handle Members
   const handleSearch = async () => {
@@ -105,10 +108,9 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
 
   const handleAddMember = (member) => {
     setSelectedMembers([...selectedMembers, member]);
-    const updatedSearchResults = searchResults.filter(
+    const updatedSearchResults = listMemberSearched.filter(
       (item) => item.accountID !== member.accountID
     );
-    setSearchResults(updatedSearchResults);
   };
 
   const handleRemoveItemMemberAdd = (index) => {
@@ -116,45 +118,39 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
     const newSelectedMembers = [...selectedMembers];
     newSelectedMembers.splice(index, 1);
     setSelectedMembers(newSelectedMembers);
-    setSearchResults([...searchResults, removedMember]);
   };
-
-  useEffect(() => {
-    setSearchResults(listMemberSearch);
-  }, [listMemberSearch]);
-
-  useEffect(() => {
-    const values = getValues(); // Get current form values
-    setValue("account", selectedMembers); // Update account value
-  }, [selectedMembers]);
 
   //Handle Image
   const handleShowImageSelect = (event) => {
     const files = event.target.files;
     if (files && files.length) {
-      const imageURL = URL.createObjectURL(files[0]);
-      setValue("imageURL", imageURL);
+      const imageLink = URL.createObjectURL(files[0]);
+      setValue("imageLink", imageLink);
+
+      const imageFile = files[0];
+      setValue("imageFile", imageFile);
     }
   };
 
   useEffect(() => {
-    if(show) return;
+    if (show) return;
+    setSearchKey("");
+    setSearchResults([]);
+    setSelectedMembers([]);
+
     reset();
   }, [show]);
-
-  //   const convertImage = useAppSelector((state) => state.coverImage.values)
-  //   console.log("image name: ", imageName);
-  //   console.log("image convert: ", convertImage);
-  //   const handleConvert = async (imageName) => {
-  //     await dispatch(coverImage(imageName));
-  //   };
 
   return (
     <Popup
       title={"Thêm khoản chi tiêu chung"}
       show={show}
       onClose={() => showSet(false)}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(
+        function(data) {
+          onSubmit({...data, account: selectedMembers})
+        }
+      )}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
@@ -176,7 +172,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
           <Button onClick={handleSearch}>Tìm</Button>
         </Form.Group>
         <div className="member_search_card">
-          {searchResults.map((member, index) => (
+          {listMemberSearched.map((member, index) => (
             <ItemMember member={member} onAddMember={handleAddMember} />
           ))}
         </div>
@@ -206,16 +202,15 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
                 onChange={handleShowImageSelect}
               />
             </Form.Group>
-            {watch("imageURL") ? (
+            {watch("imageLink") ? (
               <div>
                 <img
-                  src={watch("imageURL")}
+                  src={watch("imageLink")}
                   alt={`Image`}
                   className="img-fluid"
                 />
               </div>
             ) : null}
-            {/* <Button onClick={() => handleConvert(imageName)}>Covert</Button> */}
           </div>
         </div>
       </Form>

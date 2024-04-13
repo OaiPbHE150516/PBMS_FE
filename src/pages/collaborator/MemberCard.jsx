@@ -19,7 +19,7 @@ const MemberCard=({data}) => {
         </div>
         <div class="col-md-8 c-card-time-money">
           <div class="card-body py-0">
-            <p class="card-text small fst-italic  mb-2">{dayjs(data.createTime).format("DD/MM/YYYY")}</p>
+            <p class="card-text small fst-italic  mb-2">{dayjs(data.lastTime).format("DD/MM/YYYY")}</p>
             <p class="card-text c-card-money">
             <BsThreeDots />
             </p>
