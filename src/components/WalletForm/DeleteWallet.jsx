@@ -1,9 +1,9 @@
 import React from 'react'
-import Popup from '../Popup';
+import PopupDelete from '../PopupDelete';
 
 const DeleteWallet = ({name, balance, note, onClose, show, onSubmit = () => {}}) => {
   return (
-      <Popup
+      <PopupDelete
           title={`Xóa ví “${name}”`}
           show={show}
           onClose={onClose}
@@ -14,7 +14,7 @@ const DeleteWallet = ({name, balance, note, onClose, show, onSubmit = () => {}})
             <p>Số dư: {balance}</p>
             <p>Ghi chú: {note}</p>
           </div>
-      </Popup>
+      </PopupDelete>
   );
 };
 
