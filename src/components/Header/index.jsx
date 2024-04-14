@@ -40,7 +40,7 @@ const Header = ({ onToggleSidebar }) => {
         <div
           className="d-flex align-items-center justify-content-between"
         >
-          <a href="index.html" className="logo d-flex align-items-center">
+          <a href="overview" className="logo d-flex align-items-center">
             <img src={Logo} alt="" />
             <span>PBMS</span>
           </a>

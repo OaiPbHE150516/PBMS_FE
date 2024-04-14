@@ -8,7 +8,7 @@ const PageHelper = () => {
     return (
         <div>
             <section className="section dashboard title_div">
-            <h1 className="welcome">Chào mừng bạn đã đến với PTS</h1>
+            <h1 className="welcome">Chào mừng bạn đã đến với PBMS</h1>
             <h1 className="welcome">Vui lòng đăng nhập để trải nghiệm</h1>
             <GoogleLogin
               onSuccess={(credentialResponse) => {
