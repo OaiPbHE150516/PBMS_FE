@@ -10,7 +10,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
     setValue,
     watch,
     reset,
-    formState: { errors } // Add errors object from react-hook-form
+    formState: { errors } 
   } = useForm({
     defaultValues: {
       ...data,

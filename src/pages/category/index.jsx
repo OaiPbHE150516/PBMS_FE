@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageHelper, PageTitle } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategoryByType , createCategory} from "../../redux/categorySlice";
+import { getCategoryByType, createCategory } from "../../redux/categorySlice";
 import Button from "../../components/Button";
 import "../../css/Category.css";
 import CreateCategory from "../../components/CategoryForm/CreateCategory";
@@ -30,7 +30,10 @@ const Category = () => {
       <ul className="tree-list">
         {category.map((item) => (
           <li key={item.categoryID}>
-            <span className={expandedItems.includes(item.categoryID) ? 'expanded' : ''}>
+            <span
+              className={`${expandedItems.includes(item.categoryID) ? 'expanded' : ''}`}
+              onClick={() => showSet(!show)}
+            >
               {item.nameVN}
             </span>
             <span className="toggle-icon" onClick={() => toggleExpand(item.categoryID)}>
@@ -42,6 +45,8 @@ const Category = () => {
       </ul>
     );
   };
+
+
   const rootCategories = categories.filter((category) => category.isRoot === true);
   const incomeCategories = rootCategories.find(category => category.nameVN === 'Thu nhập');
   const expenseCategories = rootCategories.find(category => category.nameVN === 'Chi tiêu');
@@ -68,19 +73,19 @@ const Category = () => {
                   .then(() => showSet(false))
               }
             />
-            <div className="row" style={{ marginTop: "20px" }}>
-              <div className="col-lg-6">
+            <div className="row justify-content-center mt-5">
+              <div className="col-lg-5">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục thu</h5>
+                    <h5 className="card-title" style={{ textAlign: "center", fontSize: "35px", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục thu</h5>
                     {renderCategoryTree(incomeCategories?.children)}
                   </div>
                 </div>
               </div>
-              <div className="col-lg-6">
+              <div className="col-lg-5">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title" style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục chi</h5>
+                    <h5 className="card-title" style={{ textAlign: "center", fontSize: "35px", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>Hạng mục chi</h5>
                     {renderCategoryTree(expenseCategories?.children)}
                   </div>
                 </div>
@@ -95,6 +100,9 @@ const Category = () => {
       </div>
     </div>
   );
+
+
+
 };
 
 export default Category;
