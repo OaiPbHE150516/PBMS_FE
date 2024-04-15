@@ -5,6 +5,7 @@ import UpdateCollabFund from "../../components/CollabFundForm/UpdateCollabFund";
 import DevideMoney from "../../components/CollabFundForm/DevideMoney";
 import { addDivideMoney } from "../../redux/divideMoneySlice";
 import { useDispatch, useSelector } from "react-redux";
+import { TransactionFrom } from "../../components/CollabFundForm/TransactionForm";
 
 export const CollaItemCard = ({ data, onItemClick }) => {
   const [repeat, repeatSet] = useState(true);
@@ -24,6 +25,7 @@ export const CollaItemCard = ({ data, onItemClick }) => {
 
   const [showFormUpdate, setShowFormUpdate] = useState(false);
   const [showDivideForm, setShowDivideForm] = useState(false);
+  const [showTransactionForm, setShowTransactionForm] = useState(false);
 
   const dispatch = useDispatch();
   const [show, showSet] = useState(false);
@@ -69,9 +71,20 @@ export const CollaItemCard = ({ data, onItemClick }) => {
             {formatNumber(data.totalAmount)} đ
           </h5>
           <div className="listButton">
-            <Button size="btn-sm" className="btn btn-outline-secondary">
+            <Button
+              size="btn-sm"
+              className="btn btn-outline-secondary"
+              onClick={() => setShowTransactionForm(true)}
+            >
               <span>Giao dịch mới</span>
             </Button>
+            {showTransactionForm && (
+              <TransactionFrom
+                show={showTransactionForm}
+                showSet={setShowTransactionForm}
+                collabFundID={data.collabFundID}
+              />
+            )}
             {data.isFundholder ? (
               <Button
                 className="btn btn-outline-secondary"
@@ -94,9 +107,14 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 show={showDivideForm}
                 showSet={setShowDivideForm}
                 onSubmit={(fieldValue) => {
-                  dispatch(addDivideMoney({accountID: accountID, fieldValue: fieldValue}))
-                  .unwrap()
-                  .then(() => showSet(false))
+                  dispatch(
+                    addDivideMoney({
+                      accountID: accountID,
+                      fieldValue: fieldValue,
+                    })
+                  )
+                    .unwrap()
+                    .then(() => showSet(false));
                 }}
                 collabFundID={data.collabFundID}
               />

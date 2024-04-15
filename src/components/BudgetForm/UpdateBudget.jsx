@@ -7,8 +7,17 @@ import { walletListData } from "../../contexts/wallet";
 import { Controller, useForm } from "react-hook-form";
 import useAppSelector from "../../hooks/useAppSelector";
 import { FormErrorMessage } from "./FormErrorMessage";
+import logo from "../../assets/Logo.png";
 
-const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
+const UpdateBudget = ({
+  show,
+  showSet,
+  onClose,
+  data,
+  onSubmit = () => {},
+}) => {
+  const user = useAppSelector((state) => state.authen.user);
+
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
   const categoryOptions = categories.map((item) => ({
@@ -20,10 +29,14 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
     control,
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      ...data,
+      accountID: user.accountID,
+      budgetID: data.budgetID,
+      budgetName: data.budgetName,
+      targetAmount: data.targetAmount,
+      note: data.note,
       categories: data.categories.map((item) => ({
         label: item.nameVN,
         value: item.categoryID,
@@ -31,69 +44,55 @@ const UpdateBudget = ({ show, onClose, data, onSubmit }) => {
     },
   });
 
-  // console.log({isDirty})
-
   return (
     <Popup
       title={"Chỉnh sửa hạn mức"}
       show={show}
       onClose={() => onClose()}
-      onSubmit={isDirty ? handleSubmit(onSubmit) : onClose}
+      onSubmit={handleSubmit(onSubmit)}
     >
-      <Form noValidate validated={isValid} className="c-form">
-        <Form.Group className="mb-2">
-          <Form.Label>Tên  hạn mức</Form.Label>
-          <Form.Control
-            type="text"
-            {...register("budgetName", { required: true })}
-          ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"budgetName"} />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Hạng mục</Form.Label>
-          <div className="row">
-            <div className="col-9">
-              <Controller
-                rules={{ validate: (value) => Boolean(value.length) }}
-                control={control}
-                name="categories"
-                render={({ field }) => (
-                  <MultipleSelect
-                    isMulti
-                    {...field}
-                    options={categoryOptions}
-                  />
-                )}
-              />
-              <FormErrorMessage errors={errors} fieldName={"categories"} />
-            </div>
-            <div className="col-3 d-flex align-items-center justify-content-center">
-              <div className="force-center">
-                <img
-                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iMjUiIGZpbGw9IiNEOUQ5RDkiLz4KPC9zdmc+Cg=="
-                  className=""
-                  width={70}
-                  height={70}
-                  alt=""
-                />
-              </div>
+      <Form.Group className="mb-2">
+        <Form.Label>Tên hạn mức</Form.Label>
+        <Form.Control
+          type="text"
+          {...register("budgetName", { required: true })}
+        ></Form.Control>
+        <FormErrorMessage errors={errors} fieldName={"budgetName"} />
+      </Form.Group>
+      <Form.Group className="mb-2">
+        <Form.Label>Hạng mục</Form.Label>
+        <div className="row">
+          <div className="col-9">
+            <Controller
+              rules={{ validate: (value) => Boolean(value.length) }}
+              control={control}
+              name="categories"
+              render={({ field }) => (
+                <MultipleSelect isMulti {...field} options={categoryOptions} />
+              )}
+            />
+            <FormErrorMessage errors={errors} fieldName={"categories"} />
+          </div>
+          <div className="col-3 d-flex align-items-center justify-content-center">
+            <div className="force-center">
+              <img src={logo} className="" width={70} height={70} alt="" />
             </div>
           </div>
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Ngưỡng chi tiêu</Form.Label>
-          <Form.Control
-            type="number"
-            {...register("targetAmount", { required: true })}
-          ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Ghi chú</Form.Label>
-          <Form.Control as="textarea" {...register("note")}></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"note"} />
-        </Form.Group>
-      </Form>
+        </div>
+      </Form.Group>
+      <Form.Group className="mb-2">
+        <Form.Label>Ngưỡng chi tiêu</Form.Label>
+        <Form.Control
+          type="number"
+          {...register("targetAmount", { required: true })}
+        ></Form.Control>
+        <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
+      </Form.Group>
+      <Form.Group className="mb-2">
+        <Form.Label>Ghi chú</Form.Label>
+        <Form.Control as="textarea" {...register("note")}></Form.Control>
+        <FormErrorMessage errors={errors} fieldName={"note"} />
+      </Form.Group>
     </Popup>
   );
 };

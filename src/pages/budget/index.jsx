@@ -7,7 +7,12 @@ import UpdateBudget from "../../components/BudgetForm/UpdateBudget";
 import DeleteBudget from "../../components/BudgetForm/DeleteBudget";
 import { useDispatch, useSelector } from "react-redux";
 import useAppSelector from "../../hooks/useAppSelector";
-import { addBudgets, getBudgets, removeBudgets } from "../../redux/budgetSlice";
+import {
+  addBudgets,
+  getBudgets,
+  removeBudgets,
+  updateBudgets,
+} from "../../redux/budgetSlice";
 import CardBudget from "./CardBudget";
 import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
@@ -44,6 +49,7 @@ const Budget = () => {
     (item) => item.budgetID === removeIdModal
   );
 
+  console.log(budgets);
   return (
     <div className="Budget">
       {user ? (
@@ -74,9 +80,16 @@ const Budget = () => {
             <UpdateBudget
               data={updateBudgetData}
               show={Boolean(editIdModal)}
+              showSet={showSet}
               onClose={() => editIdModalSet(false)}
               onSubmit={(fieldValue) => {
-                console.log({ fieldValue });
+                dispatch(
+                  updateBudgets({
+                    fieldValue: fieldValue,
+                  })
+                )
+                  .unwrap()
+                  .then(() => editIdModalSet(false));
               }}
             />
           )}
@@ -148,7 +161,7 @@ const Budget = () => {
         </>
       ) : (
         <>
-          <PageHelper/>
+          <PageHelper />
         </>
       )}
     </div>

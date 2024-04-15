@@ -26,12 +26,19 @@ export const addBudgets = async (data) => {
 };
 
 export const updateBudgets = async (data) => {
-  // const response = await axios.post(
-  //   API.MANAGE_BUDGET + "/api/budget/creat",
-  //   data
-  // );
-  console.log(data);
-  // return response.data;
+  const response = await axios.put(
+    API.MANAGE_BUDGET + "/api/budget/update",
+    data
+  );
+  return response.data;
+};
+
+export const updateCategoryOfBudget = async (data) => {
+  const response = await axios.put(
+    API.MANAGE_BUDGET + "/api/budget/update/category",
+    data
+  );
+  return response.data;
 };
 
 export const removeBudgets = async (budgetID, accountID) => {
