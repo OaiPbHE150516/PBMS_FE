@@ -15,6 +15,7 @@ import { getCurrency } from "../../redux/currencySlice";
 const Wallet = () => {
     const dispatch = useDispatch();
     const wallet = useSelector((state) => state.wallet.values);
+    console.log("wallet", wallet);
     const totalwallets = useSelector((state) => state.totalwallet.values);
     const user = useSelector((state) => state.authen.user);
     const accountID = useSelector((state) => state.authen.user?.accountID);
@@ -26,6 +27,7 @@ const Wallet = () => {
     const editWalletData = wallet.find(
         (item) => item.walletID === editIdModal
     );
+    console.log("editWalletData", editWalletData);
     const deleteWalletData = wallet.find(
         (item) => item.walletID === removeIdModal
     );

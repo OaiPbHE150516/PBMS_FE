@@ -3,11 +3,12 @@
 }
 
 .tree-list {
+  margin-top: 5px;
+  margin-left: 20px;
   list-style-type: none; 
-  font-family: 'New Century Schoolbook', serif;
-  font-size: 25px;
+  font-size: 20px;
   padding-left: 0;
-  color: rgb(90, 88, 88); /* Set text color to gray */
+  color: rgb(90, 88, 88); 
 }
 
 
@@ -46,8 +47,31 @@
   position: absolute;
   right: 0;
 }
+.category-box {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 100%;
+}
 
-.tree-list li span:hover {
-  color: rgb(52, 52, 160); 
-  font-weight: bold; 
+.category-box:hover {
+  background-color: #e0e0e0;
+}
+
+.category-name {
+  color: #333;
+}
+
+.tree-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tree-list > li {
+  margin-bottom: 8px;
 }

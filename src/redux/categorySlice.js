@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import categoryServices from "../services/categoryServices";
 import { createCategory as createCategoryServices } from "../services/categoryServices";
+import { updateCategory as updateCategoryServices } from "../services/categoryServices";
 
 export const getCategories = createAsyncThunk("get-categories", async () => {
   const response = await categoryServices.getCategories();
@@ -17,12 +18,30 @@ export const createCategory = createAsyncThunk(
   async ({ accountID, fieldValue }, { dispatch }) => {
     const body = {
       accountID: accountID,
+      categoryID: fieldValue.categoryID,
       nameVN: fieldValue.nameVN,
       nameEN: fieldValue.nameVN,
       parentCategoryID: fieldValue.categoryID,
     };
     console.log(body);
     const response = await createCategoryServices(body);
+    dispatch(getCategoryByType());
+    return response;
+  }
+);
+export const updateCategory = createAsyncThunk(
+  "update-category",
+  async ({ accountID,categoryID, fieldValue }, { dispatch }) => {
+    const updatedParentCategoryID = fieldValue.parentCategoryID ? fieldValue.parentCategoryID : categoryID;
+    const body = {
+      accountID: accountID,
+      categoryID: categoryID,
+      nameVN: fieldValue.nameVN,
+      nameEN: fieldValue.nameVN,
+      parentCategoryID: updatedParentCategoryID,
+    };
+    console.log(body);
+    const response = await updateCategoryServices(body);
     dispatch(getCategoryByType());
     return response;
   }
