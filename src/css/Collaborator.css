@@ -125,3 +125,24 @@
 .item_member .icon_remove:hover{
     cursor: pointer;
 }
+
+.time{
+    display: flex;
+    justify-content: center;
+}
+.cardHistoItem{
+    margin: 5px auto;
+}
+.moneyItem{
+    display: flex;
+}
+.numberMoney{
+    text-align: right;
+}
+.divide{
+    display: flex;
+    margin: 10px 0 !important;
+}
+.right{
+    float: right;
+}

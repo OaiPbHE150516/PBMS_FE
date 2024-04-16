@@ -23,7 +23,7 @@ export const addMembersToCollab = createAsyncThunk(
       };
       const response = await AddMembersOfCollabServices(body);
       toast.success("Add Member successfully.");
-      await dispatch(getMembersOfCollab(fieldValue.collabFundID));
+      await dispatch(getMembersOfCollab(fieldValue.accountFundholderID));
       return response;
     } catch (error) {
       toast.error("Failed to add member.");
