@@ -1,23 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getActionsOfCollab as ActionsOfCollabServices } from "../services/actionServices";
 import { addActionsOfCollabNoTrans as NewActionsOfCollabNoTransServices } from "../services/actionServices";
+import { coverImage } from "../services/coverImageServices";
 
-export const getActionsOfCollab = createAsyncThunk("get-actionsOfCollab", async (collabID, accountID) => {
-  const response = await ActionsOfCollabServices(collabID, accountID);
-  return response;
-});
+export const getActionsOfCollab = createAsyncThunk(
+  "get-actionsOfCollab",
+  async (collabID, accountID) => {
+    const response = await ActionsOfCollabServices(collabID, accountID);
+    return response;
+  }
+);
 
 export const addActionNoTrans = createAsyncThunk(
   "add-action-no-trans",
-  async ({accountID, fieldValue}, { dispatch }) => {
+  async ({ fieldValue }, { dispatch }) => {
     const body = {
       collabFundID: fieldValue.collabID,
-      accountID: accountID,
+      accountID: fieldValue.accountID,
       note: fieldValue.note,
-      filename: "",
-      };
+      filename:
+        fieldValue.imageFile !== ""
+          ? await coverImage(fieldValue.imageFile)
+          : "",
+    };
     const response = await NewActionsOfCollabNoTransServices(body);
-    await dispatch(getActionsOfCollab(body.collabFundID))
+    await dispatch(getActionsOfCollab(fieldValue.collabID));
     return response;
   }
 );
@@ -42,6 +49,5 @@ const actionSlice = createSlice({
       });
   },
 });
-
 
 export default actionSlice;
