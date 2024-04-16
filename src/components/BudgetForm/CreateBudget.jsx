@@ -122,7 +122,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
           <Form.Label>
-            Tên hạn mứ<caption></caption>
+            Tên hạn mức<caption></caption>
           </Form.Label>
           <Form.Control
             type="text"

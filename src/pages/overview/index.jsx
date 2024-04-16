@@ -513,7 +513,7 @@ const BudgetListViewCard = () => {
     <div class="col-6">
       <div class="card top-selling overflow-auto">
         <div class="card-body">
-          <h5 class="card-title">Ngân sách</h5>
+          <h5 class="card-title">Các hạn mức</h5>
           <table class="table table-borderless">
             <tbody>
               {budgets.map((item) => (

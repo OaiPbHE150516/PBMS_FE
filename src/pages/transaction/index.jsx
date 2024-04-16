@@ -120,7 +120,7 @@ const Transaction = () => {
                       #
                     </th>
                     <th scope="col">Thời gian</th>
-                    <th scope="col">Danh mục</th>
+                    <th scope="col">Hạng mục</th>
                     <th scope="col">Số tiền</th>
                     <th scope="col">Ví</th>
                     <th scope="col">Ghi chú</th>
