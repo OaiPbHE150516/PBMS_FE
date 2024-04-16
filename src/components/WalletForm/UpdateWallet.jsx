@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Popup from "../Popup";
+import PopupWallet from "../PopupWallet";
 import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
 
@@ -71,7 +71,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
   
 
   return (
-    <Popup
+    <PopupWallet
       title={"Chỉnh sửa ví"}
       show={show}
       onClose={() => onClose()}
@@ -138,7 +138,7 @@ const UpdateWallet = ({ show, onClose, data, onSubmit }) => {
           </>
         )}
       </Form>
-    </Popup>
+    </PopupWallet>
   );
 };
 

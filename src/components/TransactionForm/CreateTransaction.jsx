@@ -60,7 +60,9 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
         label: item.name,
         value: item.walletID,
         balance: item.balance,
+        activeState: item.activeState.activeStateID
     }));
+    console.log("WalletOPtions", walletOptions);
     useEffect(() => {
         if (isScanned && scan && scan.totalAmount) {
             setValue('totalAmount', scan.totalAmount);
@@ -267,11 +269,11 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                         {isScanned && scan ? (
                                             <FormControl
                                                 {...field}
-                                                type="number" 
+                                                type="number"
                                                 defaultValue={scan.totalAmount}
                                             />
                                         ) : (
-                                            <Form.Control {...field} type="number" /> 
+                                            <Form.Control {...field} type="number" />
                                         )}
                                         {errors.totalAmount && (
                                             <div className="text-danger">{errors.totalAmount.message}</div>
@@ -294,14 +296,18 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                 render={({ field }) => (
                                     <select {...field} className="form-control">
                                         <option value="">Chọn ví</option>
-                                        {walletOptions.map((item) => (
-                                            <option key={item.value} value={item.value}>
-                                                {item.label}
-                                            </option>
-                                        ))}
+                                        {walletOptions
+                                            .filter(item => item.activeState && item.activeState === 1)
+                                            .map((item) => (
+                                                <option key={item.value} value={item.value}>
+                                                    {item.label}
+                                                </option>
+                                            ))}
                                     </select>
                                 )}
                             />
+
+
                         </div>
                         <div className="col-8">
                             <Form.Label>Thời gian</Form.Label>
@@ -395,7 +401,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
-                                    <InputGroup className="mb-3">                                    
+                                    <InputGroup className="mb-3">
                                         <Controller
                                             control={control}
                                             name="totalAmount"
