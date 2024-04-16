@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PageHelper,PageTitle } from '../../components';
+import { PageHelper, PageTitle } from '../../components';
 import "../../css/Transaction.css";
 import Button from "../../components/Button";
 import { getTransaction } from "../../redux/transactionSlice";
@@ -30,12 +30,12 @@ const Transaction = () => {
         setIsDataLoaded(true);
       } catch (error) {
         console.error("Error fetching transaction data:", error);
-        setIsDataLoaded(true); 
+        setIsDataLoaded(true);
       }
     };
 
     if (editIdModal !== null) {
-      setIsDataLoaded(false); 
+      setIsDataLoaded(false);
       fetchTransactionData();
     }
   }, [editIdModal]);
@@ -135,7 +135,7 @@ const Transaction = () => {
                       </td>
                       <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}` : `${transaction.transactionDateStr, transaction.transactionDateStr}`}</td>
                       <td>{transaction.category.nameVN}</td>
-                      <td>
+                      <td style={{ textAlign: 'right', width:"120px" }} >
                         {transaction.category.categoryType.categoryTypeID === 1 ? (
                           <span style={{ color: '#4CAF50' }}>+{transaction.totalAmountStr}</span>
                         ) : transaction.category.categoryType.categoryTypeID === 2 ? (

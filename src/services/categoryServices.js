@@ -14,6 +14,14 @@ export const createCategory = async (data) => {
   console.log(response);
   return response.data;
 };
+export const updateCategory = async (data) => {
+  const response = await axios.put(
+    API.MANAGE_CATEGORY + "/api/category/update",
+    data
+  );
+  console.log(response);
+  return response.data;
+};
 
 const categoryServices = {
   getCategories: async () => {
