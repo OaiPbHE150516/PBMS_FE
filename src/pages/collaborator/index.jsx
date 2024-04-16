@@ -53,7 +53,6 @@ const Callaborator = () => {
                 .then(() => showSet(false))
             }
           />
-
           <section className="section dashboard">
             <div className="row">
               {collaborators.length > 0 && (
@@ -69,7 +68,7 @@ const Callaborator = () => {
                   </div>
                   <div className="col-lg-8 actionTable">
                     {selectedCollab && (
-                      <ActionTable collabID={selectedCollab} />
+                      <ActionTable collabID={selectedCollab}/>
                     )}
                   </div>
                 </>
