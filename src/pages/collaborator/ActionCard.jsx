@@ -31,10 +31,10 @@ export const ActionCard = ({ collabID }) => {
                       {item.account.accountName}
                     </p>
                     <p class="card-text">{item.note}</p>
-                    {item.transaction ? (
+                    {item.filename ? (
                       <>
                         <img
-                          src={item.transaction.imageURL}
+                          src={item.filename}
                           className="img_trans"
                         />
                       </>
