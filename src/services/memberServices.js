@@ -24,7 +24,7 @@ export const searchMembersByKey = async (key) => {
 };
 
 export const addMemberToCollab = async (body) => {
-  const response = await axios.get(
+  const response = await axios.post(
     API.MANAGE_COLLABORATOR + `/api/collabfund/invite`,
     body
   );

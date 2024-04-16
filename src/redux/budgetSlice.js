@@ -3,7 +3,7 @@ import { getBudgets as budgetServices } from "../services/budgetServices";
 import { addBudgets as addBudgetServices } from "../services/budgetServices";
 import { updateBudgets as updateBudgetServices } from "../services/budgetServices";
 import { removeBudgets as removeBudgetServices } from "../services/budgetServices";
-
+import { updateCategoryOfBudget as updateCategoryBudgetServices } from "../services/budgetServices";
 export const getBudgets = createAsyncThunk(
   "get-budgets",
   async (_, { getState }) => {
@@ -28,7 +28,7 @@ const getBudgetId = (period) => {
 
 export const addBudgets = createAsyncThunk(
   "add-budgets",
-  async ({fieldValue }, { dispatch }) => {
+  async ({ fieldValue }, { dispatch }) => {
     const body = {
       accountID: fieldValue.accountID,
       budgetName: fieldValue.budgetName,
@@ -49,32 +49,46 @@ export const addBudgets = createAsyncThunk(
 
 export const updateBudgets = createAsyncThunk(
   "update-budgets",
-  async (fieldValue, { dispatch }) => {
-    const body = {
-      // accountID: "117911566377016615313",
-      // accountID: "a1",
+  async ({ fieldValue }, { dispatch }) => {
+    const bodyCate = {
       accountID: fieldValue.accountID,
+      budgetID: fieldValue.budgetID,
+      categoryIDs: fieldValue.categories.map((item) => item.value),
+    };
+    await updateCategoryBudgetServices(bodyCate);
+    
+    const body = {
+      accountID: fieldValue.accountID,
+      budgetID: fieldValue.budgetID,
       budgetName: fieldValue.budgetName,
       targetAmount: fieldValue.targetAmount,
-      beginDate: new Date(fieldValue.fromPeriod).toISOString(),
-      endDate: new Date(fieldValue.toPeriod).toISOString(),
-      repeatInterVal: fieldValue.repeat ? fieldValue.numberIterations : 0,
       note: fieldValue.note,
-      createTime: new Date().toISOString(),
-      categoryIDs: fieldValue.category.map((item) => item.value),
     };
-    console.log(body);
-    // const response = await updateBudgetServices(body);
-    // await dispatch(getBudgets());
-    // return response;
+    console.log("body", body)
+    await updateBudgetServices(body);
+    await dispatch(getBudgets());
   }
 );
+
+// export const updateCategoryBudget = createAsyncThunk(
+//   "update-category-budgets",
+//   async ({fieldValue}, { dispatch }) => {
+//     const body = {
+//       accountID: fieldValue.accountID,
+//       budgetID: fieldValue.budgetID,
+//       categoryIDs: fieldValue.cagegories.mapp(item => item.categoryID),
+//     };
+//     const response = await updateCategoryBudgetServices(body);
+//     await dispatch(getBudgets());
+//     return response;
+//   }
+// );
 
 export const removeBudgets = createAsyncThunk(
   "remove-budgets",
   async ({ budgetID, accountID }, { dispatch }) => {
     const response = await removeBudgetServices(budgetID, accountID);
-    await dispatch(getBudgets(accountID));
+    await dispatch(getBudgets());
     return response;
   }
 );

@@ -98,8 +98,6 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
   const [selectedMembers, setSelectedMembers] = useState([]);
 
   const listMemberSearched = listMemberSearch.filter((item) => !selectedMembers.filter(member => member.accountID === item.accountID).length);
-  console.log("listMemberSearched", listMemberSearched);
-  console.log("selectedMembers", selectedMembers);
 
   //Handle Members
   const handleSearch = async () => {
@@ -194,7 +192,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
           </div>{" "}
           <div className="col-md-6">
             <Form.Group className="mb-2">
-              <Form.Label>Chọn ảnh</Form.Label>
+              <Form.Label>Ảnh bìa</Form.Label>
               <Form.Control
                 type="file"
                 accept="image/*"

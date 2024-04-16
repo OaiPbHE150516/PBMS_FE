@@ -8,6 +8,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 import { FormErrorMessage } from "./FormErrorMessage";
+import logo from "../../assets/Logo.png";
 
 /**
  *
@@ -46,7 +47,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
       budgetName: "",
       targetAmount: 0,
       fromPeriod: getInputDateFormat(new Date()),
-      toPeriod: getInputDateFormat(new Date()), 
+      toPeriod: getInputDateFormat(new Date()),
       repeat: false,
       period: /** @type {'week' | 'month' | 'other'} */ ("other"),
       numberIterations: 1,
@@ -120,7 +121,9 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên hạn mứ<caption></caption></Form.Label>
+          <Form.Label>
+            Tên hạn mức<caption></caption>
+          </Form.Label>
           <Form.Control
             type="text"
             {...register("budgetName", { required: true })}
@@ -146,13 +149,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             </div>
             <div className="col-3 d-flex align-items-center justify-content-center">
               <div className="force-center">
-                <img
-                  src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiByeD0iMjUiIGZpbGw9IiNEOUQ5RDkiLz4KPC9zdmc+Cg=="
-                  className=""
-                  width={70}
-                  height={70}
-                  alt=""
-                />
+                <img src={logo} className="" width={70} height={70} alt="" />
               </div>
             </div>
           </div>

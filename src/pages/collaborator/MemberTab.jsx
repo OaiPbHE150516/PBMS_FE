@@ -7,55 +7,105 @@ import Form from "react-bootstrap/Form";
 import logo from "../../assets/Logo.png";
 import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
-import { getMembersOfCollab } from "../../redux/memberSlice";
-function ItemMember() {
-  return (
-    <div className="d-flex align-items-center gap-2 p-2">
-      <div>
-        <img
-          src={logo}
-          alt=""
-          className="rounded-full border border-dark img_logo"
-          width={50}
-          height={50}
-        />
-      </div>
-      <div className="flex-grow-1">
-        <p className="mb-0 bold">Member 1</p>
-        <p className="mb-0 small">Member 1</p>
-      </div>
-      <Button>Thêm</Button>
-    </div>
-  );
-}
+import {
+  addMembersToCollab,
+  getMembersOfCollab,
+} from "../../redux/memberSlice";
+import { BsX } from "react-icons/bs";
+import { searchMembersByKey } from "../../services/searchMemberSlice";
+import { useForm } from "react-hook-form";
 
-function AddNewMemberPopup({ show, onClose }) {
+
+
+const AddNewMemberPopup = ({ show, onClose, collabID, founderID  }) => {
+  const [searchKey, setSearchKey] = useState("");
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  
+  const dispatch = useDispatch();
+
+  const listMemberSearch = useAppSelector((state) => state.searchMember.values);
+  const listMemberSearched = listMemberSearch.filter(
+    (item) =>
+      !selectedMembers.filter((member) => member.accountID === item.accountID)
+        .length
+  );
+  const handleSearch = async () => {
+    await dispatch(searchMembersByKey(searchKey));
+  };
+
   return (
     <Popup show={show} onClose={onClose}>
       <div>
         <h3>Thêm thành viên</h3>
         <Form className="c-form">
-          <Form.Group className="mb-3">
-            <MultipleSelect
-              value={[{ value: "member1", label: "member 1" }]}
-              options={[
-                { value: "member1", label: "member 1" },
-                { value: "member2", label: "member 2" },
-              ]}
-            ></MultipleSelect>
-          </Form.Group>
+          <Form.Label>Tìm kiếm thành viên</Form.Label>
           <Form.Group className="mb-3 d-flex gap-3 align-items-center">
-            <Form.Control type="text" className="flex-grow-1" />
-            <Button>Search</Button>
+            <Form.Control
+              type="text"
+              className="flex-grow-1"
+              value={searchKey}
+              onChange={(e) => setSearchKey(e.target.value)}
+            />
+            <Button onClick={handleSearch}>Tìm</Button>
           </Form.Group>
-          <Form.Group className="mb-3 border border-dark">
-            <ItemMember />
-          </Form.Group>
+          <div className="member_search_card">
+            {listMemberSearched.map((member, index) => (
+              <ItemMember
+                key={index}
+                member={member}
+                collabID={collabID}
+                founderID={founderID}
+                selectedMembers={selectedMembers}
+                setSelectedMembers={setSelectedMembers}
+              />
+            ))}
+          </div>
         </Form>
       </div>
     </Popup>
   );
-}
+};
+
+const ItemMember = ({ member, collabID, founderID, selectedMembers, setSelectedMembers }) => {
+  const dispatch = useDispatch();
+  const handleAddMember = () => {
+    dispatch(
+      addMembersToCollab({
+        fieldValue: {
+          collabFundID: collabID,
+          accountFundholderID: founderID,
+          accountMemberID: member.accountID,
+        },
+      })
+    );
+  };
+
+  const handleAddMemberAndRemove = () => {
+    handleAddMember();
+    setSelectedMembers([...selectedMembers, member]);
+  };
+
+  if (!member) return null;
+  return (
+    <Form.Group className="mb-3 border border-dark">
+      <div className="d-flex align-items-center gap-2 p-2 ">
+        <div>
+          <img
+            src={logo}
+            alt=""
+            className="rounded-full border border-dark"
+            width={50}
+            height={50}
+          />
+        </div>
+        <div className="flex-grow-1">
+          <p className="mb-0 bold">{member.accountName}</p>
+        </div>
+        <Button onClick={handleAddMemberAndRemove}>Thêm</Button>
+      </div>
+    </Form.Group>
+  );
+};
 
 const MemberTab = ({ collabID }) => {
   const [showAddNewPopup, showAddNewPopupSet] = useState(false);
@@ -72,14 +122,23 @@ const MemberTab = ({ collabID }) => {
   const membersWaiting = members.pending || [];
   const memberInactive = members.inactive || [];
 
-  console.log("memberAction", memberAction);
-  console.log("membersWaiting", membersWaiting);
-  console.log("memberInactive", memberInactive);
+  const memberFound = {
+    active: (members.active || []).filter((member) => member.isFundholder),
+    pending: (members.pending || []).filter((member) => member.isFundholder),
+    inactive: (members.inactive || []).filter((member) => member.isFundholder),
+  };
+
+  const isCurrentUserMember = memberFound.active.some(
+    (member) => member.accountID === user.accountID
+  );
+
   return (
     <>
       <AddNewMemberPopup
         show={showAddNewPopup}
         onClose={() => showAddNewPopupSet(false)}
+        collabID={collabID}
+        founderID={user.accountID}
       />
 
       <h5 className="card-title text-center">Hoạt động</h5>
@@ -120,14 +179,16 @@ const MemberTab = ({ collabID }) => {
         </>
       )}
 
-      <div className="text-center mt-4">
-        <Button
-          size="btn-lg"
-          onClick={() => showAddNewPopupSet(!showAddNewPopup)}
-        >
-          Thêm thành viên
-        </Button>
-      </div>
+      {isCurrentUserMember && (
+        <div className="text-center mt-4">
+          <Button
+            size="btn-lg"
+            onClick={() => showAddNewPopupSet(!showAddNewPopup)}
+          >
+            Thêm thành viên
+          </Button>
+        </div>
+      )}
     </>
   );
 };

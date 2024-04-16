@@ -40,7 +40,7 @@ export const sidebars = [
   },
 
   {
-    text: "Lịch",
+    text: "Lịch ngân sách",
     icon: <BsCalendar2Week />,
     path: ROUTE_CONSTANTS.CALENDAR_PAGE,
     exact: true,
