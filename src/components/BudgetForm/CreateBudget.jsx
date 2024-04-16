@@ -68,13 +68,6 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     value: item.categoryID,
   }));
 
-  //List Wallet
-  const wallets = useAppSelector((state) => state.wallet.values);
-  const walletOptions = wallets.map((item) => ({
-    label: item.name,
-    value: item.walletID,
-  }));
-
   useEffect(() => {
     const subscription = watch((fields, { name, type }) => {
       if (name === "period") {
@@ -122,7 +115,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
           <Form.Label>
-            Tên hạn mức<caption></caption>
+            Tên hạn mức
           </Form.Label>
           <Form.Control
             type="text"

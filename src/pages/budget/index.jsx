@@ -49,7 +49,6 @@ const Budget = () => {
     (item) => item.budgetID === removeIdModal
   );
 
-  console.log(budgets);
   return (
     <div className="Budget">
       {user ? (

@@ -36,3 +36,10 @@ export const addInvoiceTransaction = async (data) => {
   console.log(response);
   return response.data;
 };
+export const mostTransactionExpense = async (user) => {
+  const response = await axios.get(
+    API.MANAGE_TRANSACTION + `/api/transaction/get/expenses/lastnumdays/${user.accountID}/5`
+  );
+  console.log(response);
+  return response.data;
+};
