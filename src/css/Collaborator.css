@@ -1,127 +1,183 @@
-.actionTable{
-    min-height: 850px;
+.actionTable {
+  min-height: 850px;
 }
-.collCard-Detail{
-    min-height: 140px;
+.collCard-Detail {
+  min-height: 140px;
 }
-.totalMoney{
-    display: flex;
-    justify-content: right;
+.totalMoney {
+  display: flex;
+  justify-content: right;
 }
-.listButton button{
-    width: 100%;
-    margin-top: 5px;
-    background: #FFFFFF;
+.listButton button {
+  width: 100%;
+  margin-top: 5px;
+  background: #ffffff;
 }
-.listButton .btn{
-    font-size: 12px!important;
-    padding: 3px 5px!important;
+.listButton .btn {
+  font-size: 12px !important;
+  padding: 3px 5px !important;
 }
-.listButton{
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    width: 90%;
-    margin: auto;
+.listButton {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  width: 90%;
+  margin: auto;
 }
 
 .rounded-full {
-    border-radius: 100%;
+  border-radius: 100%;
 }
-.cardItem:hover .listButton{
-    opacity: 1;
-    pointer-events: all;
-    visibility: visible;
+.cardItem:hover .listButton {
+  opacity: 1;
+  pointer-events: all;
+  visibility: visible;
 }
-#myTabjustified{
-    border: 1px solid #000000 !important;
+#myTabjustified {
+  border: 1px solid #000000 !important;
 }
 #myTabjustified button {
-    border-radius: 0 !important;
+  border-radius: 0 !important;
 }
-#myTabjustified button:hover{
-    border: 1px solid #000000 !important;
-   
+#myTabjustified button:hover {
+  border: 1px solid #000000 !important;
 }
-#myTabjustified .active{
-    background: #EFEDE4;
-    border-radius: 0;
-    border: 1px solid #000000;
-    border-top: none;
-    border-bottom: none;
+#myTabjustified .active {
+  background: #efede4;
+  border-radius: 0;
+  border: 1px solid #000000;
+  border-top: none;
+  border-bottom: none;
 }
-.cardActionItem{
-    box-shadow: none !important;
+.cardActionItem {
+  box-shadow: none !important;
 }
-.cardActionItem .row{
-    background: #EFEDE4;
-    border: 1px solid #000000 !important;
+.cardActionItem .row {
+  background: #efede4;
+  border: 1px solid #000000 !important;
 }
-.cardActionItem .img_logo{
-    height: 50px !important;
-    border: 1px solid #000000;
-    border-radius: 50% !important;
+.cardActionItem .img_logo {
+  height: 50px !important;
+  border: 1px solid #000000;
+  border-radius: 50% !important;
 }
-.cardActionItem .c-card-member-comment{
-    display: flex;
-    align-items: center;
+.cardActionItem .c-card-member-comment {
+  display: flex;
+  align-items: center;
 }
-.cardActionItem .c-card-member{
-    font-weight: bold;
+.cardActionItem .c-card-member {
+  font-weight: bold;
 }
-.cardActionItem .c-card-time-money .card-body{
-    float: right;
-    text-align: right;
+.cardActionItem .c-card-time-money .card-body {
+  float: right;
+  text-align: right;
 }
-.cardActionItem .c-card-time-money .c-card-money{
-    font-weight: bold;
+.cardActionItem .c-card-time-money .c-card-money {
+  font-weight: bold;
 }
-.c-card-time-money svg{
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    cursor: pointer;
+.c-card-time-money svg {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  cursor: pointer;
 }
-.c-card-time-money:hover svg{
-    opacity: 1;
-    pointer-events: all;
-    visibility: visible;
-}
-
-.Callaborator .dashboard{
-    margin-top: 20px;
+.c-card-time-money:hover svg {
+  opacity: 1;
+  pointer-events: all;
+  visibility: visible;
 }
 
-.listDivideMoney img{
-    height: 40px;
-    border-radius: 50%;
+.Callaborator .dashboard {
+  margin-top: 20px;
 }
-.listDivideMoney .divideItem{
-    border: 1px solid #000000;
-    margin-bottom: 10px;
+
+.listDivideMoney img {
+  height: 40px;
+  border-radius: 50%;
 }
-.img_trans{
-    height: 200px;
+.listDivideMoney .divideItem {
+  border: 1px solid #000000;
+  margin-bottom: 10px;
 }
-.item_member{
-    border-bottom: 1px solid #000000;
-    justify-content: space-between;
+.img_trans {
+  height: 200px;
 }
-.item_member:last-child{
-    border-bottom: none;
+.item_member {
+  border-bottom: 1px solid #000000;
+  justify-content: space-between;
 }
-.item_member_card{
-    display: flex;
+.item_member:last-child {
+  border-bottom: none;
 }
-.item_member_title{
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
+.item_member_card {
+  display: flex;
 }
-.member_search_card{
-    max-height: 250px;
-    overflow-y: auto;
+.item_member_title {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
-.item_member .icon_remove:hover{
-    cursor: pointer;
+.member_search_card {
+  max-height: 250px;
+  overflow-y: auto;
+}
+.item_member .icon_remove:hover {
+  cursor: pointer;
+}
+
+.time {
+  display: flex;
+  justify-content: center;
+}
+.cardHistoItem {
+  margin: 5px auto;
+}
+.moneyItem {
+  display: flex;
+}
+.numberMoney {
+  text-align: right;
+}
+.divide {
+  display: flex;
+  margin: 10px 0 !important;
+}
+.right {
+  float: right;
+}
+.moneyDivide {
+  display: flex;
+  margin-top: 10px;
+  text-align: center;
+}
+.arrow_money {
+  display: flex;
+}
+.money_left{
+  text-align: left !important;
+}
+.titleMoney, .numberMoney, .time{
+  font-weight: bold;
+}
+.transExpen_each{
+  margin-top: 10px;
+}
+.eachItem{
+  border-bottom: 1px solid;
+}
+.transExpen_time{
+  font-weight: bold;
+}
+.close{
+  font-size: 24px;
+}
+.content input{
+  width: 98%;
+  height: 50px;
+  border-radius: 10px;
+  outline: none;
+
+}
+.amount{
+  width: 100%;
 }

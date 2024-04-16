@@ -3,6 +3,7 @@ import MemberTab from "./MemberTab";
 import { ActionCard } from "./ActionCard";
 import { AddNewAction } from "./AddNewAction";
 import useAppSelector from "../../hooks/useAppSelector";
+import { HistoryTab } from "./HistoryTab";
 
 export const ActionTable = ({ collabID }) => {
   const user = useAppSelector((state) => state.authen.user);
@@ -83,7 +84,14 @@ export const ActionTable = ({ collabID }) => {
             id="history-justified"
             role="tabpanel"
             aria-labelledby="history-tab"
-          ></div>
+          >
+            <div
+              className="flex-grow-1"
+              style={{ maxHeight: "500px", overflowY: "auto" }}
+            >
+              <HistoryTab collabID={collabID} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

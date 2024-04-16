@@ -8,14 +8,6 @@ export const getProfileInfor = createAsyncThunk("get-profile", async (_, {getSta
   const response = await ProfileServices(user);
   return response;
 });
-// export const updateProfileInfo = createAsyncThunk(
-//   "update-budgets",
-//   async (userData, { dispatch }) => {
-//     const response = await UpdateProfileServices(userData);
-//     await dispatch(getProfileInfor());
-//     return response;
-//   }
-// );
 
 export const getAccountByKey = createAsyncThunk(
   "get-account-by-key",
