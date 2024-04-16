@@ -14,19 +14,16 @@ export const getMembersOfCollab = createAsyncThunk(
 
 export const addMembersToCollab = createAsyncThunk(
   "add-members-to-collab",
-  async (
-    { collabFundID, accountFundholderID, accountMemberID },
-    { dispatch }
-  ) => {
+  async ({ fieldValue }, { dispatch }) => {
     try {
       const body = {
-        collabFundID: collabFundID,
-        accountFundholderID: accountFundholderID,
-        accountMemberID: accountMemberID,
+        collabFundID: fieldValue.collabFundID,
+        accountFundholderID: fieldValue.accountFundholderID,
+        accountMemberID: fieldValue.accountMemberID,
       };
       const response = await AddMembersOfCollabServices(body);
-      await dispatch(getMembersOfCollab());
       toast.success("Add Member successfully.");
+      await dispatch(getMembersOfCollab(fieldValue.collabFundID));
       return response;
     } catch (error) {
       toast.error("Failed to add member.");

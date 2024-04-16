@@ -98,8 +98,6 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
   const [selectedMembers, setSelectedMembers] = useState([]);
 
   const listMemberSearched = listMemberSearch.filter((item) => !selectedMembers.filter(member => member.accountID === item.accountID).length);
-  console.log("listMemberSearched", listMemberSearched);
-  console.log("selectedMembers", selectedMembers);
 
   //Handle Members
   const handleSearch = async () => {
