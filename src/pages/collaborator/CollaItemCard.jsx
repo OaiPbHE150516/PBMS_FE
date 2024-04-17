@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import Button from "../../components/Button";
 import UpdateCollabFund from "../../components/CollabFundForm/UpdateCollabFund";
@@ -6,9 +6,12 @@ import DevideMoney from "../../components/CollabFundForm/DevideMoney";
 import { addDivideMoney } from "../../redux/divideMoneySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { TransactionFrom } from "../../components/CollabFundForm/TransactionForm";
+import useAppSelector from "../../hooks/useAppSelector";
+import { updateCollaborator } from "../../redux/collaboratorSlice";
 
 export const CollaItemCard = ({ data, onItemClick }) => {
   const [repeat, repeatSet] = useState(true);
+
   const handleClick = () => {
     onItemClick(data.collabFundID);
   };
@@ -26,7 +29,8 @@ export const CollaItemCard = ({ data, onItemClick }) => {
   const [showFormUpdate, setShowFormUpdate] = useState(false);
   const [showDivideForm, setShowDivideForm] = useState(false);
   const [showTransactionForm, setShowTransactionForm] = useState(false);
-
+  const [editIdModal, editIdModalSet] = useState(false);
+  
   const dispatch = useDispatch();
   const [show, showSet] = useState(false);
   const accountID = useSelector((state) => state.authen.user?.accountID);
@@ -129,9 +133,17 @@ export const CollaItemCard = ({ data, onItemClick }) => {
             </Button>
             {showFormUpdate && (
               <UpdateCollabFund
+                data={data}
                 show={showFormUpdate}
                 showSet={setShowFormUpdate}
-                onSubmit={(fieldValue) => {}}
+                onClose={() => editIdModalSet(false)}
+                onSubmit={(fieldValue) => {dispatch(
+                  updateCollaborator({
+                    fieldValue: fieldValue,
+                  })
+                )
+                  .unwrap()
+                  .then(() => editIdModalSet(false));}}
               />
             )}
           </div>
