@@ -6,7 +6,7 @@ import PopupCategory from '../PopupCategory';
 import useAppSelector from "../../hooks/useAppSelector";
 import Button from '../Button';
 
-const UpdateAndDeleteCategory = ({ showUD, data, onSubmit, onClose }) => {
+const UpdateAndDeleteCategory = ({ showUD, data, onSubmit, onDelete,onClose }) => {
     const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
 
     const categories = useAppSelector((state) => state.category.values);
@@ -88,7 +88,7 @@ const UpdateAndDeleteCategory = ({ showUD, data, onSubmit, onClose }) => {
         <PopupCategory
             title="Chỉnh sửa hạng mục"
             show={showUD}
-            onDelete={onClose}
+            onDelete={onDelete}
             onClose={onClose}
             onSubmit={handleSubmit(handleFormSubmit)}
         >
@@ -110,7 +110,7 @@ const UpdateAndDeleteCategory = ({ showUD, data, onSubmit, onClose }) => {
                             setParentCategoryId(newCategoryId ? newCategoryId : data.parentCategoryID);
                         }}
                     >
-                        <option value="">Chọn hạng mục (Nếu có)</option>
+                        <option value="">Chọn hạng mục cha (Nếu có)</option>
 
                         {renderCategoriesRecursively(categories)}
 

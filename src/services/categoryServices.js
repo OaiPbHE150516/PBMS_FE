@@ -22,6 +22,13 @@ export const updateCategory = async (data) => {
   console.log(response);
   return response.data;
 };
+export const deleteCategory = async (categoryID,accountID) => {
+  const response = await axios.delete(
+    API.MANAGE_CATEGORY + `/api/category/delete/${categoryID}/${accountID}`,
+  );
+  console.log(response);
+  return response.data;
+};
 
 const categoryServices = {
   getCategories: async () => {

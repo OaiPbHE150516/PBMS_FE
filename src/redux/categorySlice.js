@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import categoryServices from "../services/categoryServices";
 import { createCategory as createCategoryServices } from "../services/categoryServices";
 import { updateCategory as updateCategoryServices } from "../services/categoryServices";
+import { deleteCategory as deleteCategoryServices } from "../services/categoryServices";
 
 export const getCategories = createAsyncThunk("get-categories", async () => {
   const response = await categoryServices.getCategories();
@@ -42,6 +43,14 @@ export const updateCategory = createAsyncThunk(
     };
     console.log(body);
     const response = await updateCategoryServices(body);
+    dispatch(getCategoryByType());
+    return response;
+  }
+);
+export const deleteCategory = createAsyncThunk(
+  "delete-category",
+  async ({ accountID,categoryID}, { dispatch }) => {
+    const response = await deleteCategoryServices(categoryID, accountID);
     dispatch(getCategoryByType());
     return response;
   }
