@@ -22,6 +22,8 @@ import filterTransactionThisSlice from "./filterTransactionThisSlice";
 import filterTransactionLastSlice from "./filterTransactionLastSlice";
 import balanceHistorySlice from "./balanceHistorySlice";
 import searchMemberSlice from "../services/searchMemberSlice";
+import historyCollabSlice from "./historyCollabSlice";
+import mostTransExpenseSlice from "./mostTransExpenseSlice";
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   value: valueSlice.reducer,
@@ -46,6 +48,8 @@ const rootReducers = combineReducers({
   filterTransactionThis: filterTransactionThisSlice.reducer,
   balanceHistory: balanceHistorySlice.reducer,
   searchMember: searchMemberSlice.reducer,
+  historyCollab: historyCollabSlice.reducer,
+  mostTransExpense: mostTransExpenseSlice.reducer,
 });
 
 const store = configureStore({

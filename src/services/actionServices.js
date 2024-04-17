@@ -25,3 +25,12 @@ export const addActionsOfCollabNoTrans = async (data) => {
   return response.data;
 };
 
+export const addActionsOfCollabWithTrans = async (formData) => {
+  const response = await axios.post(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/create/activity/withtrans/form`, 
+    formData
+  );
+  console.log(response);
+  return response.data;
+};
+
