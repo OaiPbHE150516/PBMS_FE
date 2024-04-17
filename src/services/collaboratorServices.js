@@ -25,8 +25,8 @@ export const addCollaborators = async (data) => {
 };
 
 export const updateCollaborators = async (data) => {
-  const response = await axios.post(
-    API.MANAGE_COLLABORATOR + `/api/collabfund/create`,
+  const response = await axios.put(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/update`,
     data
   );
   console.log(response);
@@ -34,8 +34,8 @@ export const updateCollaborators = async (data) => {
 };
 
 export const deleteCollaborators = async (data) => {
-  const response = await axios.post(
-    API.MANAGE_COLLABORATOR + `/api/collabfund/create`,
+  const response = await axios.delete(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/delete`,
     data
   );
   console.log(response);

@@ -1,57 +1,59 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import Popup from '../Popup';
-import { Form } from 'react-bootstrap';
-import { FormErrorMessage } from '../BudgetForm/FormErrorMessage';
+import React from "react";
+import { useForm } from "react-hook-form";
+import Popup from "../Popup";
+import { Form } from "react-bootstrap";
+import { FormErrorMessage } from "../BudgetForm/FormErrorMessage";
+import useAppSelector from "../../hooks/useAppSelector";
 
-const UpdateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
-    const {
-        register,
-        handleSubmit,
-        control,
-        watch,
-        formState: { errors, isValid },
-        setValue,
-      } = useForm({
-        defaultValues: {
-          name: "",
-          description: "",
-          imageURL: "",
-          totalAmount: 0,
-        },
-      });
-    
-      const handleImageSelect = (event) => {
-        const files = event.target.files;
-        if (files && files.length) {
-          const imageURL = URL.createObjectURL(files[0]);
-          setValue("imageURL", imageURL);
-        }
-      };
-      
-    return (
-        <Popup
+const UpdateCollabFund = ({
+  data,
+  onClose,
+  show,
+  showSet,
+  onSubmit = () => {},
+}) => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors, isValid },
+    setValue,
+  } = useForm({
+    defaultValues: {
+      collabFundID: data.collabFundID,
+      name: data.name,
+      description: data.description,
+      imageLink: data.imageURL,
+    },
+  });
+
+  const handleShowImageSelect = (event) => {
+    const files = event.target.files;
+    if (files && files.length) {
+      const imageLink = URL.createObjectURL(files[0]);
+      setValue("imageLink", imageLink);
+
+      const imageFile = files[0];
+      setValue("imageFile", imageFile);
+    }
+  };
+
+  return (
+    <Popup
       title={"Chỉnh sửa quỹ chung mới"}
       show={show}
-      onClose={() => showSet(false)}
+      onClose={() => onClose()}
       onSubmit={handleSubmit(onSubmit)}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên ngân sách</Form.Label>
+          <Form.Label>Tên khoản</Form.Label>
           <Form.Control
             type="text"
             {...register("name", { required: true })}
           ></Form.Control>
           <FormErrorMessage errors={errors} fieldName={"name"} />
-        </Form.Group>
-        <Form.Group className="mb-2">
-          <Form.Label>Lượng ngân sách</Form.Label>
-          <Form.Control
-            type="number"
-            {...register("totalAmount", { required: true })}
-          ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"totalAmount"} />
         </Form.Group>
         <div className="row">
           <div className="col-md-6">
@@ -67,28 +69,28 @@ const UpdateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
           </div>{" "}
           <div className="col-md-6">
             <Form.Group className="mb-2">
-              <Form.Label>Chọn ảnh</Form.Label>
+              <Form.Label>Ảnh bìa</Form.Label>
               <Form.Control
                 type="file"
                 accept="image/*"
                 multiple
-                onChange={handleImageSelect}
+                onChange={handleShowImageSelect}
               />
             </Form.Group>
-            {watch("imageURL") && ( 
+            {watch("imageLink") ? (
               <div>
                 <img
-                  src={watch("imageURL")} 
+                  src={watch("imageLink")}
                   alt={`Image`}
                   className="img-fluid"
                 />
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </Form>
     </Popup>
-    );
+  );
 };
 
 export default UpdateCollabFund;
