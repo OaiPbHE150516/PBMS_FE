@@ -3,6 +3,7 @@ import { getTransaction as transactionServices } from "../services/transactionSe
 import { getDetailTransaction as transactionDetailServices } from "../services/transactionServices";
 import { addTransactionwithoutInvoice as addTransactionwithoutInvoiceServices } from "../services/transactionServices";
 import { addInvoiceTransaction as addInvoiceTransactionServices } from "../services/transactionServices";
+import { getCollaborator } from "./collaboratorSlice";
 
 export const getTransaction = createAsyncThunk("get-transaction", async ({ pageNumber, pageSize }) => {
   const response = await transactionServices(pageNumber, pageSize);
@@ -32,6 +33,31 @@ export const addTransactionwithoutInvoice = createAsyncThunk(
     return response;
   }
 );
+
+export const addTransWithoutInvoice = createAsyncThunk(
+  "add-TransWithoutInvoice",
+  async ({ user, fieldValue }, { dispatch }) => {
+    const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 7);
+    const formattedDate = currentDate.toISOString();
+
+    const body = {
+      accountID: fieldValue.accountID,
+      walletID: fieldValue.walletID,
+      categoryID: fieldValue.categoryID,
+      totalAmount: fieldValue.totalAmount,
+      transactionDate: formattedDate,
+      note: fieldValue.note,
+      fromPerson: "",
+      toPerson: "",
+      imageURL: "",
+    };
+    const response = await addTransactionwithoutInvoiceServices(body);
+    dispatch(getCollaborator(user));
+    return response;
+  }
+);
+
 export const addInvoiceTransaction = createAsyncThunk(
   "add-InvoiceTransaction",
   async ({ accountID, fieldValue ,scan}, { dispatch }) => {

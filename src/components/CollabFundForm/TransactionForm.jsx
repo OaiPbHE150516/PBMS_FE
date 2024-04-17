@@ -7,12 +7,12 @@ import { getMostTransExpen } from "../../redux/mostTransExpenseSlice";
 import { IoIosSend } from "react-icons/io";
 import { addActionWithTrans } from "../../redux/actionSlice";
 import { Form } from "react-bootstrap";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FormErrorMessage } from "../BudgetForm/FormErrorMessage";
 import Popup from "../Popup";
-import MultipleSelect from "../MultipleSelect";
-import { getBudgets } from "../../redux/budgetSlice";
-import { getCategories, getCategoryByType } from "../../redux/categorySlice";
+import { getCategoryByType } from "../../redux/categorySlice";
+import { getWallets } from "../../redux/walletSlice";
+import { addTransWithoutInvoice } from "../../redux/transactionSlice";
 
 const ListTransaction = ({
   data,
@@ -138,21 +138,14 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
 
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
-  const categoryOptions = categories.map((item) => ({
-    label: item.nameVN,
-    value: item.categoryID,
-  }));
 
-  console.log("Category", categories);
   // List Wallet
   const wallets = useAppSelector((state) => state.wallet.values);
-  const walletOptions = wallets.map((item) => ({
-    label: item.name,
-    value: item.walletID,
-  }));
+
+  console.log("Wallet", wallets);
 
   useEffect(() => {
-    dispatch(getBudgets());
+    dispatch(getWallets());
     dispatch(getCategoryByType());
   }, [user]);
 
@@ -167,10 +160,10 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
         <Form.Group className="mb-2">
           <Form.Label>Tên hạn mức</Form.Label>
           <Form.Control
-            type="text"
-            {...register("categoryID", { required: true })}
+            type="number"
+            {...register("totalAmount", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"categoryID"} />
+          <FormErrorMessage errors={errors} fieldName={"totalAmount"} />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Hạng mục</Form.Label>
@@ -181,15 +174,24 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
               borderRadius: "unset",
               height: "38px",
             }}
+            {...register("categoryID", { required: true })}
+            // value={watch("categoryID")}
+            // onChange={(e) => setValue("categoryID", e.target.value)}
           >
-            {categoryOptions.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
-              </option>
+            <option value={0}>-----Chọn hạng mục-----</option>
+            {categories.map((cate) => (
+              <optgroup key={cate.value} label={cate.nameVN}>
+                {cate.children.map((child) => (
+                  <option key={child.categoryID} value={child.categoryID}>
+                    {child.nameVN}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
-          <FormErrorMessage errors={errors} fieldName={"category"} />
+          <FormErrorMessage errors={errors} fieldName={"categoryID"} />
         </Form.Group>
+
         <Form.Group className="mb-2">
           <Form.Label>Ví</Form.Label>
           <select
@@ -199,23 +201,27 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
               borderRadius: "unset",
               height: "38px",
             }}
+            {...register("walletID", { required: true })}
           >
-            {walletOptions.map((item) => (
-              <option key={item.value} value={item.value}>
-                {item.label}
+            <option value={0}>-----Chọn ví-----</option>
+            {wallets.map((item) => (
+              <option key={item.value} value={item.walletID}>
+                {item.name}
               </option>
             ))}
           </select>
           <FormErrorMessage errors={errors} fieldName={"walletID"} />
         </Form.Group>
-        <Form.Group className="mb-2">
+        {/* <Form.Group className="mb-2">
           <Form.Label>Thời gian</Form.Label>
           <Form.Control
-            type="datetime-local"
+            type="date"
             {...register("transactionDate", { required: true })}
+            defaultValue={new Date().toISOString().split("T")[0]}
+            disabled
           />
           <FormErrorMessage errors={errors} fieldName={"transactionDate"} />
-        </Form.Group>
+        </Form.Group> */}
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>
@@ -301,14 +307,16 @@ export const TransactionFrom = ({ show, showSet, collabFundID }) => {
           <FormNewTransaction
             show={showFormNewTransaction}
             showSet={showSet}
-            onSubmit={(fieldValue) =>
-              dispatch()
-                // addBudgets({
-                //   fieldValue: fieldValue,
-                // })
+            onSubmit={(fieldValue) => {
+              dispatch(
+                addTransWithoutInvoice({
+                  user,
+                  fieldValue,
+                })
+              )
                 .unwrap()
-                .then(() => showSet(false))
-            }
+                .then(() => showSet(false));
+            }}
           />
         )}
       </PopupCollabTransaction>
