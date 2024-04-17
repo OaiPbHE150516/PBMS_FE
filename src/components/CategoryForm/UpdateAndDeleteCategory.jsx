@@ -110,7 +110,7 @@ const UpdateAndDeleteCategory = ({ showUD, data, onSubmit, onDelete,onClose }) =
                             setParentCategoryId(newCategoryId ? newCategoryId : data.parentCategoryID);
                         }}
                     >
-                        <option value="">Chọn hạng mục (Nếu có)</option>
+                        <option value="">Chọn hạng mục cha (Nếu có)</option>
 
                         {renderCategoriesRecursively(categories)}
 
