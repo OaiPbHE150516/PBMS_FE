@@ -9,6 +9,8 @@ import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 import { FormErrorMessage } from "./FormErrorMessage";
 import logo from "../../assets/Logo.png";
+import { useDispatch } from "react-redux";
+import { getCategoryByType } from "../../redux/categorySlice";
 
 /**
  *
@@ -63,10 +65,11 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
 
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
-  const categoryOptions = categories.map((item) => ({
-    label: item.nameVN,
-    value: item.categoryID,
-  }));
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCategoryByType());
+  }, [user]);
 
   useEffect(() => {
     const subscription = watch((fields, { name, type }) => {
@@ -114,9 +117,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>
-            Tên hạn mức
-          </Form.Label>
+          <Form.Label>Tên hạn mức</Form.Label>
           <Form.Control
             type="text"
             {...register("budgetName", { required: true })}
@@ -125,27 +126,26 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Hạng mục</Form.Label>
-          <div className="row">
-            <div className="col-9">
-              <Controller
-                control={control}
-                name="category"
-                rules={{ validate: (value) => Boolean(value.length) }}
-                render={({ field }) => (
-                  <MultipleSelect
-                    {...field}
-                    isMulti
-                    options={categoryOptions}
-                  />
-                )}
-              />
-            </div>
-            <div className="col-3 d-flex align-items-center justify-content-center">
-              <div className="force-center">
-                <img src={logo} className="" width={70} height={70} alt="" />
-              </div>
-            </div>
-          </div>
+          <select
+            className="form-control"
+            style={{
+              border: "var(--bs-border-width) solid var(--bs-border-color)",
+              borderRadius: "unset",
+              height: "38px",
+            }}
+            {...register("category", { required: true })}
+          >
+            <option value={0}>-----Chọn hạng mục-----</option>
+            {categories.map((cate) => (
+              <optgroup key={cate.value} label={cate.nameVN}>
+                {cate.children.map((child) => (
+                  <option key={child.categoryID} value={child.categoryID}>
+                    {child.nameVN}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
           <FormErrorMessage errors={errors} fieldName={"category"} />
         </Form.Group>
         <Form.Group className="mb-2">

@@ -9,6 +9,7 @@ export const getCategories = createAsyncThunk("get-categories", async () => {
   const response = await categoryServices.getCategories();
   return response;
 });
+
 export const getCategoryByType = createAsyncThunk(
   "get-typecategories",
   async () => {

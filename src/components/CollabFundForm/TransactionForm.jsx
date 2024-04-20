@@ -173,8 +173,6 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
               height: "38px",
             }}
             {...register("categoryID", { required: true })}
-            // value={watch("categoryID")}
-            // onChange={(e) => setValue("categoryID", e.target.value)}
           >
             <option value={0}>-----Chọn hạng mục-----</option>
             {categories.map((cate) => (
