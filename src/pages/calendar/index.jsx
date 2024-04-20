@@ -65,7 +65,7 @@ const Calendar = () => {
                         <th scope="col">Thời gian</th>
                         <th scope="col">Danh mục</th>
                         <th scope="col">Ví</th>
-                        <th scope="col">số tiền</th>
+                        <th scope="col">Số tiền</th>
                       </tr>
                     </thead>
                     <tbody>
