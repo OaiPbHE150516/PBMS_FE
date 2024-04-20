@@ -447,7 +447,7 @@ const SurplusViewCard = () => {
           <div className="col-md-10">
             <select value={walletValue} onChange={handleWalletValueChange}>
               <option value={0}>---Chọn ví---</option>
-              {wallets.map((item) => (
+              {activeWallets.map((item) => (
                 <option value={item.walletID}>{item.name}</option>
               ))}
             </select>
