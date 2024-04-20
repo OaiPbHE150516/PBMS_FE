@@ -45,7 +45,7 @@ export const addBudgets = createAsyncThunk(
         repeatInterVal: fieldValue.repeat ? fieldValue.numberIterations : 0,
         note: fieldValue.note,
         createTime: new Date().toISOString(),
-        categoryIDs: fieldValue.category.map((item) => item.value),
+        categoryIDs: [fieldValue.category],
       };
       const response = await addBudgetServices(body);
       toast.success("Bạn tạo khoản chi chung thành công");
@@ -64,7 +64,7 @@ export const updateBudgets = createAsyncThunk(
       const bodyCate = {
         accountID: fieldValue.accountID,
         budgetID: fieldValue.budgetID,
-        categoryIDs: fieldValue.categories.map((item) => item.value),
+        categoryIDs: [fieldValue.category],
       };
       await updateCategoryBudgetServices(bodyCate);
 

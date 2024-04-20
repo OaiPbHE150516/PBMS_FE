@@ -14,7 +14,6 @@ import {
   updateBudgets,
 } from "../../redux/budgetSlice";
 import CardBudget from "./CardBudget";
-import { getCategories } from "../../redux/categorySlice";
 import { getWallets } from "../../redux/walletSlice";
 
 const Budget = () => {
@@ -28,7 +27,6 @@ const Budget = () => {
 
   useEffect(() => {
     dispatch(getBudgets());
-    dispatch(getCategories());
   }, [user]);
 
   const OtherBudget = budgets.filter((item) => {

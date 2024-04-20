@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MultipleSelect from "../MultipleSelect";
 import Popup from "../Popup";
 import Form from "react-bootstrap/Form";
@@ -8,6 +8,8 @@ import { Controller, useForm } from "react-hook-form";
 import useAppSelector from "../../hooks/useAppSelector";
 import { FormErrorMessage } from "./FormErrorMessage";
 import logo from "../../assets/Logo.png";
+import { useDispatch } from "react-redux";
+import { getCategoryByType } from "../../redux/categorySlice";
 
 const UpdateBudget = ({
   show,
@@ -20,10 +22,13 @@ const UpdateBudget = ({
 
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
-  const categoryOptions = categories.map((item) => ({
-    label: item.nameVN,
-    value: item.categoryID,
-  }));
+
+  console.log("CATE", categories)
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCategoryByType());
+  }, [user]);
 
   const {
     control,
@@ -37,12 +42,11 @@ const UpdateBudget = ({
       budgetName: data.budgetName,
       targetAmount: data.targetAmount,
       note: data.note,
-      categories: data.categories.map((item) => ({
-        label: item.nameVN,
-        value: item.categoryID,
-      })),
+      category: data.categories?.[0].categoryID,
     },
   });
+
+  console.log("DATA BUDGET", data)
 
   return (
     <Popup
@@ -61,7 +65,7 @@ const UpdateBudget = ({
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Hạng mục</Form.Label>
-        <div className="row">
+        {/* <div className="row">
           <div className="col-9">
             <Controller
               rules={{ validate: (value) => Boolean(value.length) }}
@@ -78,7 +82,27 @@ const UpdateBudget = ({
               <img src={logo} className="" width={70} height={70} alt="" />
             </div>
           </div>
-        </div>
+        </div> */}
+           <select
+            className="form-control"
+            style={{
+              border: "var(--bs-border-width) solid var(--bs-border-color)",
+              borderRadius: "unset",
+              height: "38px",
+            }}
+            {...register("category", { required: true })}
+          >
+            {categories.map((cate) => (
+              <optgroup key={cate.value} label={cate.nameVN}>
+                {cate.children.map((child) => (
+                  <option key={child.categoryID} value={child.categoryID}>
+                    {child.nameVN}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          <FormErrorMessage errors={errors} fieldName={"category"} />
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Ngưỡng chi tiêu</Form.Label>
