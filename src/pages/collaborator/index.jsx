@@ -11,6 +11,9 @@ import {
   getCollaborator,
 } from "../../redux/collaboratorSlice";
 import CreateCollabFund from "../../components/CollabFundForm/CreateCollabFund";
+import { IoMdClose } from "react-icons/io";
+import { BiCheck } from "react-icons/bi";
+import { acceptToCollab } from "../../redux/memberSlice";
 
 const Callaborator = () => {
   const [show, showSet] = useState(false);
@@ -27,11 +30,44 @@ const Callaborator = () => {
     setSelectedCollab(collabId);
   };
 
+  const handleAcceptCollab = (collabID, accID, user) => {
+    dispatch(acceptToCollab({ collabID, accID,user }));
+  };
+
+  console.log("COLABS", collaborators);
+
   return (
     <div className="Callaborator">
       {user ? (
         <>
           <PageTitle title="Chi tiêu chung" />
+          {collaborators.map((item) =>
+            item.accountState.activeStateID === 3 ? (
+              <div
+                class="alert alert-secondary alert-dismissible fade show"
+                role="alert"
+                style={{ background: "#EFEDE4" }}
+              >
+                <div className="cardAccept">
+                  <div className="contentAccept ">
+                    Bạn được mời tham gia vào quỹ "{item.name}"
+                  </div>
+                  <div className="listIcon">
+                    <IoMdClose className="iconClose" />
+                    <BiCheck
+                      className="iconCheck"
+                      onClick={() =>
+                        handleAcceptCollab(item.collabFundID, user.accountID, user)
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )
+          )}
+
           <Button
             size="btn-lg"
             onClick={() => showSet(!show)}
@@ -68,7 +104,7 @@ const Callaborator = () => {
                   </div>
                   <div className="col-lg-8 actionTable">
                     {selectedCollab && (
-                      <ActionTable collabID={selectedCollab}/>
+                      <ActionTable collabID={selectedCollab} />
                     )}
                   </div>
                 </>
@@ -78,7 +114,7 @@ const Callaborator = () => {
         </>
       ) : (
         <>
-          <PageHelper/>
+          <PageHelper />
         </>
       )}
     </div>

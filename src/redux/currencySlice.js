@@ -3,8 +3,12 @@ import { toast } from "react-toastify";
 import currencyServices from "../services/currencyServices";
 
 export const getCurrency = createAsyncThunk("get-currency", async () => {
-  const response = await currencyServices.getCurrency();
-  return response;
+  try {
+    const response = await currencyServices.getCurrency();
+    return response;
+  } catch (error) {
+    toast.error(error.response.data);
+  }
 });
 
 const currencySlice = createSlice({
@@ -24,7 +28,7 @@ const currencySlice = createSlice({
       })
       .addCase(getCurrency.rejected, (state, action) => {
         console.log("rejected");
-      })
+      });
   },
 });
 

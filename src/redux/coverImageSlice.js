@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { coverImage as CoverImageServices } from "../services/coverImageServices";
+import { toast } from "react-toastify";
 
 export const coverImage = createAsyncThunk(
   "cover-image",
-  async ({fileImg}) => {
-    console.log("Slice", fileImg);
-    const response = await CoverImageServices(fileImg);
-    return response;
+  async ({ fileImg }) => {
+    try {
+      console.log("Slice", fileImg);
+      const response = await CoverImageServices(fileImg);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 

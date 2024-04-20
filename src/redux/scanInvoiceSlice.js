@@ -1,15 +1,15 @@
 import { createAsyncThunk ,createSlice} from "@reduxjs/toolkit";
 import { scanInvoice as scanInvoiceServices } from "../services/scanInvoiceServices";
+import { toast } from "react-toastify";
 
 export const getInvoiceScan = createAsyncThunk("get-invoicescan", async (image) => {
   try {
     const formData = new FormData();
     formData.append("file", image);
     const response = await scanInvoiceServices(formData);
-    console.log(response);
     return response.data;
   } catch (error) {
-    throw error;
+    toast.error(error.response.data)
   }
 });
 const scanInvoiceSlice = createSlice({

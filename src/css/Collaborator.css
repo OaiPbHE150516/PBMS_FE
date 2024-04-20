@@ -153,31 +153,48 @@
 .arrow_money {
   display: flex;
 }
-.money_left{
+.money_left {
   text-align: left !important;
 }
-.titleMoney, .numberMoney, .time{
+.titleMoney,
+.numberMoney,
+.time {
   font-weight: bold;
 }
-.transExpen_each{
+.transExpen_each {
   margin-top: 10px;
 }
-.eachItem{
+.eachItem {
   border-bottom: 1px solid;
 }
-.transExpen_time{
+.transExpen_time {
   font-weight: bold;
 }
-.close{
+.close {
   font-size: 24px;
 }
-.content input{
+.content input {
   width: 98%;
   height: 50px;
   border-radius: 10px;
   outline: none;
-
 }
-.amount{
+.amount {
   width: 100%;
+}
+.cardAccept {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.listIcon{
+  font-size: 20px;
+}
+.iconClose{
+  color: red;
+  cursor: pointer;
+}
+.iconCheck{
+  color: green;
+  cursor: pointer;
 }

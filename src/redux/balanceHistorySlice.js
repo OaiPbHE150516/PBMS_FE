@@ -1,40 +1,38 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getBalanceHistory as BalanceHistoryServices, getBalanceHistoryByDate } from "../services/balanceHisotoryServices";
+import { getBalanceHistoryByWallet as BalanceHistoryServices } from "../services/balanceHisotoryServices";
+import { toast } from "react-toastify";
 
 export const getBalanceHistory = createAsyncThunk(
   "get-balance-history",
-  // async (_, { getState }) => {
-    async ({firstDate, lastDate}, { getState }) => {
-    const user = getState().authen.user;
-    // const response = await BalanceHistoryServices(user, firstDate, lastDate);
-    const response = await getBalanceHistoryByDate(user, firstDate, lastDate);
-    return response;
+  async ({ walletID }, { getState }) => {
+    try {
+      const user = getState().authen.user;
+      console.log(user.accountID, walletID);
+      const response = await BalanceHistoryServices(user, walletID);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
+
 const balanceHistorySlice = createSlice({
   name: "balance-history",
   initialState: {
-    minBalance: 0,
-    maxBalance: 0,
-    listAfter: [],
+    values: [],
   },
   reducers: {
     setValues: (state, action) => {
-      state.minBalance = action.payload.minBalance;
-      state.maxBalance = action.payload.maxBalance;
-      state.listAfter = action.payload.listAfter;
+      state.values = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getBalanceHistory.fulfilled, (state, action) => {
-        if (action.payload === undefined) return;
-        state.minBalance = action.payload.minBalance;
-        state.maxBalance = action.payload.maxBalance;
-        state.listAfter = action.payload.listAfter;
+        state.values = action.payload;
       })
       .addCase(getBalanceHistory.rejected, (state, action) => {
-        console.log("rejected get balance history");
+        console.log("rejected get balance");
       });
   },
 });

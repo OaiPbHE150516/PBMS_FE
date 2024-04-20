@@ -1,14 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMembersOfCollab as MembersOfCollabServices } from "../services/memberServices";
 import { addMemberToCollab as AddMembersOfCollabServices } from "../services/memberServices";
+import { acceptToCollab as AcceptToCollabServices } from "../services/memberServices";
 import { toast } from "react-toastify";
+import { getCollaborators } from "../services/collaboratorServices";
 
 export const getMembersOfCollab = createAsyncThunk(
   "get-membersOfCollab",
   async ({ collabID }, { getState }) => {
-    const user = getState().authen.user;
-    const response = await MembersOfCollabServices(collabID, user);
-    return response;
+    try {
+      const user = getState().authen.user;
+      const response = await MembersOfCollabServices(collabID, user);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 
@@ -23,12 +29,26 @@ export const addMembersToCollab = createAsyncThunk(
       };
       const response = await AddMembersOfCollabServices(body);
       const collabID = fieldValue.collabFundID;
-      toast.success("Add Member successfully.");
-      await dispatch(getMembersOfCollab({collabID}));
+      toast.success("Bạn đã tạo khoản chi tiêu chung thành công");
+      await dispatch(getMembersOfCollab({ collabID }));
       return response;
     } catch (error) {
-      toast.error("Failed to add member.");
-      throw error;
+      toast.error(error.response.data);
+    }
+  }
+);
+
+export const acceptToCollab = createAsyncThunk(
+  "accpet-to-collab",
+  async ({ collabID, accID, user }, { dispatch }) => {
+    try {
+      const response = await AcceptToCollabServices(collabID, accID);
+      toast.success("Bạn đã tham gia quỹ thành công");
+      await dispatch(getCollaborators(user));
+      await dispatch(getMembersOfCollab({ collabID }));
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
     }
   }
 );

@@ -1,13 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getTransactionLastMonth as FilteTransactionLastServices } from "../services/filterTransactionServices";
 import { getTransactionThisMonth as FilteTransactionThisServices } from "../services/filterTransactionServices";
+import { toast } from "react-toastify";
 
 export const filterTransactionLastMonth = createAsyncThunk(
   "filter-transaction-last-month",
   async ({ month, year }, { getState }) => {
-    const user = getState().authen.user;
-    const response = await FilteTransactionLastServices(month, year, user);
-    return response;
+    try {
+      const user = getState().authen.user;
+      const response = await FilteTransactionLastServices(month, year, user);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 const filterTransactionLastSlice = createSlice({

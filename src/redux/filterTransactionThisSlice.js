@@ -1,14 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getTransactionThisMonth as FilteTransactionThisServices } from "../services/filterTransactionServices";
+import { toast } from "react-toastify";
 
 export const filterTransactionThisMonth = createAsyncThunk(
-    "filter-transaction-this-month",
-    async ({ month, year }, { getState }) => {
+  "filter-transaction-this-month",
+  async ({ month, year }, { getState }) => {
+    try {
       const user = getState().authen.user;
       const response = await FilteTransactionThisServices(month, year, user);
       return response;
+    } catch (error) {
+      toast.error(error.response.data);
     }
-  );
+  }
+);
 
 const filterTransactionThisSlice = createSlice({
   name: "filter-transaction-this",
@@ -33,7 +38,7 @@ const filterTransactionThisSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(filterTransactionThisMonth.fulfilled, (state, action) => {
-        if(action.payload === undefined) return; 
+        if (action.payload === undefined) return;
         state.totalAmountOfMonth = action.payload.totalAmountOfMonth;
         state.totalAmountOfMonthStr = action.payload.totalAmountOfMonthStr;
         state.totalNumberOfTransaction =

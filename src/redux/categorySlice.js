@@ -9,50 +9,72 @@ export const getCategories = createAsyncThunk("get-categories", async () => {
   const response = await categoryServices.getCategories();
   return response;
 });
-export const getCategoryByType = createAsyncThunk("get-typecategories", async () => {
-  const response = await categoryServices.getCategoryByType();
-  return response;
-});
+export const getCategoryByType = createAsyncThunk(
+  "get-typecategories",
+  async () => {
+    try {
+      const response = await categoryServices.getCategoryByType();
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  }
+);
 
 export const createCategory = createAsyncThunk(
   "create-category",
   async ({ accountID, fieldValue }, { dispatch }) => {
-    const body = {
-      accountID: accountID,
-      categoryID: fieldValue.categoryID,
-      nameVN: fieldValue.nameVN,
-      nameEN: fieldValue.nameVN,
-      parentCategoryID: fieldValue.categoryID,
-    };
-    console.log(body);
-    const response = await createCategoryServices(body);
-    dispatch(getCategoryByType());
-    return response;
+    try {
+      const body = {
+        accountID: accountID,
+        categoryID: fieldValue.categoryID,
+        nameVN: fieldValue.nameVN,
+        nameEN: fieldValue.nameVN,
+        parentCategoryID: fieldValue.categoryID,
+      };
+      const response = await createCategoryServices(body);
+      toast.success("Bạn tạo mới danh mục thành công");
+      dispatch(getCategoryByType());
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 export const updateCategory = createAsyncThunk(
   "update-category",
-  async ({ accountID,categoryID, fieldValue }, { dispatch }) => {
-    const updatedParentCategoryID = fieldValue.parentCategoryID ? fieldValue.parentCategoryID : categoryID;
-    const body = {
-      accountID: accountID,
-      categoryID: categoryID,
-      nameVN: fieldValue.nameVN,
-      nameEN: fieldValue.nameVN,
-      parentCategoryID: updatedParentCategoryID,
-    };
-    console.log(body);
-    const response = await updateCategoryServices(body);
-    dispatch(getCategoryByType());
-    return response;
+  async ({ accountID, categoryID, fieldValue }, { dispatch }) => {
+    try {
+      const updatedParentCategoryID = fieldValue.parentCategoryID
+        ? fieldValue.parentCategoryID
+        : categoryID;
+      const body = {
+        accountID: accountID,
+        categoryID: categoryID,
+        nameVN: fieldValue.nameVN,
+        nameEN: fieldValue.nameVN,
+        parentCategoryID: updatedParentCategoryID,
+      };
+      const response = await updateCategoryServices(body);
+      toast.success("Bạn đã chỉnh sửa thành công");
+      dispatch(getCategoryByType());
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 export const deleteCategory = createAsyncThunk(
   "delete-category",
-  async ({ accountID,categoryID}, { dispatch }) => {
-    const response = await deleteCategoryServices(categoryID, accountID);
-    dispatch(getCategoryByType());
-    return response;
+  async ({ accountID, categoryID }, { dispatch }) => {
+    try {
+      const response = await deleteCategoryServices(categoryID, accountID);
+      toast.success("Bạn đã xoá thành công");
+      dispatch(getCategoryByType());
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 

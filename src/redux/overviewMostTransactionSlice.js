@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMostTransaction as MostTransactionServices } from "../services/overviewLastTransactionServices";
+import { toast } from "react-toastify";
 
 export const getMostTransaction = createAsyncThunk(
   "get-most-transaction",
   async (number, { getState }) => {
-    const user = getState().authen.user;
-    const response = await MostTransactionServices(user, number);
-    return response;
+    try {
+      const user = getState().authen.user;
+      const response = await MostTransactionServices(user, number);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 

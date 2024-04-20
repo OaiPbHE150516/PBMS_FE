@@ -26,3 +26,13 @@ export const getBalanceHistoryByDate = async (user, firstDate, lastDate) => {
   console.log(response);
   return response.data;
 };
+
+export const getBalanceHistoryByWallet = async (user, walletID) => {
+  if (!user) return [];
+  const response = await axios.get(
+    API.BALANCE_HISTORY +
+      `/api/balanceHisLogController/get/each/${user.accountID}/${walletID}`,
+  );
+  console.log(response);
+  return response.data;
+};

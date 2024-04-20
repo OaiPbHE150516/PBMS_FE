@@ -33,10 +33,10 @@ export const updateCollaborators = async (data) => {
   return response.data;
 };
 
-export const deleteCollaborators = async (data) => {
+export const deleteCollaborators = async (accountID, collabFundID) => {
   const response = await axios.delete(
     API.MANAGE_COLLABORATOR + `/api/collabfund/delete`,
-    data
+    { data: { collabFundID, accountID } }
   );
   console.log(response);
   return response.data;

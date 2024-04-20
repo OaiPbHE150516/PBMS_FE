@@ -3,8 +3,12 @@ import authenServices from "../services/authenServices";
 import { toast } from "react-toastify";
 
 export const signin = createAsyncThunk("signin", async (token) => {
-  const response = await authenServices.signin(token);
-  return response;
+  try {
+    const response = await authenServices.signin(token);
+    return response;
+  } catch (error) {
+    toast.error(error.response.data);
+  }
 });
 
 const authenSlice = createSlice({
@@ -26,7 +30,6 @@ const authenSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signin.fulfilled, (state, action) => {
-        console.log("done");
         const user = action.payload;
         if (user == null) {
           const { message } = action.payload;
