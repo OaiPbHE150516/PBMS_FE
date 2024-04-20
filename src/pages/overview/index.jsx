@@ -52,6 +52,9 @@ const OverViewCard = () => {
 const WalletViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
   const wallets = useAppSelector((state) => state.wallet.values);
+  const activeWallets = wallets.filter(
+    (item) => item.activeState.activeStateID === 1
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getWallets());
@@ -63,7 +66,7 @@ const WalletViewCard = () => {
           <h5 class="card-title">Ví</h5>
           <table class="table">
             <tbody>
-              {wallets.map((item) => (
+              {activeWallets.map((item) => (
                 <tr>
                   <td>{item.name}</td>
                   <td
@@ -358,6 +361,11 @@ const SurplusViewCard = () => {
   const dispatch = useDispatch();
 
   const wallets = useAppSelector((state) => state.wallet.values);
+
+  const activeWallets = wallets.filter(
+    (item) => item.activeState.activeStateID === 1
+  );
+
   useEffect(() => {
     dispatch(getWallets());
   }, [user]);
@@ -374,10 +382,9 @@ const SurplusViewCard = () => {
     }
   }, [walletValue, user]);
 
-  console.log("balanceHistory", balanceHistory)
-  const date = balanceHistory.map((item) => item.date);
+  const date = balanceHistory?.map((item) => item.date);
 
-  const totalAmount = balanceHistory.map((item) => item.totalAmount);
+  const totalAmount = balanceHistory?.map((item) => item.totalAmount);
 
   const balanceData = [
     {
@@ -440,7 +447,7 @@ const SurplusViewCard = () => {
           <div className="col-md-10">
             <select value={walletValue} onChange={handleWalletValueChange}>
               <option value={0}>---Chọn ví---</option>
-              {wallets.map((item) => (
+              {activeWallets.map((item) => (
                 <option value={item.walletID}>{item.name}</option>
               ))}
             </select>
