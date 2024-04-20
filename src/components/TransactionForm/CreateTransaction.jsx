@@ -323,14 +323,8 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                     <Form.Label>Ghi chú</Form.Label>
                     <Form.Control as="textarea" {...register("note")}></Form.Control>
                 </Form.Group>
-                {/* {file && isScanned && (
-                    <Form.Group className="col-4" >
-                        <Form.Label>file</Form.Label>
-                        <Form.Control defaultValue={file} type="text" {...register('invoiceImageURL')} />
-                    </Form.Group>
-                )} */}
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <div style={{ flexBasis: '60%', marginRight: '20px' }}>
+                    <div style={{ flexBasis: '50%', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
                             <Form.Label>Chọn hóa đơn</Form.Label>
                             <Form.Control type="file" onChange={handleImageChange} />
@@ -352,7 +346,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                         </Form.Group>
                     </div>
                     {isScanned && scan && imagePreview && file && (
-                        <div style={{ flexBasis: '90%', display: 'flex' }}>
+                        <div style={{ flexBasis: '60%', display: 'flex' }}>
                             <div style={{ marginRight: '20px' }}>
                                 <h5 style={{ marginTop: '80px' }}>Nhà cung cấp</h5>
                                 <Form.Group controlId="formName">
@@ -452,7 +446,7 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     </InputGroup>
                                 </Form.Group>
                             </div>
-                            <div style={{ flexBasis: '70%', marginTop: '80px' }}>
+                            <div style={{ flexBasis: '50%', marginTop: '80px' }}>
                                 <h5>Sản phẩm</h5>
                                 <table className="table table-striped table-bordered table-hover" style={{ borderCollapse: 'collapse', width: '100%' }}>
                                     <thead>

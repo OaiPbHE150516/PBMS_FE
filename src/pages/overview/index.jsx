@@ -447,12 +447,13 @@ const SurplusViewCard = () => {
           <div className="col-md-10">
             <select value={walletValue} onChange={handleWalletValueChange}>
               <option value={0}>---Chọn ví---</option>
-              {activeWallets.map((item) => (
+              {wallets.map((item) => (
                 <option value={item.walletID}>{item.name}</option>
               ))}
             </select>
           </div>
         </div>
+
 
         <ReactApexChart
           options={balanceData[0].options}
