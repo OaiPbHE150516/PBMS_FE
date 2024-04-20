@@ -44,16 +44,6 @@ const Profile = ({ data }) => {
         <li>
           <hr className="dropdown-divider" />
         </li>
-
-        <li>
-          <Link
-            className="dropdown-item d-flex align-items-center link"
-            to="/setting"
-          >
-            <BsGear className="icon" />
-            <span>Cài đặt</span>
-          </Link>
-        </li>
         <li>
           <hr className="dropdown-divider" />
         </li>

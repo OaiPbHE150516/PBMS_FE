@@ -8,9 +8,13 @@ import { getCollaborators } from "../services/collaboratorServices";
 export const getMembersOfCollab = createAsyncThunk(
   "get-membersOfCollab",
   async ({ collabID }, { getState }) => {
-    const user = getState().authen.user;
-    const response = await MembersOfCollabServices(collabID, user);
-    return response;
+    try {
+      const user = getState().authen.user;
+      const response = await MembersOfCollabServices(collabID, user);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 

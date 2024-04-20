@@ -142,8 +142,6 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
   // List Wallet
   const wallets = useAppSelector((state) => state.wallet.values);
 
-  console.log("Wallet", wallets);
-
   useEffect(() => {
     dispatch(getWallets());
     dispatch(getCategoryByType());
@@ -212,16 +210,6 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
           </select>
           <FormErrorMessage errors={errors} fieldName={"walletID"} />
         </Form.Group>
-        {/* <Form.Group className="mb-2">
-          <Form.Label>Thời gian</Form.Label>
-          <Form.Control
-            type="date"
-            {...register("transactionDate", { required: true })}
-            defaultValue={new Date().toISOString().split("T")[0]}
-            disabled
-          />
-          <FormErrorMessage errors={errors} fieldName={"transactionDate"} />
-        </Form.Group> */}
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>

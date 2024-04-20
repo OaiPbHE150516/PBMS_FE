@@ -10,8 +10,7 @@ export const getInforDivide = createAsyncThunk(
       const response = await getInforDivideServices(collabFundID);
       return response;
     } catch (error) {
-      toast.error("Failed to fetch information.");
-      throw error;
+      toast.error(error.response.data);
     }
   }
 );
@@ -25,12 +24,11 @@ export const addDivideMoney = createAsyncThunk(
         collabFundID: fieldValue.collabFundID,
       };
       const response = await addDivideMoneyServices(body);
-      toast.success("Money divided successfully.");
+      toast.success("Bạn chia tiền thành công");
       await dispatch(getInforDivide());
       return response;
     } catch (error) {
-      toast.error("Failed to divide money.");
-      throw error;
+      toast.error(error.response.data);
     }
   }
 );

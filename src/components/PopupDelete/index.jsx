@@ -23,14 +23,22 @@ const Popup = ({
       <div className="popup-content">
         <h3 className="bold">{title}</h3>
         <div>{children}</div>
-        <div>
-          Thành viên gồm:
-          <div style={{"margin": "20px 50px"}}>
-            {members.map((item) => (
-              <p>{item.accountName}</p>
-            ))}
-          </div>
-        </div>
+        {members ? (
+          <>
+            {" "}
+            <div>
+              Thành viên gồm:
+              <div style={{ margin: "20px 50px" }}>
+                {members.map((item) => (
+                  <p>{item.accountName}</p>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+
         <div className="d-flex justify-content-end">
           <div className="d-flex gap-2 mt-2">
             {onClose && (

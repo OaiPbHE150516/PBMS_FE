@@ -1,7 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 import authenSlice from "./authenSlice";
-import valueSlice from "./valueSlice";
 import budgetSlice from "./budgetSlice";
 import categorySlice from "./categorySlice";
 import walletSlice, { totalwalletSlice } from "./walletSlice";
@@ -26,7 +25,6 @@ import historyCollabSlice from "./historyCollabSlice";
 import mostTransExpenseSlice from "./mostTransExpenseSlice";
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
-  value: valueSlice.reducer,
   budget: budgetSlice.reducer,
   category: categorySlice.reducer,
   wallet: walletSlice.reducer,

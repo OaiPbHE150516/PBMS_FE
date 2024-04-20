@@ -353,19 +353,31 @@ const Last7DaysViewCard = () => {
 
 const SurplusViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
-  const balanceHistory = useAppSelector((state) => state.balanceHistory);
-
-  const firstDate = "04-01-2024";
-  const lastDate = "04-30-2024";
+  const balanceHistory = useAppSelector((state) => state.balanceHistory.values);
 
   const dispatch = useDispatch();
+
+  const wallets = useAppSelector((state) => state.wallet.values);
   useEffect(() => {
-    dispatch(getBalanceHistory({firstDate, lastDate}));
-  }, [user, firstDate, lastDate]);
+    dispatch(getWallets());
+  }, [user]);
 
-  const date = balanceHistory.listAfter.map((item) => item.date);
+  const [walletValue, setWalletValue] = useState(0);
 
-  const totalAmount = balanceHistory.listAfter.map((item) => item.totalAmount);
+  const handleWalletValueChange = (event) => {
+    const selectedWalletID = parseInt(event.target.value);
+    setWalletValue(selectedWalletID);
+  };
+  useEffect(() => {
+    if (walletValue !== 0) {
+      dispatch(getBalanceHistory({ walletID: walletValue }));
+    }
+  }, [walletValue, user]);
+
+  console.log("balanceHistory", balanceHistory)
+  const date = balanceHistory.map((item) => item.date);
+
+  const totalAmount = balanceHistory.map((item) => item.totalAmount);
 
   const balanceData = [
     {
@@ -416,12 +428,25 @@ const SurplusViewCard = () => {
       },
     },
   ];
+
   return (
     <div className="col-6">
       <div className="card">
         <div class="card-body">
-          <h5 class="card-title">Số dư</h5>
+          <h5 class="card-title">Số dư của ví</h5>
         </div>
+        <div className="row" style={{ "margin-left": "20px" }}>
+          <div className="col-md-1">Ví:</div>
+          <div className="col-md-10">
+            <select value={walletValue} onChange={handleWalletValueChange}>
+              <option value={0}>---Chọn ví---</option>
+              {wallets.map((item) => (
+                <option value={item.walletID}>{item.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         <ReactApexChart
           options={balanceData[0].options}
           series={balanceData[0].series}

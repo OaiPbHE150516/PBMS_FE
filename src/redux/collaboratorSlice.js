@@ -9,16 +9,20 @@ import { toast } from "react-toastify";
 export const getCollaborator = createAsyncThunk(
   "get-collaborators",
   async (_, { getState }) => {
-    const user = getState().authen.user;
-    const response = await getCollaboratorsServices(user);
-    return response;
+    try {
+      const user = getState().authen.user;
+      const response = await getCollaboratorsServices(user);
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 
 export const addCollaborator = createAsyncThunk(
   "add-collaborator",
   async ({ fieldValue }, { dispatch }) => {
-    try{
+    try {
       const imageConvert = await coverImage(fieldValue.imageFile);
       const body = {
         accountID: fieldValue.accountID,
@@ -28,29 +32,33 @@ export const addCollaborator = createAsyncThunk(
         accountIDs: fieldValue.account.map((item) => item.accountID),
       };
       const response = await addCollaboratorsServices(body);
-      toast.success("Bạn tạo khoản tiêu chung thành công")
+      toast.success("Bạn tạo khoản tiêu chung thành công");
       await dispatch(getCollaborator(fieldValue.user));
       return response;
-    }catch(error){
-      toast.error(error.response.data)
+    } catch (error) {
+      toast.error(error.response.data);
     }
-    
   }
 );
 
 export const updateCollaborator = createAsyncThunk(
   "update-collaborator",
   async ({ fieldValue }, { dispatch }) => {
-    const body = {
-      collabFundID: fieldValue.collabFundID,
-      name: fieldValue.name,
-      description: fieldValue.description,
-      imageURL: "",
-      activeStateID: 1,
-    };
-    const response = await updateCollaboratorsServices(body);
-    await dispatch(getCollaborator(fieldValue.user));
-    return response;
+    try {
+      const body = {
+        collabFundID: fieldValue.collabFundID,
+        name: fieldValue.name,
+        description: fieldValue.description,
+        imageURL: "",
+        activeStateID: 1,
+      };
+      const response = await updateCollaboratorsServices(body);
+      toast.success("Bạn đã chỉnh sửa thành công");
+      await dispatch(getCollaborator(fieldValue.user));
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
   }
 );
 
@@ -59,12 +67,12 @@ export const deleteCollaborator = createAsyncThunk(
   async ({ accID, collabFundID, user }, { dispatch }) => {
     try {
       const response = await deleteCollaboratorsServices(accID, collabFundID);
-      toast.success("Xoá quỹ thành công")
+      toast.success("Bạn đã xoá thành công");
       await dispatch(getCollaborator(user));
       return response;
     } catch (error) {
-      console.log(error.response.data)
-      toast.error(error.response.data)
+      console.log(error.response.data);
+      toast.error(error.response.data);
     }
   }
 );

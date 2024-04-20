@@ -21,15 +21,15 @@ export const sidebars = [
     exact: true,
   },
   {
-    text: "Giao dịch",
-    icon: <AiOutlineTransaction />,
-    path: ROUTE_CONSTANTS.TRANSACTION_PAGE,
-    exact: true,
-  },
-  {
     text: "Ví",
     icon: <LuWallet />,
     path: ROUTE_CONSTANTS.WALLET_PAGE,
+    exact: true,
+  },
+  {
+    text: "Giao dịch",
+    icon: <AiOutlineTransaction />,
+    path: ROUTE_CONSTANTS.TRANSACTION_PAGE,
     exact: true,
   },
   {
@@ -51,25 +51,6 @@ export const sidebars = [
     path: ROUTE_CONSTANTS.COLLABORATOR_PAGE,
     exact: true,
   },
-  // {
-  //   text: "Khoản vay",
-  //   icon: <BsBank2 />,
-  //   path: ROUTE_CONSTANTS.LOAN_PAGE,
-  //   exact: true,
-  // },
-  // {
-  //   text: "Báo cáo",
-  //   icon: <BsFileEarmarkZip />,
-  //   path: ROUTE_CONSTANTS.REPORT_PAGE,
-  //   exact: true,
-  // },
-  // {
-  //   text: "Cài đặt",
-  //   icon: <BsFillGearFill />,
-  //   path: ROUTE_CONSTANTS.SETTING_PAGE,
-  //   exact: true,
-  // },
-  // category
   {
     text: "Hạng mục",
     icon: <MdOutlineCategory />,
