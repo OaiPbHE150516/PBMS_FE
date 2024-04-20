@@ -61,7 +61,6 @@ export const addActionWithTrans = createAsyncThunk(
     Object.entries(body).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    console.log("Body", body)
     const response = await NewActionsOfCollabWithTransServices(formData);
     await dispatch(getActionsOfCollab(fieldValue.collabID, fieldValue.accountID));
     return response;

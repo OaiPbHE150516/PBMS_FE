@@ -19,3 +19,6 @@
 .Calendar  .red {
   color: red !important;
 }
+td, th{
+  white-space: nowrap
+}

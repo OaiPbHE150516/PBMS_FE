@@ -56,7 +56,7 @@ const Calendar = () => {
           <PageTitle title="Lịch" />
           <section className="section dashboard">
             <div className="row">
-              <div className="col-lg-3 listTrans card">
+              <div className="col-md-4 listTrans card">
                 <div className="card-body">
                   <h5 className="card-title">Các giao dịch</h5>
                   <table className="table table-hover">
@@ -92,7 +92,7 @@ const Calendar = () => {
                   </table>
                 </div>
               </div>
-              <div className="col-lg-8 fullCalendar card">
+              <div className="col-md-7 fullCalendar card">
                 <FullCalendar
                   plugins={[dayGridPlugin]}
                   initialView="dayGridMonth"

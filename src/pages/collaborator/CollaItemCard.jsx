@@ -7,7 +7,8 @@ import { addDivideMoney } from "../../redux/divideMoneySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { TransactionFrom } from "../../components/CollabFundForm/TransactionForm";
 import useAppSelector from "../../hooks/useAppSelector";
-import { updateCollaborator } from "../../redux/collaboratorSlice";
+import { deleteCollaborator, updateCollaborator } from "../../redux/collaboratorSlice";
+import PopupDelete from "../../components/PopupDelete";
 
 export const CollaItemCard = ({ data, onItemClick }) => {
   const [repeat, repeatSet] = useState(true);
@@ -29,8 +30,9 @@ export const CollaItemCard = ({ data, onItemClick }) => {
   const [showFormUpdate, setShowFormUpdate] = useState(false);
   const [showDivideForm, setShowDivideForm] = useState(false);
   const [showTransactionForm, setShowTransactionForm] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [editIdModal, editIdModalSet] = useState(false);
-  
+
   const dispatch = useDispatch();
   const [show, showSet] = useState(false);
   const accountID = useSelector((state) => state.authen.user?.accountID);
@@ -136,14 +138,45 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 data={data}
                 show={showFormUpdate}
                 showSet={setShowFormUpdate}
-                onClose={() => editIdModalSet(false)}
-                onSubmit={(fieldValue) => {dispatch(
-                  updateCollaborator({
-                    fieldValue: fieldValue,
-                  })
-                )
-                  .unwrap()
-                  .then(() => editIdModalSet(false));}}
+                onClose={() => setShowFormUpdate(false)}
+                onSubmit={(fieldValue) => {
+                  dispatch(
+                    updateCollaborator({
+                      fieldValue: fieldValue,
+                    })
+                  )
+                    .unwrap()
+                    .then(() => {
+                      editIdModalSet(false);
+                      setShowFormUpdate(false);
+                    });
+                }}
+              />
+            )}
+            <Button
+              className="btn btn-outline-secondary"
+              size="btn-sm"
+              onClick={() => setShowDeletePopup(true)}
+            >
+              <span>Xoá</span>
+            </Button>
+            {showDeletePopup && (
+              <PopupDelete
+                title={"Xoá quỹ chung " + data.name}
+                members={data.accountInCollabFunds}
+                show={showDeletePopup}
+                onClose={() => setShowDeletePopup(false)}
+                onSubmit={(accID, collabFundID) => {
+                  dispatch(
+                    deleteCollaborator({
+                      accID: accountID,
+                      collabFundID: data.collabFundID
+                    })
+                  )
+                    .unwrap()
+                    .then(() => showSet(false));
+                }}
+                collabFundID={data.collabFundID}
               />
             )}
           </div>
