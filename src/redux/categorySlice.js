@@ -102,7 +102,6 @@ const categorySlice = createSlice({
       })
       .addCase(createCategory.fulfilled, (state, action) => {
         console.log("done create category");
-        toast.success("Create category success");
       });
   },
 });
