@@ -124,7 +124,6 @@ const Transaction = () => {
                     <th scope="col">Số tiền</th>
                     <th scope="col">Ví</th>
                     <th scope="col">Ghi chú</th>
-                    {/* <th scope="col">Thông tin</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -154,13 +153,6 @@ const Transaction = () => {
                           <>{transaction.note}</>
                         )}
                       </td>
-                      {/* <td>
-                        {transaction.note.length > 10 ? (
-                          <>{transaction.note.substring(0, 10)}...</>
-                        ) : (
-                          <>{transaction.note}</>
-                        )}
-                      </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -179,55 +171,66 @@ const Transaction = () => {
                 </select>
                 <a style={{ marginLeft: '10px' }}>giao dịch trên mỗi trang</a>
                 <ul className="pagination justify-content-end" style={{ marginLeft: 'auto' }}>
-                  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                    <button
-                      className="page-link"
-                      onClick={() => handlePageClick(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      {'<<<'}
-                    </button>
-                  </li>
-                  {[1, 2, 3].map((page) => (
-                    <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
-                      <button className="page-link" onClick={() => handlePageClick(page)}>
-                        {page}
-                      </button>
-                    </li>
-                  ))}
-                  {transactions.totalPage > 3 && (
-                    <>
-                      <li className="page-item disabled">
-                        <span className="page-link">...</span>
-                      </li>
-                      <li className={`page-item ${currentPage === transactions.totalPage - 1 ? 'active' : ''}`}>
-                        <button
-                          className="page-link"
-                          onClick={() => handlePageClick(transactions.totalPage - 1)}
-                        >
-                          {transactions.totalPage - 1}
-                        </button>
-                      </li>
-                      <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
-                        <button
-                          className="page-link"
-                          onClick={() => handlePageClick(transactions.totalPage)}
-                        >
-                          {transactions.totalPage}
-                        </button>
-                      </li>
-                    </>
-                  )}
-                  <li className={`page-item ${currentPage === transactions.totalPage ? 'disabled' : ''}`}>
-                    <button
-                      className="page-link"
-                      onClick={() => handlePageClick(currentPage + 1)}
-                      disabled={currentPage === transactions.totalPage}
-                    >
-                      {'>>>'}
-                    </button>
-                  </li>
-                </ul>
+  {/* Nút quay về trang đầu */}
+  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+    <button
+      className="page-link"
+      onClick={() => handlePageClick(1)}
+      disabled={currentPage === 1}
+    >
+      {'|<'}
+    </button>
+  </li>
+
+  {/* Nút trang trước */}
+  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+    <button
+      className="page-link"
+      onClick={() => handlePageClick(currentPage - 1)}
+      disabled={currentPage === 1}
+    >
+      {'<<<'}
+    </button>
+  </li>
+
+  {/* Các nút số trang */}
+  {[...Array(transactions.totalPage).keys()].slice(Math.max(0, currentPage - 2), Math.min(transactions.totalPage, currentPage + 1)).map((page) => (
+    <li key={page + 1} className={`page-item ${currentPage === page + 1 ? 'active' : ''}`}>
+      <button className="page-link" onClick={() => handlePageClick(page + 1)}>
+        {page + 1}
+      </button>
+    </li>
+  ))}
+
+  {/* Nút dấu chấm lược ... và nút cuối cùng, nếu cần */}
+  {currentPage < transactions.totalPage - 1 && (
+    <li className="page-item disabled">
+      <span className="page-link">...</span>
+    </li>
+  )}
+  {currentPage < transactions.totalPage - 1 && (
+    <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
+      <button
+        className="page-link"
+        onClick={() => handlePageClick(transactions.totalPage)}
+      >
+        {transactions.totalPage}
+      </button>
+    </li>
+  )}
+
+  {/* Nút trang sau */}
+  <li className={`page-item ${currentPage === transactions.totalPage ? 'disabled' : ''}`}>
+    <button
+      className="page-link"
+      onClick={() => handlePageClick(currentPage + 1)}
+      disabled={currentPage === transactions.totalPage}
+    >
+      {'>>>'}
+    </button>
+  </li>
+</ul>
+
               </div>
             </div>
           </div>

@@ -76,7 +76,7 @@ export const updateStateWallet = createAsyncThunk(
         activeStateID: activeStateID,
       };
       const response = await updateStateWalletServices(body);
-      toast.success("Bạn đã chỉnh sửa thành công");
+      // toast.success("Bạn đã chỉnh sửa thành công");
       await dispatch(getTotalWallets());
       return response;
     } catch (error) {
