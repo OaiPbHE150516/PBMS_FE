@@ -13,7 +13,8 @@ import {
 import CreateCollabFund from "../../components/CollabFundForm/CreateCollabFund";
 import { IoMdClose } from "react-icons/io";
 import { BiCheck } from "react-icons/bi";
-import { acceptToCollab } from "../../redux/memberSlice";
+import { acceptToCollab, declineToCollab } from "../../redux/memberSlice";
+import { getActionsOfCollab } from "../../redux/actionSlice";
 
 const Callaborator = () => {
   const [show, showSet] = useState(false);
@@ -31,10 +32,12 @@ const Callaborator = () => {
   };
 
   const handleAcceptCollab = (collabID, accID, user) => {
-    dispatch(acceptToCollab({ collabID, accID,user }));
+    dispatch(acceptToCollab({ collabID, accID, user }));
   };
 
-  console.log("COLABS", collaborators);
+  const handleDeclineCollab = (collabID, accID, user) => {
+    dispatch(declineToCollab({ collabID, accID, user }));
+  };
 
   return (
     <div className="Callaborator">
@@ -53,11 +56,24 @@ const Callaborator = () => {
                     Bạn được mời tham gia vào quỹ "{item.name}"
                   </div>
                   <div className="listIcon">
-                    <IoMdClose className="iconClose" />
+                    <IoMdClose
+                      className="iconClose"
+                      onClick={() =>
+                        handleDeclineCollab(
+                          item.collabFundID,
+                          user.accountID,
+                          user
+                        )
+                      }
+                    />
                     <BiCheck
                       className="iconCheck"
                       onClick={() =>
-                        handleAcceptCollab(item.collabFundID, user.accountID, user)
+                        handleAcceptCollab(
+                          item.collabFundID,
+                          user.accountID,
+                          user
+                        )
                       }
                     />
                   </div>
@@ -94,13 +110,16 @@ const Callaborator = () => {
               {collaborators.length > 0 && (
                 <>
                   <div className="col-lg-4 listColla">
-                    {collaborators.map((item) => (
-                      <CollaItemCard
-                        key={item.collabFundID}
-                        data={item}
-                        onItemClick={handleCollabItemClick}
-                      />
-                    ))}
+                    {collaborators.map((item, index) =>
+                      item.accountState.activeStateID !== 3 ? (
+                        <CollaItemCard
+                          data={item}
+                          onItemClick={handleCollabItemClick}
+                        />
+                      ) : (
+                        <></>
+                      )
+                    )}
                   </div>
                   <div className="col-lg-8 actionTable">
                     {selectedCollab && (

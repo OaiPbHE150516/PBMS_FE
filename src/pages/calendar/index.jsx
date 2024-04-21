@@ -8,6 +8,7 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
 import { getCalendars } from "../../redux/calendarSlice";
 import viLocale from "@fullcalendar/core/locales/vi";
+import { Link } from "react-router-dom";
 
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -58,7 +59,9 @@ const Calendar = () => {
             <div className="row">
               <div className="col-md-4 listTrans card">
                 <div className="card-body">
-                  <h5 className="card-title">Các giao dịch</h5>
+                  <Link to="/transaction">
+                    <h5 className="card-title">Các giao dịch</h5>
+                  </Link>
                   <table className="table table-hover">
                     <thead>
                       <tr>
@@ -94,6 +97,7 @@ const Calendar = () => {
               </div>
               <div className="col-md-7 fullCalendar card">
                 <FullCalendar
+                  className="custom-calendar"
                   plugins={[dayGridPlugin]}
                   initialView="dayGridMonth"
                   events={events}
@@ -155,9 +159,9 @@ const Calendar = () => {
           </section>
         </>
       ) : (
-          <>
-           <PageHelper/>
-          </>
+        <>
+          <PageHelper />
+        </>
       )}
     </div>
   );

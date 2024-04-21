@@ -57,7 +57,7 @@ export const AddNewAction = ({ data, collabID }) => {
           width={50}
           height={50}
         ></img>
-        <div className="">
+        <div style={{display: "flex", "align-items": "center"}}>
           <p className="mb-0 bold">{data.accountName}</p>
         </div>
       </div>

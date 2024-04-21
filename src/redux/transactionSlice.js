@@ -75,6 +75,7 @@ export const addTransWithoutInvoice = createAsyncThunk(
       const response = await addTransactionwithoutInvoiceServices(body);
       toast.success("Bạn tạo giao dịch mới thành công");
       dispatch(getCollaborator(user));
+      
       return response;
     } catch (error) {
       toast.error(error.response.data);

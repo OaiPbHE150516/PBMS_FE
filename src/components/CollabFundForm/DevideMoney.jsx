@@ -45,7 +45,7 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
       onClose={() => showSet(false)}
       onSubmit={onSubmit}
     >
-      <div class=" tableListItem">
+      <div class="tableListItem">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -115,7 +115,7 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
               <div className="row divideItem">
                 <div className="col-lg-5">
                   <input type="checkbox" />
-                  <img src={logo} />
+                  <img src={item.fromAccount.pictureURL} />
                   <span>{item.fromAccount.accountName}</span>
                 </div>
                 <div className="col-lg-2">
@@ -126,7 +126,7 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
                 </div>
                 <div className="col-lg-5">
                   <input type="checkbox" />
-                  <img src={logo} />
+                  <img src={item.toAccount.pictureURL} />
                   <span>{item.toAccount.accountName}</span>
                 </div>
               </div>
