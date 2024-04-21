@@ -4,6 +4,7 @@ import { addActionsOfCollabNoTrans as NewActionsOfCollabNoTransServices } from "
 import { addActionsOfCollabWithTrans as NewActionsOfCollabWithTransServices } from "../services/actionServices";
 import { coverImage } from "../services/coverImageServices";
 import { toast } from "react-toastify";
+import { getCollaborator } from "./collaboratorSlice";
 
 export const getActionsOfCollab = createAsyncThunk(
   "get-actionsOfCollab",
@@ -41,7 +42,7 @@ export const addActionNoTrans = createAsyncThunk(
 
 export const addActionWithTrans = createAsyncThunk(
   "add-action-with-trans",
-  async (fieldValue, { dispatch }) => {
+  async ({user, fieldValue}, { dispatch }) => {
     try {
       const body = {
         CollabFundID: fieldValue.collabID,
@@ -49,6 +50,7 @@ export const addActionWithTrans = createAsyncThunk(
         Note: fieldValue.note,
         TransactionID: fieldValue.transactionID,
       };
+      console.log("Body", body)
       const formData = new FormData();
       Object.entries(body).forEach(([key, value]) => {
         formData.append(key, value);
@@ -57,6 +59,7 @@ export const addActionWithTrans = createAsyncThunk(
       await dispatch(
         getActionsOfCollab(fieldValue.collabID, fieldValue.accountID)
       );
+      await dispatch(getCollaborator(user))
       return response;
     } catch (error) {
       toast.error(error.response.data);

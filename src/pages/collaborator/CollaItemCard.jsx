@@ -7,18 +7,16 @@ import { addDivideMoney } from "../../redux/divideMoneySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { TransactionFrom } from "../../components/CollabFundForm/TransactionForm";
 import useAppSelector from "../../hooks/useAppSelector";
-import { deleteCollaborator, updateCollaborator } from "../../redux/collaboratorSlice";
+import {
+  deleteCollaborator,
+  updateCollaborator,
+} from "../../redux/collaboratorSlice";
+
 import PopupDelete from "../../components/PopupDelete";
 
 export const CollaItemCard = ({ data, onItemClick }) => {
-  const [repeat, repeatSet] = useState(true);
-
   const handleClick = () => {
     onItemClick(data.collabFundID);
-  };
-
-  const formatNumber = (number) => {
-    return number.toLocaleString("vi-VN");
   };
 
   const buttonStyle = {
@@ -54,18 +52,6 @@ export const CollaItemCard = ({ data, onItemClick }) => {
               })}
             </p>
             <p class="card-text small mb-2">Ghi chú: {data.description}</p>
-            <p class="card-text small">
-              <div>
-                <Form.Check
-                  className="mb-0"
-                  type="switch"
-                  label="Hoạt động"
-                  size={"lg"}
-                  checked={repeat}
-                  onChange={({ target: { checked } }) => repeatSet(checked)}
-                ></Form.Check>
-              </div>
-            </p>
           </div>
         </div>
         <div
@@ -74,7 +60,7 @@ export const CollaItemCard = ({ data, onItemClick }) => {
           onClick={handleClick}
         >
           <h5 class="card-title totalMoney pt-2 pb-3 mb-0 fs-6">
-            {formatNumber(data.totalAmount)} đ
+            {data.totalAmountStr}
           </h5>
           <div className="listButton">
             <Button
@@ -91,22 +77,28 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 collabFundID={data.collabFundID}
               />
             )}
-            {data.isFundholder ? (
-              <Button
-                className="btn btn-outline-secondary"
-                size="btn-sm"
-                onClick={() => setShowDivideForm(true)}
-              >
-                <span>Đề nghị chia tiền</span>
-              </Button>
+            {data.totalAmount !== 0 ? (
+              <>
+                {!data.isFundholder ? (
+                  <Button
+                    className="btn btn-outline-secondary"
+                    size="btn-sm"
+                    onClick={() => setShowDivideForm(true)}
+                  >
+                    <span>Đề nghị chia tiền</span>
+                  </Button>
+                ) : (
+                  <Button
+                    className="btn btn-outline-secondary"
+                    size="btn-sm"
+                    onClick={() => setShowDivideForm(true)}
+                  >
+                    <span>Chia tiền</span>
+                  </Button>
+                )}
+              </>
             ) : (
-              <Button
-                className="btn btn-outline-secondary"
-                size="btn-sm"
-                onClick={() => setShowDivideForm(true)}
-              >
-                <span>Chia tiền</span>
-              </Button>
+              <></>
             )}
             {showDivideForm && (
               <DevideMoney
@@ -126,13 +118,21 @@ export const CollaItemCard = ({ data, onItemClick }) => {
               />
             )}
 
-            <Button
-              className="btn btn-outline-secondary"
-              size="btn-sm"
-              onClick={() => setShowFormUpdate(true)}
-            >
-              <span>Chỉnh sửa</span>
-            </Button>
+            {data.isFundholder ? (
+              <>
+                {" "}
+                <Button
+                  className="btn btn-outline-secondary"
+                  size="btn-sm"
+                  onClick={() => setShowFormUpdate(true)}
+                >
+                  <span>Chỉnh sửa</span>
+                </Button>
+              </>
+            ) : (
+              <></>
+            )}
+
             {showFormUpdate && (
               <UpdateCollabFund
                 data={data}
@@ -153,13 +153,21 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 }}
               />
             )}
-            <Button
-              className="btn btn-outline-secondary"
-              size="btn-sm"
-              onClick={() => setShowDeletePopup(true)}
-            >
-              <span>Xoá</span>
-            </Button>
+            {data.isFundholder ? (
+              <>
+                {" "}
+                <Button
+                  className="btn btn-outline-secondary"
+                  size="btn-sm"
+                  onClick={() => setShowDeletePopup(true)}
+                >
+                  <span>Xoá</span>
+                </Button>
+              </>
+            ) : (
+              <></>
+            )}
+
             {showDeletePopup && (
               <PopupDelete
                 title={"Xoá quỹ chung " + data.name}
@@ -170,7 +178,7 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                   dispatch(
                     deleteCollaborator({
                       accID: accountID,
-                      collabFundID: data.collabFundID
+                      collabFundID: data.collabFundID,
                     })
                   )
                     .unwrap()

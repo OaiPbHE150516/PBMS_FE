@@ -72,7 +72,7 @@ const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID }) => {
       transactionID: itemTrans.transactionID,
     };
     try {
-      await dispatch(addActionWithTrans(fieldValue));
+      await dispatch(addActionWithTrans({user, fieldValue}));
       onClose();
     } catch (errors) {}
   };
@@ -149,14 +149,14 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
 
   return (
     <Popup
-      title={"Tạo hạn mức chi mới"}
+      title={"Tạo giao dịch mới"}
       show={show}
       onClose={() => showSet(false)}
       onSubmit={handleSubmit(onSubmit)}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên hạn mức</Form.Label>
+          <Form.Label>Số tiền</Form.Label>
           <Form.Control
             type="number"
             {...register("totalAmount", { required: true })}

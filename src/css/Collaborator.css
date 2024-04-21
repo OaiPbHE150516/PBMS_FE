@@ -187,14 +187,26 @@
   justify-content: space-between;
   align-items: center;
 }
-.listIcon{
+.listIcon {
   font-size: 20px;
 }
-.iconClose{
+.iconClose {
   color: red;
   cursor: pointer;
 }
-.iconCheck{
+.iconCheck {
   color: green;
   cursor: pointer;
+}
+.btn-search {
+  background: #F8F9FA !important;
+  border-radius: 12px !important;
+  border: 1px black solid !important;
+  width: 80px;
+}
+.btn-search span {
+  color: black;
+}
+.btn-search:hover{
+  background: #EFEDE4 !important;
 }

@@ -25,10 +25,10 @@ export const acceptToCollab = async (collabFundID, accountMemberID) => {
   return response.data;
 };
 
-export const declineToCollab = async (collabID, accID) => {
+export const declineToCollab = async (data) => {
   const response = await axios.put(
     API.MANAGE_COLLABORATOR + `/api/collabfund/decline`,
-    { data: { collabID, accID } }
+    data
   );
   console.log(response);
   return response.data;
