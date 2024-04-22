@@ -12,7 +12,6 @@ const DetailTransaction = ({ show, onClose, data }) => {
       ...data,
     },
   });
-  console.log("tình trạng", data)
   const formatCurrency = (amount) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };

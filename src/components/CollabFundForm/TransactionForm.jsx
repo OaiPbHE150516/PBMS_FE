@@ -139,6 +139,7 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
 
+  console.log("CATE", categories.filter((item) => item.nameVN === "Chi tiêu"))
   // List Wallet
   const wallets = useAppSelector((state) => state.wallet.values);
 
@@ -175,7 +176,7 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
             {...register("categoryID", { required: true })}
           >
             <option value={0}>-----Chọn hạng mục-----</option>
-            {categories.map((cate) => (
+            {categories.filter((item) => item.nameVN === "Chi tiêu").map((cate) => (
               <optgroup key={cate.value} label={cate.nameVN}>
                 {cate.children.map((child) => (
                   <option key={child.categoryID} value={child.categoryID}>

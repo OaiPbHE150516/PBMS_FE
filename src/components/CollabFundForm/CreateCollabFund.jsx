@@ -191,7 +191,6 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
               <Form.Label>Ghi chú</Form.Label>
               <Form.Control
                 as="textarea"
-                {...register("description")}
                 style={{ height: "300px" }}
               ></Form.Control>
               <FormErrorMessage errors={errors} fieldName={"description"} />
