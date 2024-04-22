@@ -90,6 +90,7 @@ const Calendar = () => {
                                 ? "green"
                                 : "red"
                             }
+                             style={{float: "right"}}
                           >
                             {transaction.category.categoryTypeID !== 1
                               ? "-"
