@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 
 const Progress = ({ data }) => {
-  console.log("DATA", data);
   return (
     <div className="w-100">
       <div className="row">

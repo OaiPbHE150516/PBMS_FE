@@ -15,6 +15,7 @@ import { filterTransactionThisMonth } from "../../redux/filterTransactionThisSli
 import { getBalanceHistory } from "../../redux/balanceHistorySlice";
 import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Progress from "../../components/Progress";
 
 const OverViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
@@ -719,6 +720,9 @@ const BudgetListViewCard = () => {
     dispatch(getBudgets());
   }, [user]);
 
+  const budgetsFilter = budgets.filter((item) => item.percentProgress !== 0);
+
+  console.log("budgetsFilter", budgetsFilter);
   const [showTable, setShowTable] = useState(false);
   return (
     <div class="card top-selling overflow-auto">
@@ -746,79 +750,17 @@ const BudgetListViewCard = () => {
           </div>
         </div>
         {showTable && (
-          <table class="table table-borderless">
-            <tbody>
-              {budgets.map((item) => (
-                <tr>
-                  <th scope="row">
-                    <img src={logo} alt="" />
-                  </th>
-                  <td>
-                    <table class="table table-borderless">
-                      <tbody>
-                        <tr>
-                          <td scope="col" className="tdStartDay">
-                            {dayjs(item.beginDate).format("DD/MM/YYYY")}
-                          </td>
-                          <th scope="col" className="thPercent">
-                            {item.percentProgressStr}
-                          </th>
-                          <td scope="col" className="tdEndDay">
-                            {dayjs(item.endDate).format("DD/MM/YYYY")}
-                          </td>
-                        </tr>
-                        <tr>
-                          <div class="container">
-                            <div class="progress">
-                              {item.percentProgress < 33 && (
-                                <div
-                                  class={
-                                    "progress-bar progress-bar-striped bg-success"
-                                  }
-                                  role="progressbar"
-                                  style={{ width: `${item.percentProgress}%` }}
-                                ></div>
-                              )}
-                              {item.percentProgress > 33 &&
-                                item.percentProgress < 66 && (
-                                  <div
-                                    class={
-                                      "progress-bar progress-bar-striped bg-warning"
-                                    }
-                                    role="progressbar"
-                                    style={{
-                                      width: `${item.percentProgress}%`,
-                                    }}
-                                  ></div>
-                                )}
-                              {item.percentProgress > 66 && (
-                                <div
-                                  class={
-                                    "progress-bar progress-bar-striped bg-danger"
-                                  }
-                                  role="progressbar"
-                                  style={{ width: `${item.percentProgress}%` }}
-                                ></div>
-                              )}
-                            </div>
-                          </div>
-                        </tr>
-                        <tr>
-                          <th scope="col" className="tdStartDay">
-                            0 đ
-                          </th>
-                          <th className="thPercent">{item.currentAmountStr}</th>
-                          <th scope="col" className="tdEndDay">
-                            {item.targetAmountStr}
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <>
+            {budgetsFilter.map((item) => {
+              return (
+                <>
+                  <b>{item.budgetName}</b>
+                  <Progress data={item} />
+                  <br/>
+                </>
+              );
+            })}
+          </>
         )}
       </div>
     </div>

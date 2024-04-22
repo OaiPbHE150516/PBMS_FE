@@ -50,7 +50,6 @@ export const addActionWithTrans = createAsyncThunk(
         Note: fieldValue.note,
         TransactionID: fieldValue.transactionID,
       };
-      console.log("Body", body)
       const formData = new FormData();
       Object.entries(body).forEach(([key, value]) => {
         formData.append(key, value);
