@@ -6,6 +6,7 @@ import { getActionsOfCollab } from "../../redux/actionSlice";
 import * as dayjs from "dayjs";
 import { IoIosArrowForward } from "react-icons/io";
 import Popup from "../../components/Popup";
+import { Button } from "react-bootstrap";
 
 export const ActionCard = ({ collabID }) => {
   const actions = useAppSelector((state) => state.action.values);
@@ -14,29 +15,12 @@ export const ActionCard = ({ collabID }) => {
   useEffect(() => {
     dispatch(getActionsOfCollab(collabID));
   }, [collabID]);
-
-  const [selectedAction, setSelectedAction] = useState(null);
-  const [showActionDetail, setShowActionDetail] = useState(false);
-
-  const handleShowDetailAction = (actionID) => {
-    const detailAction = actions.find(
-      (item) => item.collabFundActivityID === actionID
-    );
-    setSelectedAction(detailAction);
-    setShowActionDetail(true);
-  };
-
-  console.log("selectedAction", selectedAction);
-
   return (
     <div class="card mb-3 cardActionItem">
       {reversedActions.map((item) => {
         return (
           <>
-            <div
-              class="card mb-3 cardActionItem"
-              onClick={() => handleShowDetailAction(item.collabFundActivityID)}
-            >
+            <div class="card mb-3 cardActionItem">
               <div class="row g-0 ps-2 py-2">
                 <div class="col-md-10 c-card-member-comment">
                   <img
@@ -119,16 +103,6 @@ export const ActionCard = ({ collabID }) => {
                   </div>
                 </div>
               </div>
-
-              {showActionDetail && (
-                <Popup
-                  title="Chi tiết hoạt động"
-                  show={showActionDetail}
-                  onClose={() => setShowActionDetail(false)}
-                >
-                qrtqtw    
-                </Popup>
-              )}
             </div>
           </>
         );

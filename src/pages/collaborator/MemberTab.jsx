@@ -146,7 +146,14 @@ const MemberTab = ({ collabID }) => {
       {memberAction.length > 0 ? (
         <>
           {memberAction.map((item) => {
-            return <MemberCard key={item.id} data={item} />;
+            return (
+              <MemberCard
+                key={item.id}
+                data={item}
+                collabID={collabID}
+                founderID={user.accountID}
+              />
+            );
           })}{" "}
         </>
       ) : (
@@ -159,7 +166,14 @@ const MemberTab = ({ collabID }) => {
       {memberInactive.length > 0 ? (
         <>
           {memberInactive.map((item) => {
-            return <MemberCard key={item.id} data={item} />;
+            return (
+              <MemberCard
+                key={item.id}
+                data={item}
+                collabID={collabID}
+                founderID={user.accountID}
+              />
+            );
           })}{" "}
         </>
       ) : (
@@ -176,6 +190,7 @@ const MemberTab = ({ collabID }) => {
                 key={item.id}
                 data={item}
                 founderID={user.accountID}
+                collabID={collabID}
               />
             );
           })}{" "}

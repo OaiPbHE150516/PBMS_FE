@@ -71,7 +71,6 @@ export const deleteCollaborator = createAsyncThunk(
       await dispatch(getCollaborator(user));
       return response;
     } catch (error) {
-      console.log(error.response.data);
       toast.error(error.response.data);
     }
   }

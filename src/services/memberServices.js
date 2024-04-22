@@ -59,3 +59,12 @@ export const addMemberToCollab = async (body) => {
   console.log(response);
   return response.data;
 };
+
+export const deleteMemberToCollab = async (data) => {
+  const response = await axios.delete(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/delete/member`,
+    { data: data }
+  );
+  console.log(response);
+  return response.data;
+};
