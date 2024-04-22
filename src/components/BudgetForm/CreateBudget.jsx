@@ -135,8 +135,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             }}
             {...register("category", { required: true })}
           >
-            <option value={0}>-----Chọn hạng mục-----</option>
-            {categories.map((cate) => (
+            {categories.filter((item) => item.nameVN === "Chi tiêu").map((cate) => (
               <optgroup key={cate.value} label={cate.nameVN}>
                 {cate.children.map((child) => (
                   <option key={child.categoryID} value={child.categoryID}>

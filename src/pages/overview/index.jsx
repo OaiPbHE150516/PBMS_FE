@@ -54,7 +54,7 @@ const WalletViewCard = () => {
     dispatch(getWallets());
   }, [user]);
 
-  const [showTable, setShowTable] = useState(false);
+  const [showTable, setShowTable] = useState(true);
   return (
     <div class="col-xxl-6 col-md-6 card_Overview_Wallet">
       <div class="card info-card revenue-card">
@@ -381,9 +381,11 @@ const ThisMonthViewCard = () => {
 
 const Last7DaysViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
-  const lastTransaction = useAppSelector(
+
+  const lastTransaction = Object.values(useAppSelector(
     (state) => state.lastTransaction.values
-  );
+  )).reverse();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -722,7 +724,6 @@ const BudgetListViewCard = () => {
 
   const budgetsFilter = budgets.filter((item) => item.percentProgress !== 0);
 
-  console.log("budgetsFilter", budgetsFilter);
   const [showTable, setShowTable] = useState(false);
   return (
     <div class="card top-selling overflow-auto">
