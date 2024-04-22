@@ -65,7 +65,9 @@ const MemberCard = ({ data, founderID, collabID }) => {
             show={showFormDeleteMember}
             onClose={() => setShowFormDeleteMember(false)}
             onSubmit={handleDeleteMember}
-          />
+          >
+            Bạn có chắc chắn muốn rời quỹ không?
+          </PopupDelete>
         )}
       </div>
     </div>

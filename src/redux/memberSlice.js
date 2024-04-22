@@ -94,13 +94,11 @@ export const deleteMemberToCollab = createAsyncThunk(
   "delete-member-to-collab",
   async ({ fieldValue, user }, { dispatch }) => {
     try {
-      // console.log("fieldValue", fieldValue)
       const body = {
         collabFundID: fieldValue.collabFundID,
         accountFundholderID: fieldValue.founderID,
         accountMemberID: fieldValue.accID,
       };
-      // console.log("body", body)
       const collabID = fieldValue.collabFundID;
       const response = await DeleteMemberToCollabServices(body);
       toast.success("Bạn đã rời thành công");
