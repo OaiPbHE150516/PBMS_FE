@@ -88,6 +88,8 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
       accountID: user.accountID,
       name: "",
       description: "",
+      imageFile: "",
+      imageLink: ""
     },
   });
 
