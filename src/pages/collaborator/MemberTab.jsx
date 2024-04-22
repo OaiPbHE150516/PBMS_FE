@@ -142,7 +142,7 @@ const MemberTab = ({ collabID }) => {
         collabID={collabID}
       />
 
-      <h5 className="card-title text-center">Hoạt động</h5>
+      <h5 className="card-title text-center">Đang hoạt động</h5>
       {memberAction.length > 0 ? (
         <>
           {memberAction.map((item) => {
@@ -181,7 +181,7 @@ const MemberTab = ({ collabID }) => {
           <div className="card-title text-center">...</div>
         </>
       )}
-      <h5 className="card-title text-center">Đang xét duyệt </h5>
+      <h5 className="card-title text-center">Đang chờ </h5>
       {membersWaiting.length > 0 ? (
         <>
           {membersWaiting.map((item) => {
