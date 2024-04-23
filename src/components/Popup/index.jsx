@@ -16,7 +16,7 @@ const Popup = ({
             centered
             size="lg"
             show={show}
-            onExit={onClose}
+            // onExit={onClose}
             onHide={onClose}
         >
             <div className="popup-content">
