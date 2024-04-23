@@ -326,10 +326,10 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                     <Form.Control as="textarea" {...register("note")}></Form.Control>
                 </Form.Group>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <div style={{ flexBasis: '40%', marginRight: '20px' }}>
+                    <div style={{ flexBasis: '40%', marginTop:'30px', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
-                            <Form.Label>Chọn hóa đơn</Form.Label>
-                            <Form.Control type="file" onChange={handleImageChange} />
+                            <Form.Label>Tạo giao dịch với hóa đơn</Form.Label>
+                            <Form.Control style={{marginTop:'5px'}} type="file" onChange={handleImageChange} />
                             {isScanning && (
                                 <Spinner animation="border"
                                     role="status"
