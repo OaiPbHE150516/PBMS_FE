@@ -15,12 +15,34 @@ export const ActionCard = ({ collabID }) => {
   useEffect(() => {
     dispatch(getActionsOfCollab(collabID));
   }, [collabID]);
+
+  const [actionSelected, showActionSelected] = useState(null);
+  const [showPopupAction, setShowPopupAction] = useState(false);
+
+  console.log("actionSelected", actionSelected);
+  console.log("reversedActions", reversedActions);
+
+  const handleGetActionID = (actionID) => {
+    const selectedAction = reversedActions.find(
+      (item) => item.collabFundActivityID === actionID
+    );
+    showActionSelected(selectedAction);
+  };
+
+  const handleAction = (actionID) => {
+    handleGetActionID(actionID);
+    setShowPopupAction(true);
+  };
+
   return (
     <div class="card mb-3 cardActionItem">
       {reversedActions.map((item) => {
         return (
           <>
-            <div class="card mb-3 cardActionItem">
+            <div
+              class="card mb-3 cardActionItem"
+              onClick={() => handleAction(item.collabFundActivityID)}
+            >
               <div class="row g-0 ps-2 py-2">
                 <div class="col-md-10 c-card-member-comment">
                   <img
@@ -104,6 +126,35 @@ export const ActionCard = ({ collabID }) => {
                 </div>
               </div>
             </div>
+            {showPopupAction && (
+              <Popup
+                title="Chi tiết hoạt động"
+                show={showPopupAction}
+                onClose={() => {
+                  setShowPopupAction(false);
+                }}
+              >
+                {actionSelected.transaction ? (
+                  <>
+                    <div>
+                      <b> Hạng mục: </b>
+                      {actionSelected.transaction?.category.nameVN}
+                    </div>
+                    <div>
+                      <b>Số tiền: </b>
+                      {actionSelected.transaction?.totalAmountStr}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
+                <div>
+                  <b>Note: </b>
+                  {actionSelected.note}
+                </div>
+              </Popup>
+            )}
           </>
         );
       })}
