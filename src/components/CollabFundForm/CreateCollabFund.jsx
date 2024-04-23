@@ -14,10 +14,10 @@ function ItemMember({ member, onAddMember }) {
   if (!member) return;
   return (
     <Form.Group className="mb-3 border border-dark">
-      <div className="d-flex align-items-center gap-2 p-2 ">
+      <div className="d-flex align-items-center gap-2 p-2">
         <div>
           <img
-            src={logo}
+            src={member.pictureURL}
             alt=""
             className="rounded-full border border-dark"
             width={50}
@@ -27,7 +27,9 @@ function ItemMember({ member, onAddMember }) {
         <div className="flex-grow-1">
           <p className="mb-0 bold">{member.accountName}</p>
         </div>
-        <Button onClick={() => onAddMember(member)}>Thêm</Button>
+        <Button onClick={() => onAddMember(member)} className="btn-search">
+          <span>Mời</span>
+        </Button>
       </div>
     </Form.Group>
   );
@@ -48,7 +50,7 @@ function ItemMemberAdd({ selectedMembers, onRemoveMember }) {
               <div>
                 <div className="item_member_card">
                   <img
-                    src={logo}
+                    src={member.pictureURL}
                     alt=""
                     className="rounded-full border border-dark"
                     width={50}
@@ -86,6 +88,8 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
       accountID: user.accountID,
       name: "",
       description: "",
+      imageFile: "",
+      imageLink: ""
     },
   });
 
@@ -97,7 +101,11 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
 
-  const listMemberSearched = listMemberSearch.filter((item) => !selectedMembers.filter(member => member.accountID === item.accountID).length);
+  const listMemberSearched = listMemberSearch.filter(
+    (item) =>
+      !selectedMembers.filter((member) => member.accountID === item.accountID)
+        .length
+  );
 
   //Handle Members
   const handleSearch = async () => {
@@ -132,10 +140,9 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
 
   useEffect(() => {
     if (show) return;
-    setSearchKey("");
+    setSearchKey("");       
     setSearchResults([]);
     setSelectedMembers([]);
-
     reset();
   }, [show]);
 
@@ -144,30 +151,31 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
       title={"Thêm khoản chi tiêu chung"}
       show={show}
       onClose={() => showSet(false)}
-      onSubmit={handleSubmit(
-        function(data) {
-          onSubmit({...data, account: selectedMembers})
-        }
-      )}
+      onSubmit={handleSubmit(function (data) {
+        onSubmit({ ...data, account: selectedMembers });
+      })}
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên khoản</Form.Label>
+          <Form.Label>Tên khoản chi tiêu</Form.Label>
           <Form.Control
             type="text"
             {...register("name", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"name"} />
+          <FormErrorMessage errors={errors} fieldName={"name"} defaultMessage={"Không được để trống"}/>
         </Form.Group>
+        <Form className="c-form"></Form>
         <Form.Label>Tìm kiếm thành viên</Form.Label>
         <Form.Group className="mb-3 d-flex gap-3 align-items-center">
           <Form.Control
             type="text"
             className="flex-grow-1"
             value={searchKey}
-            onChange={(e) => setSearchKey(e.target.value)}
+            onChange={(e) => {
+              setSearchKey(e.target.value);
+              handleSearch(); 
+            }}
           />
-          <Button onClick={handleSearch}>Tìm</Button>
         </Form.Group>
         <div className="member_search_card">
           {listMemberSearched.map((member, index) => (
@@ -184,10 +192,9 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
               <Form.Label>Ghi chú</Form.Label>
               <Form.Control
                 as="textarea"
-                {...register("description")}
                 style={{ height: "300px" }}
               ></Form.Control>
-              <FormErrorMessage errors={errors} fieldName={"description"} />
+              <FormErrorMessage errors={errors} fieldName={"description"}  defaultMessage={"Không được để trống"}/>
             </Form.Group>
           </div>{" "}
           <div className="col-md-6">

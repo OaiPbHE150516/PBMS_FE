@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import MemberCard from "./MemberCard";
 import Button from "../../components/Button";
 import Popup from "../../components/Popup";
-import MultipleSelect from "../../components/MultipleSelect";
 import Form from "react-bootstrap/Form";
-import logo from "../../assets/Logo.png";
 import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
 import {
@@ -13,14 +11,11 @@ import {
 } from "../../redux/memberSlice";
 import { BsX } from "react-icons/bs";
 import { searchMembersByKey } from "../../services/searchMemberSlice";
-import { useForm } from "react-hook-form";
 
-
-
-const AddNewMemberPopup = ({ show, onClose, collabID, founderID  }) => {
+const AddNewMemberPopup = ({ show, onClose, collabID, founderID }) => {
   const [searchKey, setSearchKey] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
-  
+
   const dispatch = useDispatch();
 
   const listMemberSearch = useAppSelector((state) => state.searchMember.values);
@@ -44,9 +39,11 @@ const AddNewMemberPopup = ({ show, onClose, collabID, founderID  }) => {
               type="text"
               className="flex-grow-1"
               value={searchKey}
-              onChange={(e) => setSearchKey(e.target.value)}
+              onChange={(e) => {
+                setSearchKey(e.target.value);
+                handleSearch();
+              }}
             />
-            <Button onClick={handleSearch}>Tìm</Button>
           </Form.Group>
           <div className="member_search_card">
             {listMemberSearched.map((member, index) => (
@@ -66,7 +63,13 @@ const AddNewMemberPopup = ({ show, onClose, collabID, founderID  }) => {
   );
 };
 
-const ItemMember = ({ member, collabID, founderID, selectedMembers, setSelectedMembers }) => {
+const ItemMember = ({
+  member,
+  collabID,
+  founderID,
+  selectedMembers,
+  setSelectedMembers,
+}) => {
   const dispatch = useDispatch();
   const handleAddMember = () => {
     dispatch(
@@ -91,7 +94,7 @@ const ItemMember = ({ member, collabID, founderID, selectedMembers, setSelectedM
       <div className="d-flex align-items-center gap-2 p-2 ">
         <div>
           <img
-            src={logo}
+            src={member.pictureURL}
             alt=""
             className="rounded-full border border-dark"
             width={50}
@@ -101,7 +104,7 @@ const ItemMember = ({ member, collabID, founderID, selectedMembers, setSelectedM
         <div className="flex-grow-1">
           <p className="mb-0 bold">{member.accountName}</p>
         </div>
-        <Button onClick={handleAddMemberAndRemove}>Thêm</Button>
+        <Button onClick={handleAddMemberAndRemove}>Mời</Button>
       </div>
     </Form.Group>
   );
@@ -137,15 +140,22 @@ const MemberTab = ({ collabID }) => {
       <AddNewMemberPopup
         show={showAddNewPopup}
         onClose={() => showAddNewPopupSet(false)}
-        collabID={collabID}
         founderID={user.accountID}
+        collabID={collabID}
       />
 
-      <h5 className="card-title text-center">Hoạt động</h5>
+      <h5 className="card-title text-center">Đang hoạt động</h5>
       {memberAction.length > 0 ? (
         <>
           {memberAction.map((item) => {
-            return <MemberCard key={item.id} data={item} />;
+            return (
+              <MemberCard
+                key={item.id}
+                data={item}
+                collabID={collabID}
+                founderID={user.accountID}
+              />
+            );
           })}{" "}
         </>
       ) : (
@@ -158,7 +168,14 @@ const MemberTab = ({ collabID }) => {
       {memberInactive.length > 0 ? (
         <>
           {memberInactive.map((item) => {
-            return <MemberCard key={item.id} data={item} />;
+            return (
+              <MemberCard
+                key={item.id}
+                data={item}
+                collabID={collabID}
+                founderID={user.accountID}
+              />
+            );
           })}{" "}
         </>
       ) : (
@@ -166,11 +183,18 @@ const MemberTab = ({ collabID }) => {
           <div className="card-title text-center">...</div>
         </>
       )}
-      <h5 className="card-title text-center">Đang xét duyệt </h5>
+      <h5 className="card-title text-center">Đang chờ </h5>
       {membersWaiting.length > 0 ? (
         <>
           {membersWaiting.map((item) => {
-            return <MemberCard key={item.id} data={item} />;
+            return (
+              <MemberCard
+                key={item.id}
+                data={item}
+                founderID={user.accountID}
+                collabID={collabID}
+              />
+            );
           })}{" "}
         </>
       ) : (

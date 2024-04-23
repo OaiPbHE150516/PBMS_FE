@@ -25,10 +25,10 @@ export const acceptToCollab = async (collabFundID, accountMemberID) => {
   return response.data;
 };
 
-export const declineToCollab = async (collabID, accID) => {
+export const declineToCollab = async (data) => {
   const response = await axios.put(
     API.MANAGE_COLLABORATOR + `/api/collabfund/decline`,
-    { data: { collabID, accID } }
+    data
   );
   console.log(response);
   return response.data;
@@ -55,6 +55,15 @@ export const addMemberToCollab = async (body) => {
   const response = await axios.post(
     API.MANAGE_COLLABORATOR + `/api/collabfund/invite`,
     body
+  );
+  console.log(response);
+  return response.data;
+};
+
+export const deleteMemberToCollab = async (data) => {
+  const response = await axios.delete(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/delete/member`,
+    { data: data }
   );
   console.log(response);
   return response.data;

@@ -69,7 +69,7 @@
 .progress-bar {
   position: relative;
   height: 20px;
-  background-color: #f5f5f5; /* Default background color */
+  background-color: #f5f5f5; 
 }
 
 .progress-segment {
@@ -79,27 +79,7 @@
 
 .container {
   width: 100%;
-  height: 10px;
   position: relative;
   border-radius: 35px;
   overflow: hidden;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 100%;
-}
-
-.progress-layer-1 {
-  color: white;
-  text-align: center;
-  background: #e5405e;
-  background: linear-gradient(to right, #3fffa2 0%, #ffdb3a 45%, #e5405e 100%);
-}
-
-.progress-layer-2 {
-  background-color: #eee !important;
-  position: absolute  !important;
-  top: 0  !important;
-  right: 0  !important;
 }

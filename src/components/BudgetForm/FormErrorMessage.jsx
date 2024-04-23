@@ -1,7 +1,7 @@
 import React from "react";
 
 export function FormErrorMessage({
-    errors, fieldName, defaultMessage = "This field is required",
+    errors, fieldName, defaultMessage,
 }) {
     const messageError = errors?.[fieldName];
     const message = (messageError ?? {}).message || defaultMessage;

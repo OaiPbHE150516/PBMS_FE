@@ -41,6 +41,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { errors, isValid },
     setValue,
   } = useForm({
@@ -108,6 +109,11 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (show) return;
+    reset();
+  }, [show]);
+
   return (
     <Popup
       title={"Tạo hạn mức chi mới"}
@@ -122,7 +128,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             type="text"
             {...register("budgetName", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"budgetName"} />
+          <FormErrorMessage errors={errors} fieldName={"budgetName"} defaultMessage={"Không được để trống"} />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Hạng mục</Form.Label>
@@ -135,8 +141,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             }}
             {...register("category", { required: true })}
           >
-            <option value={0}>-----Chọn hạng mục-----</option>
-            {categories.map((cate) => (
+            {categories.filter((item) => item.nameVN === "Chi tiêu").map((cate) => (
               <optgroup key={cate.value} label={cate.nameVN}>
                 {cate.children.map((child) => (
                   <option key={child.categoryID} value={child.categoryID}>
@@ -146,15 +151,16 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
               </optgroup>
             ))}
           </select>
-          <FormErrorMessage errors={errors} fieldName={"category"} />
+          <FormErrorMessage errors={errors} fieldName={"category"} defaultMessage={"Không được để trống"}/>
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Ngưỡng chi tiêu</Form.Label>
           <Form.Control
             type="number"
+            min="1000"
             {...register("targetAmount", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
+          <FormErrorMessage errors={errors} fieldName={"targetAmount"} defaultMessage={"Số tiền lớn hơn 1.000 đ"}/>
         </Form.Group>
         <Form.Group className="mb-3 d-flex align-items-center gap-3">
           <Form.Label>Khoảng thời gian</Form.Label>
@@ -193,7 +199,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
               </div>
             )}
           />
-          <FormErrorMessage errors={errors} fieldName={"period"} />
+          <FormErrorMessage errors={errors} fieldName={"period"} defaultMessage={"Không được để trống"}/>
         </Form.Group>
         <Form.Group className="mb-4">
           {period === "other" && (
@@ -224,7 +230,7 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"note"} />
+          <FormErrorMessage errors={errors} fieldName={"note"}  defaultMessage={"Không được để trống"}/>
         </Form.Group>
       </Form>
     </Popup>

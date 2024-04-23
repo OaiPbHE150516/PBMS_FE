@@ -12,13 +12,32 @@
 .fc-event-main {
   color: black !important;
 }
-.Calendar  .green {
+.Calendar .green {
   color: green !important;
 }
 
-.Calendar  .red {
+.Calendar .red {
   color: red !important;
 }
-td, th{
-  white-space: nowrap
+.Calendar td,
+.Calendar th {
+  white-space: nowrap;
+}
+.fc .fc-daygrid-day-number {
+  font-size: 32px !important;
+  margin: auto;
+}
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+.fc-scrollgrid-sync-inner{
+  align-content: center;
+}
+.fc-toolbar-title{
+  text-transform: uppercase;
+}
+.fc-scrollgrid-sync-inner:hover{
+  background-color: lightgray;
 }

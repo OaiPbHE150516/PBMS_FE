@@ -138,7 +138,6 @@ const Budget = () => {
                 ))}
               </>
             )}
-            {/* Other */}
             {OtherBudget.length > 0 && (
               <>
                 <h3 className="mb-3 text-center h3">Các hạn mức sách khác</h3>

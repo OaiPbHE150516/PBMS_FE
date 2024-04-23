@@ -2,8 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMembersOfCollab as MembersOfCollabServices } from "../services/memberServices";
 import { addMemberToCollab as AddMembersOfCollabServices } from "../services/memberServices";
 import { acceptToCollab as AcceptToCollabServices } from "../services/memberServices";
+import { declineToCollab as DeclineToCollabServices } from "../services/memberServices";
+import { invitationToCollab as InvitationToCollabServices } from "../services/memberServices";
+import { deleteMemberToCollab as DeleteMemberToCollabServices } from "../services/memberServices";
 import { toast } from "react-toastify";
-import { getCollaborators } from "../services/collaboratorServices";
+import { getCollaborator } from "./collaboratorSlice";
 
 export const getMembersOfCollab = createAsyncThunk(
   "get-membersOfCollab",
@@ -29,7 +32,7 @@ export const addMembersToCollab = createAsyncThunk(
       };
       const response = await AddMembersOfCollabServices(body);
       const collabID = fieldValue.collabFundID;
-      toast.success("Bạn đã tạo khoản chi tiêu chung thành công");
+      toast.success("Bạn đã mời thành công");
       await dispatch(getMembersOfCollab({ collabID }));
       return response;
     } catch (error) {
@@ -44,8 +47,63 @@ export const acceptToCollab = createAsyncThunk(
     try {
       const response = await AcceptToCollabServices(collabID, accID);
       toast.success("Bạn đã tham gia quỹ thành công");
-      await dispatch(getCollaborators(user));
       await dispatch(getMembersOfCollab({ collabID }));
+      await dispatch(getCollaborator(user));
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  }
+);
+
+export const declineToCollab = createAsyncThunk(
+  "accpet-to-collab",
+  async ({ collabID, accID, user }, { dispatch }) => {
+    try {
+      const body = {
+        collabFundID: collabID,
+        accountMemberID: accID,
+      };
+      const response = await DeclineToCollabServices(body);
+      toast.success("Bạn từ chối lời mời thành công");
+      await dispatch(getMembersOfCollab({ collabID }));
+      await dispatch(getCollaborator(user));
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  }
+);
+
+export const invitationToCollab = createAsyncThunk(
+  "accpet-to-collab",
+  async ({ collabID, accID, user }, { dispatch }) => {
+    try {
+      const response = await InvitationToCollabServices(collabID, accID);
+      toast.success("Bạn từ chối lời mời thành công");
+      await dispatch(getMembersOfCollab({ collabID }));
+      await dispatch(getCollaborator(user));
+      return response;
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  }
+);
+
+export const deleteMemberToCollab = createAsyncThunk(
+  "delete-member-to-collab",
+  async ({ fieldValue, user }, { dispatch }) => {
+    try {
+      const body = {
+        collabFundID: fieldValue.collabFundID,
+        accountFundholderID: fieldValue.founderID,
+        accountMemberID: fieldValue.accID,
+      };
+      const collabID = fieldValue.collabFundID;
+      const response = await DeleteMemberToCollabServices(body);
+      toast.success("Bạn đã rời thành công");
+      await dispatch(getMembersOfCollab({collabID}));
+      await dispatch(getCollaborator(user));
       return response;
     } catch (error) {
       toast.error(error.response.data);

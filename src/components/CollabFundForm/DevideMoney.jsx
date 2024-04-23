@@ -45,7 +45,7 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
       onClose={() => showSet(false)}
       onSubmit={onSubmit}
     >
-      <div class=" tableListItem">
+      <div class="tableListItem">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -114,19 +114,19 @@ const DevideMoney = ({ show, showSet, collabFundID }) => {
             {cfdm_detail_result.map((item, index) => (
               <div className="row divideItem">
                 <div className="col-lg-5">
-                  <input type="checkbox" />
-                  <img src={logo} />
+                  {/* <input type="checkbox" /> */}
+                  <img src={item.fromAccount.pictureURL} />
                   <span>{item.fromAccount.accountName}</span>
                 </div>
                 <div className="col-lg-2">
-                  <div>{item.dividingAmount.toLocaleString("vi-VN")} đ</div>
+                  <div>{item.dividingAmountStr}</div>
                   <div>
                     <FaLongArrowAltRight />
                   </div>
                 </div>
                 <div className="col-lg-5">
-                  <input type="checkbox" />
-                  <img src={logo} />
+                  {/* <input type="checkbox" /> */}
+                  <img src={item.toAccount.pictureURL} />
                   <span>{item.toAccount.accountName}</span>
                 </div>
               </div>

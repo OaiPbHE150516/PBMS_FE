@@ -2,26 +2,20 @@ import React, { useEffect, useState } from "react";
 import "../../css/Overview.css";
 import { PageHelper, PageTitle } from "../../components";
 import ReactApexChart from "react-apexcharts";
-import {
-  lastWeekData,
-  surplusData,
-  walletData,
-  thisMonthData,
-} from "../../contexts/overview";
 import logo from "../.././assets/Logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getTotalWallets, getWallets } from "../../redux/walletSlice";
 import useAppSelector from "../../hooks/useAppSelector";
 import * as dayjs from "dayjs";
-import { getTransaction } from "../../redux/transactionSlice";
 import { get7LastTransaction } from "../../redux/overviewLastTransactionSlice";
 import { getBudgets } from "../../redux/budgetSlice";
 import { getMostTransaction } from "../../redux/overviewMostTransactionSlice";
 import { filterTransactionLastMonth } from "../../redux/filterTransactionLastSlice";
 import { filterTransactionThisMonth } from "../../redux/filterTransactionThisSlice";
-import { GoogleLogin } from "@react-oauth/google";
-import { signin } from "../../redux/authenSlice";
 import { getBalanceHistory } from "../../redux/balanceHistorySlice";
+import { Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Progress from "../../components/Progress";
 
 const OverViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
@@ -59,27 +53,55 @@ const WalletViewCard = () => {
   useEffect(() => {
     dispatch(getWallets());
   }, [user]);
+
+  const [showTable, setShowTable] = useState(true);
+
   return (
     <div class="col-xxl-6 col-md-6 card_Overview_Wallet">
       <div class="card info-card revenue-card">
         <div class="card-body">
-          <h5 class="card-title">Ví</h5>
-          <table class="table">
-            <tbody>
-              {activeWallets.map((item) => (
-                <tr>
-                  <td>{item.name}</td>
-                  <td
-                    className={
-                      item.balance < 0 ? "tdMoney red" : "tdMoney green"
-                    }
-                  >
-                    {item.balance.toLocaleString("vi-VN")} đ
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div
+            style={{
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "space-between",
+            }}
+          >
+            <Link to="/wallet">
+              <h5 class="card-title">Ví</h5>
+            </Link>
+            <div class="card-text small">
+              <div>
+                <Form.Check
+                  className="mb-0"
+                  type="switch"
+                  label=""
+                  size={"lg"}
+                  checked={showTable}
+                  onChange={() => setShowTable(!showTable)}
+                ></Form.Check>
+              </div>
+            </div>
+          </div>
+
+          {showTable && (
+            <table class="table">
+              <tbody>
+                {activeWallets.map((item) => (
+                  <tr>
+                    <td>{item.name}</td>
+                    <td
+                      className={
+                        item.balance < 0 ? "tdMoney red" : "tdMoney green"
+                      }
+                    >
+                      {item.balanceStr}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
@@ -95,6 +117,9 @@ const LastMonthViewCard = () => {
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
 
+ const dataAmount = filterLastMonth.categoryWithTransactionData.map(
+    (item) => item.totalAmount
+  );
   const series = filterLastMonth.categoryWithTransactionData.map(
     (item) => item.percentage
   );
@@ -103,11 +128,22 @@ const LastMonthViewCard = () => {
   );
   const labelColors = ["#00E396", "#FF0000", "#FFE15D"];
 
+  const totalIn = filterLastMonth.categoryWithTransactionData.find(
+    (item) => item.categoryType.categoryTypeID === 1
+  );
+  const totalOut = filterLastMonth.categoryWithTransactionData.find(
+    (item) => item.categoryType.categoryTypeID === 2
+  );
+  const sumTotal = totalIn?.totalAmount - totalOut?.totalAmount;
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(filterTransactionLastMonth({ month, year }));
   }, [month, year, user]);
 
+  const [showTable, setShowTable] = useState(false);
+
+ 
   const lastMonthTransaction = [
     {
       series: series,
@@ -131,6 +167,19 @@ const LastMonthViewCard = () => {
             },
           },
         ],
+        tooltip: {
+          enabled: true,
+          y: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return dataAmount[dataPointIndex].toLocaleString("vi-VN") + " ₫";
+            },
+          },
+          x: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return labels[dataPointIndex];
+            },
+          },
+        },
       },
     },
   ];
@@ -138,38 +187,73 @@ const LastMonthViewCard = () => {
     <div class="col-lg-4 card_Month">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Tháng trước</h5>
-          <ReactApexChart
-            options={lastMonthTransaction[0].options}
-            series={lastMonthTransaction[0].series}
-            type={lastMonthTransaction[0].options.chart.type}
-          />
-        </div>
-        {user != null ? (
-          <>
-            <div class="card-body">
-              <table class="table">
-                <tbody>
-                  {filterLastMonth.categoryWithTransactionData.map(
-                    (item, index) => (
-                      <tr key={index}>
-                        <th>{item.categoryType.name}</th>
-                        <td className="tdMoney">{item.totalAmountStr}</td>
-                      </tr>
-                    )
-                  )}
-                  <tr>
-                    <th>Tổng</th>
-                    <th className="tdMoney">
-                      {filterLastMonth.totalAmountOfMonthStr}
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
+          <div
+            style={{
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "space-between",
+            }}
+          >
+            <h5 class="card-title">Tháng trước</h5>
+            <div class="card-text small">
+              <div>
+                <Form.Check
+                  className="mb-0"
+                  type="switch"
+                  label=""
+                  size={"lg"}
+                  onChange={() => setShowTable(!showTable)}
+                ></Form.Check>
+              </div>
             </div>
+          </div>
+        </div>
+        {showTable && (
+          <>
+            {" "}
+            {user != null ? (
+              <>
+                <ReactApexChart
+                  options={lastMonthTransaction[0].options}
+                  series={lastMonthTransaction[0].series}
+                  type={lastMonthTransaction[0].options.chart.type}
+                />
+                <div class="card-body">
+                  <table class="table">
+                    <tbody>
+                      {filterLastMonth.categoryWithTransactionData.map(
+                        (item, index) => (
+                          <tr key={index}>
+                            <th>{item.categoryType.name}</th>
+                            <th
+                              className={
+                                item.categoryType.categoryTypeID === 1
+                                  ? "tdMoney green"
+                                  : "tdMoney red"
+                              }
+                            >
+                              {item.categoryType.categoryTypeID === 1
+                                ? "+"
+                                : "-"}
+                              {item.totalAmountStr}
+                            </th>
+                          </tr>
+                        )
+                      )}
+                      <tr>
+                        <th>Tổng</th>
+                        <th className="tdMoney">
+                          {sumTotal.toLocaleString("vi-VN")} ₫
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </>
-        ) : (
-          <></>
         )}
       </div>
     </div>
@@ -192,12 +276,27 @@ const ThisMonthViewCard = () => {
   const labels = filterThisMonth.categoryWithTransactionData.map(
     (item) => item.categoryType.name
   );
+
+  const dataAmount = filterThisMonth.categoryWithTransactionData.map(
+    (item) => item.totalAmount
+  );
+
   const labelColors = ["#00E396", "#FF0000", "#FFE15D"];
+
+  const totalIn = filterThisMonth.categoryWithTransactionData.find(
+    (item) => item.categoryType.categoryTypeID === 1
+  );
+  const totalOut = filterThisMonth.categoryWithTransactionData.find(
+    (item) => item.categoryType.categoryTypeID === 2
+  );
+  const sumTotal = totalIn?.totalAmount - totalOut?.totalAmount;
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(filterTransactionThisMonth({ month, year }));
   }, [month, year, user]);
+
+  const [showTable, setShowTable] = useState(true);
 
   const thisMonthTransaction = [
     {
@@ -208,6 +307,7 @@ const ThisMonthViewCard = () => {
           type: "donut",
         },
         labels: labels,
+        datasets: dataAmount,
         colors: labelColors,
         responsive: [
           {
@@ -222,6 +322,19 @@ const ThisMonthViewCard = () => {
             },
           },
         ],
+        tooltip: {
+          enabled: true,
+          y: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return dataAmount[dataPointIndex].toLocaleString("vi-VN") + " ₫";
+            },
+          },
+          x: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return labels[dataPointIndex];
+            },
+          },
+        },
       },
     },
   ];
@@ -229,39 +342,75 @@ const ThisMonthViewCard = () => {
     <div class="col-lg-4 card_Month">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Tháng hiện tại</h5>
-          <ReactApexChart
-            options={thisMonthTransaction[0].options}
-            series={thisMonthTransaction[0].series}
-            type={thisMonthTransaction[0].options.chart.type}
-          />
-        </div>
-        {user != null ? (
-          <>
-            {" "}
-            <div class="card-body">
-              <table class="table">
-                <tbody>
-                  {filterThisMonth.categoryWithTransactionData.map(
-                    (item, index) => (
-                      <tr key={index}>
-                        <th>{item.categoryType.name}</th>
-                        <td className="tdMoney">{item.totalAmountStr}</td>
-                      </tr>
-                    )
-                  )}
-                  <tr>
-                    <th>Tổng</th>
-                    <th className="tdMoney">
-                      {filterThisMonth.totalAmountOfMonthStr}
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
+          <div
+            style={{
+              display: "flex",
+              "align-items": "center",
+              "justify-content": "space-between",
+            }}
+          >
+            <h5 class="card-title">Tháng hiện tại</h5>
+            <div class="card-text small">
+              <div>
+                <Form.Check
+                  className="mb-0"
+                  type="switch"
+                  label=""
+                  size={"lg"}
+                  checked={showTable}
+                  onChange={() => setShowTable(!showTable)}
+                ></Form.Check>
+              </div>
             </div>
+          </div>
+        </div>
+
+        {showTable && (
+          <>
+            <ReactApexChart
+              options={thisMonthTransaction[0].options}
+              series={thisMonthTransaction[0].series}
+              type={thisMonthTransaction[0].options.chart.type}
+            />
+            {user != null ? (
+              <>
+                {" "}
+                <div class="card-body">
+                  <table class="table">
+                    <tbody>
+                      {filterThisMonth.categoryWithTransactionData.map(
+                        (item, index) => (
+                          <tr key={index}>
+                            <th>{item.categoryType.name}</th>
+                            <th
+                              className={
+                                item.categoryType.categoryTypeID === 1
+                                  ? "tdMoney green"
+                                  : "tdMoney red"
+                              }
+                            >
+                              {item.categoryType.categoryTypeID === 1
+                                ? "+"
+                                : "-"}
+                              {item.totalAmountStr}
+                            </th>
+                          </tr>
+                        )
+                      )}
+                      <tr>
+                        <th>Tổng</th>
+                        <th className="tdMoney">
+                          {sumTotal.toLocaleString("vi-VN")} ₫
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </>
-        ) : (
-          <></>
         )}
       </div>
     </div>
@@ -270,9 +419,11 @@ const ThisMonthViewCard = () => {
 
 const Last7DaysViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
-  const lastTransaction = useAppSelector(
-    (state) => state.lastTransaction.values
-  );
+
+  const lastTransaction = Object.values(
+    useAppSelector((state) => state.lastTransaction.values)
+  ).reverse();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -336,20 +487,41 @@ const Last7DaysViewCard = () => {
       },
     },
   ];
+  const [showTable, setShowTable] = useState(true);
 
   return (
-    <div className="col-6">
-      <div className="card">
-        <div className="card-body">
+    <div className="card">
+      <div className="card-body">
+        <div
+          style={{
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "space-between",
+          }}
+        >
           <h5 className="card-title">7 ngày gần nhất</h5>
+          <div class="card-text small">
+            <div>
+              <Form.Check
+                className="mb-0"
+                type="switch"
+                label=""
+                size={"lg"}
+                checked={showTable}
+                onChange={() => setShowTable(!showTable)}
+              ></Form.Check>
+            </div>
+          </div>
         </div>
+      </div>
+      {showTable && (
         <ReactApexChart
           options={last7WeekData[0].options}
           series={last7WeekData[0].series}
           type={last7WeekData[0].options.chart.type}
           height={350}
         />
-      </div>
+      )}
     </div>
   );
 };
@@ -385,6 +557,8 @@ const SurplusViewCard = () => {
   const date = balanceHistory?.map((item) => item.date);
 
   const totalAmount = balanceHistory?.map((item) => item.totalAmount);
+
+  const [showTable, setShowTable] = useState(false);
 
   const balanceData = [
     {
@@ -430,38 +604,56 @@ const SurplusViewCard = () => {
               return val.toLocaleString("vi-VN");
             },
           },
-          // tickAmount: 10,
         },
       },
     },
   ];
 
   return (
-    <div className="col-6">
-      <div className="card">
-        <div class="card-body">
+    <div className="card">
+      <div class="card-body">
+        <div
+          style={{
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "space-between",
+          }}
+        >
           <h5 class="card-title">Số dư của ví</h5>
-        </div>
-        <div className="row" style={{ "margin-left": "20px" }}>
-          <div className="col-md-1">Ví:</div>
-          <div className="col-md-10">
-            <select value={walletValue} onChange={handleWalletValueChange}>
-              <option value={0}>---Chọn ví---</option>
-              {activeWallets.map((item) => (
-                <option value={item.walletID}>{item.name}</option>
-              ))}
-            </select>
+          <div class="card-text small">
+            <div>
+              <Form.Check
+                className="mb-0"
+                type="switch"
+                label=""
+                size={"lg"}
+                onChange={() => setShowTable(!showTable)}
+              ></Form.Check>
+            </div>
           </div>
         </div>
-
-
-        <ReactApexChart
-          options={balanceData[0].options}
-          series={balanceData[0].series}
-          type={balanceData[0].options.chart.type}
-          height={350}
-        />
       </div>
+
+      {showTable && (
+        <>
+          <div className="row" style={{ "margin-left": "20px" }}>
+            <div className="col-md-2">Chọn ví:</div>
+            <div className="col-md-10">
+              <select value={walletValue} onChange={handleWalletValueChange}>
+                {activeWallets.map((item) => (
+                  <option value={item.walletID}>{item.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <ReactApexChart
+            options={balanceData[0].options}
+            series={balanceData[0].series}
+            type={balanceData[0].options.chart.type}
+            height={350}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -478,57 +670,83 @@ const MostTransactionViewCard = () => {
     setNumber(event.target.value);
   };
 
+  const [showTable, setShowTable] = useState(true);
+
   return (
-    <div class="col-6">
-      <div class="card top-selling overflow-auto">
-        <div class="card-body pb-0">
-          <h5 class="card-title">Các giao dịch gần nhất</h5>
-          <span>Số lượng giao dịch: </span>
-          <select value={number} onChange={handleNumberChange}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </select>
-          <table class="table table-borderless">
-            <thead>
-              <tr>
-                <th scope="col">Thời gian</th>
-                <th scope="col">Danh mục</th>
-                <th scope="col">Ví</th>
-                <th scope="col">Số tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mostTransactions.map((transaction, index) => (
-                <tr>
-                  <td>{transaction.transactionDateMinus}</td>
-                  <td
-                    className={
-                      parseFloat(transaction.category.categoryTypeID) !== 1
-                        ? "red money"
-                        : "green money"
-                    }
-                  >
-                    <div>
-                      <td>{transaction.category.nameVN}</td>
-                    </div>
-                  </td>
-                  <td>{transaction.wallet.name}</td>
-                  <td
-                    className={
-                      parseFloat(transaction.category.categoryTypeID) !== 1
-                        ? "red money"
-                        : "green money"
-                    }
-                  >
-                    {transaction.category.categoryTypeID !== 1 ? "-" : "+"}
-                    {transaction.totalAmountStr}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div class="card top-selling overflow-auto">
+      <div class="card-body pb-0">
+        <div
+          style={{
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "space-between",
+          }}
+        >
+          <Link to="/transaction">
+            <h5 class="card-title">Các giao dịch gần nhất</h5>
+          </Link>
+          <div class="card-text small">
+            <div>
+              <Form.Check
+                className="mb-0"
+                type="switch"
+                label=""
+                size={"lg"}
+                checked={showTable}
+                onChange={() => setShowTable(!showTable)}
+              ></Form.Check>
+            </div>
+          </div>
         </div>
+        {showTable && (
+          <>
+            <span>Số lượng giao dịch: </span>
+            <select value={number} onChange={handleNumberChange}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th scope="col">Thời gian</th>
+                  <th scope="col">Danh mục</th>
+                  <th scope="col">Ví</th>
+                  <th scope="col">Số tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mostTransactions.map((transaction, index) => (
+                  <tr>
+                    <td>{transaction.transactionDateMinus}</td>
+                    <td
+                      className={
+                        parseFloat(transaction.category.categoryTypeID) !== 1
+                          ? "red money"
+                          : "green money"
+                      }
+                    >
+                      <div>
+                        <td>{transaction.category.nameVN}</td>
+                      </div>
+                    </td>
+                    <td>{transaction.wallet.name}</td>
+                    <td
+                      className={
+                        parseFloat(transaction.category.categoryTypeID) !== 1
+                          ? "red money"
+                          : "green money"
+                      }
+                    >
+                      {transaction.category.categoryTypeID !== 1 ? "-" : "+"}
+                      {transaction.totalAmountStr}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
       </div>
     </div>
   );
@@ -542,72 +760,53 @@ const BudgetListViewCard = () => {
     dispatch(getBudgets());
   }, [user]);
 
+  const budgetsFilter = budgets.filter((item) => item.percentProgress !== 0);
+
+  const [showTable, setShowTable] = useState(false);
   return (
-    <div class="col-6">
-      <div class="card top-selling overflow-auto">
-        <div class="card-body">
-          <h5 class="card-title">Các hạn mức</h5>
-          <table class="table table-borderless">
-            <tbody>
-              {budgets.map((item) => (
-                <tr>
-                  <th scope="row">
-                    <img src={logo} alt="" />
-                  </th>
-                  <td style={{ width: "100%" }}>
-                    <table class="table table-borderless">
-                      <tbody>
-                        <tr>
-                          <td scope="col" className="tdStartDay">
-                            {dayjs(item.beginDate).format("DD/MM/YYYY")}
-                          </td>
-                          <th scope="col" className="thPercent">
-                            {item.percentProgressStr}
-                          </th>
-                          <td scope="col" className="tdEndDay">
-                            {dayjs(item.endDate).format("DD/MM/YYYY")}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td colSpan={3}>
-                            <div className="container">
-                              <div className="progress-bar progress-layer-1"></div>
-                              <div
-                                className="progress-bar progress-layer-2"
-                                style={{
-                                  width: `${Math.max(
-                                    0,
-                                    100 - item.percentProgress
-                                  )}%`,
-                                }}
-                              ></div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="col" className="tdStartDay">
-                            0 đ
-                          </th>
-                          <th className="thPercent">{item.currentAmountStr}</th>
-                          <th scope="col" className="tdEndDay">
-                            {item.targetAmountStr}
-                          </th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div class="card top-selling overflow-auto">
+      <div class="card-body">
+        <div
+          style={{
+            display: "flex",
+            "align-items": "center",
+            "justify-content": "space-between",
+          }}
+        >
+          <Link to="/budget">
+            <h5 class="card-title">Các hạn mức chi</h5>
+          </Link>
+          <div class="card-text small">
+            <div>
+              <Form.Check
+                className="mb-0"
+                type="switch"
+                label=""
+                size={"lg"}
+                onChange={() => setShowTable(!showTable)}
+              ></Form.Check>
+            </div>
+          </div>
         </div>
+        {showTable && (
+          <>
+            {budgetsFilter.map((item) => {
+              return (
+                <>
+                  <b>{item.budgetName}</b>
+                  <Progress data={item} />
+                  <br />
+                </>
+              );
+            })}
+          </>
+        )}
       </div>
     </div>
   );
 };
 
 const Overview = () => {
-  const dispatch = useDispatch();
   const user = useAppSelector((state) => state.authen.user);
   return (
     <div className="Overview">
@@ -627,30 +826,39 @@ const Overview = () => {
                     <WalletViewCard />
                   </div>
                 </div>
+                <div className="row Overview_Wallet">
+                  <div className="col-lg-12">
+                    <MostTransactionViewCard />
+                  </div>
+                </div>
+                <div className="row Overview_Wallet">
+                  <div className="col-lg-12">
+                    <BudgetListViewCard />
+                  </div>
+                </div>
               </div>
 
-              <div className="col-md-8">
+              <div className="col-md-4">
                 <div className="row Month">
-                  <div className="col-lg-6">
+                  <div className="col-lg-12">
+                    <Last7DaysViewCard />
+                  </div>
+                  <div className="col-lg-12">
+                    <SurplusViewCard />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div className="row Month">
+                  <div className="col-lg-12">
                     <ThisMonthViewCard />
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-lg-12">
                     <LastMonthViewCard />
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-          <section class="section dashboard">
-            <div className="row Last_Surplus">
-              <Last7DaysViewCard />
-              <SurplusViewCard />
-            </div>
-          </section>
-          <section class="section dashboard">
-            <div className="row MostTransaction">
-              <MostTransactionViewCard />
-              <BudgetListViewCard />
             </div>
           </section>
         </>

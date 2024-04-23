@@ -8,12 +8,14 @@ import useAppSelector from "../../hooks/useAppSelector";
 import { useDispatch } from "react-redux";
 import { getCalendars } from "../../redux/calendarSlice";
 import viLocale from "@fullcalendar/core/locales/vi";
+import { Link } from "react-router-dom";
 
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [displayedTransactions, setDisplayedTransactions] = useState([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [selectedDay, setSelectedDay] = useState(null);
 
   const user = useAppSelector((state) => state.authen.user);
   const events = useAppSelector((state) => state.calendar.values);
@@ -22,6 +24,12 @@ const Calendar = () => {
   useEffect(() => {
     dispatch(getCalendars({ month: currentMonth, year: currentYear }));
   }, [currentMonth, currentYear, user]);
+
+  const handleDayClick = (arg) => {
+    const selectedDate = arg.dateStr;
+    setSelectedDate(selectedDate);
+    setSelectedDay(arg.date);
+  };
 
   const handleEventClick = (info) => {
     const clickedDateEvents = events.find((event) => {
@@ -58,7 +66,9 @@ const Calendar = () => {
             <div className="row">
               <div className="col-md-4 listTrans card">
                 <div className="card-body">
-                  <h5 className="card-title">Các giao dịch</h5>
+                  <Link to="/transaction">
+                    <h5 className="card-title">Các giao dịch</h5>
+                  </Link>
                   <table className="table table-hover">
                     <thead>
                       <tr>
@@ -80,11 +90,12 @@ const Calendar = () => {
                                 ? "green"
                                 : "red"
                             }
+                             style={{float: "right"}}
                           >
                             {transaction.category.categoryTypeID !== 1
                               ? "-"
                               : "+"}
-                            {transaction.totalAmount.toLocaleString("vi-VN")} đ
+                            {transaction.totalAmountStr}
                           </td>
                         </tr>
                       ))}
@@ -94,9 +105,11 @@ const Calendar = () => {
               </div>
               <div className="col-md-7 fullCalendar card">
                 <FullCalendar
+                  className="custom-calendar"
                   plugins={[dayGridPlugin]}
                   initialView="dayGridMonth"
                   events={events}
+                  dateClick={handleDayClick}
                   eventClick={handleEventClick}
                   eventContent={(arg) => (
                     <>
@@ -106,20 +119,14 @@ const Calendar = () => {
                             {" "}
                             <div className="green">
                               <IoMdArrowDropup />
-                              {arg.event.extendedProps.totalAmount.toLocaleString(
-                                "vi-VN"
-                              )}{" "}
-                              đ
+                              {arg.event.extendedProps.totalAmountStr}{" "}
                             </div>
                           </>
                         ) : (
                           <>
                             <div className="red">
                               <IoMdArrowDropdown />
-                              {arg.event.extendedProps.totalAmount.toLocaleString(
-                                "vi-VN"
-                              )}{" "}
-                              đ
+                              {arg.event.extendedProps.totalAmountStr}{" "}
                             </div>
                           </>
                         )}
@@ -155,9 +162,9 @@ const Calendar = () => {
           </section>
         </>
       ) : (
-          <>
-           <PageHelper/>
-          </>
+        <>
+          <PageHelper />
+        </>
       )}
     </div>
   );

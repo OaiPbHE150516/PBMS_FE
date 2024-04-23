@@ -56,7 +56,7 @@ export const HistoryTab = ({ collabID }) => {
                   </div>
                   <div className="col-lg-2 arrow_money">
                     <IoIosArrowForward />
-                    <div className="amount">{item.dividingAmount.toLocaleString("vi-VN")} đ</div>
+                    <div className="amount">{item.dividingAmountStr} đ</div>
                     <IoIosArrowForward />
                   </div>
                   <div className="col-lg-5 right">

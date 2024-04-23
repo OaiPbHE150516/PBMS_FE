@@ -1,22 +1,52 @@
-const Progress = ({ fromDate, toDate, fromValue, toValue, percent, value }) => {
+import dayjs from "dayjs";
+
+const Progress = ({ data }) => {
   return (
     <div className="w-100">
       <div className="row">
-        <span className="small col-4">{fromDate}</span>
-        <b className="small col-4 text-center">{percent}%</b>
-        <span className="small col-4 text-end">{toDate}</span>
+        <b className="small col-4">
+          {dayjs(data.beginDate).format("DD/MM/YYYY")}
+        </b>
+        <b className="small col-4 text-center">{data.percentProgressStr}</b>
+        <b className="small col-4 text-end">
+          {dayjs(data.endDate).format("DD/MM/YYYY")}
+        </b>
       </div>
       <div class="container">
-        <div className="progress-bar progress-layer-1"></div>
-        <div
-          class="progress-bar progress-layer-2"
-          style={{ width: `${Math.max(0, 100 - percent)}%` }}
-        ></div>
+        <div class="progress">
+          {data.percentProgress < 33 && (
+            <div
+              class={"progress-bar progress-bar-striped bg-success"}
+              role="progressbar"
+              style={{ width: `${data.percentProgress}%` }}
+            ></div>
+          )}
+          {data.percentProgress > 33 && data.percentProgress < 66 && (
+            <div
+              class={"progress-bar progress-bar-striped bg-warning"}
+              role="progressbar"
+              style={{ width: `${data.percentProgress}%` }}
+            ></div>
+          )}
+          {data.percentProgress > 66 && (
+            <div
+              class={"progress-bar progress-bar-striped bg-danger"}
+              role="progressbar"
+              style={{ width: `${data.percentProgress}%` }}
+            ></div>
+          )}
+        </div>
       </div>
       <div className="row">
-        <span className="small col-4">{fromValue}</span>
-        <b className="small col-4 text-center">{value}</b>
-        <span className="small col-4 text-end">{toValue}</span>
+        <b className="small col-4">0 ₫</b>
+        <b className="small col-4 text-center">
+          {(data.remainAmount > 0) ? (
+            <>{data.currentAmountStr}</>
+          ) : (
+            <>{data.remainAmountStr}</>
+          )}
+        </b>
+        <b className="small col-4 text-end">{data.targetAmountStr}</b>
       </div>
     </div>
   );
