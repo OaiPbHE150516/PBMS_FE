@@ -101,7 +101,7 @@ const Transaction = () => {
               className="active bold btn-light"
             >
               Tạo giao dịch mới
-            </Button>            
+            </Button>
           </div>
           {showCreateTransactionForm && (
             <CreateTransaction
@@ -124,7 +124,6 @@ const Transaction = () => {
                     <th scope="col">Số tiền</th>
                     <th scope="col">Ví</th>
                     <th scope="col">Ghi chú</th>
-                    {/* <th scope="col">Thông tin</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -135,7 +134,7 @@ const Transaction = () => {
                       </td>
                       <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}` : `${transaction.transactionDateStr, transaction.transactionDateStr}`}</td>
                       <td>{transaction.category.nameVN}</td>
-                      <td style={{ textAlign: 'right', width:"120px" }} >
+                      <td style={{ textAlign: 'right', width: "120px" }} >
                         {transaction.category.categoryType.categoryTypeID === 1 ? (
                           <span style={{ color: '#4CAF50' }}>+{transaction.totalAmountStr}</span>
                         ) : transaction.category.categoryType.categoryTypeID === 2 ? (
@@ -154,13 +153,6 @@ const Transaction = () => {
                           <>{transaction.note}</>
                         )}
                       </td>
-                      {/* <td>
-                        {transaction.note.length > 10 ? (
-                          <>{transaction.note.substring(0, 10)}...</>
-                        ) : (
-                          <>{transaction.note}</>
-                        )}
-                      </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -182,42 +174,45 @@ const Transaction = () => {
                   <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
                     <button
                       className="page-link"
+                      onClick={() => handlePageClick(1)}
+                      disabled={currentPage === 1}
+                    >
+                      {'|<'}
+                    </button>
+                  </li>
+                  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                    <button
+                      className="page-link"
                       onClick={() => handlePageClick(currentPage - 1)}
                       disabled={currentPage === 1}
                     >
                       {'<<<'}
                     </button>
                   </li>
-                  {[1, 2, 3].map((page) => (
-                    <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
-                      <button className="page-link" onClick={() => handlePageClick(page)}>
-                        {page}
+                  {[...Array(transactions.totalPage).keys()].slice(Math.max(0, currentPage - 2), Math.min(transactions.totalPage, currentPage + 1)).map((page) => (
+                    <li key={page + 1} className={`page-item ${currentPage === page + 1 ? 'active' : ''}`}>
+                      <button className="page-link" onClick={() => handlePageClick(page + 1)}>
+                        {page + 1}
                       </button>
                     </li>
                   ))}
-                  {transactions.totalPage > 3 && (
-                    <>
-                      <li className="page-item disabled">
-                        <span className="page-link">...</span>
-                      </li>
-                      <li className={`page-item ${currentPage === transactions.totalPage - 1 ? 'active' : ''}`}>
-                        <button
-                          className="page-link"
-                          onClick={() => handlePageClick(transactions.totalPage - 1)}
-                        >
-                          {transactions.totalPage - 1}
-                        </button>
-                      </li>
-                      <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
-                        <button
-                          className="page-link"
-                          onClick={() => handlePageClick(transactions.totalPage)}
-                        >
-                          {transactions.totalPage}
-                        </button>
-                      </li>
-                    </>
+
+                  {currentPage < transactions.totalPage - 1 && (
+                    <li className="page-item disabled">
+                      <span className="page-link">...</span>
+                    </li>
                   )}
+                  {currentPage < transactions.totalPage - 1 && (
+                    <li className={`page-item ${currentPage === transactions.totalPage ? 'active' : ''}`}>
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageClick(transactions.totalPage)}
+                      >
+                        {transactions.totalPage}
+                      </button>
+                    </li>
+                  )}
+
                   <li className={`page-item ${currentPage === transactions.totalPage ? 'disabled' : ''}`}>
                     <button
                       className="page-link"
@@ -228,6 +223,7 @@ const Transaction = () => {
                     </button>
                   </li>
                 </ul>
+
               </div>
             </div>
           </div>
