@@ -39,9 +39,11 @@ const AddNewMemberPopup = ({ show, onClose, collabID, founderID }) => {
               type="text"
               className="flex-grow-1"
               value={searchKey}
-              onChange={(e) => setSearchKey(e.target.value)}
+              onChange={(e) => {
+                setSearchKey(e.target.value);
+                handleSearch();
+              }}
             />
-            <Button onClick={handleSearch}>Tìm</Button>
           </Form.Group>
           <div className="member_search_card">
             {listMemberSearched.map((member, index) => (

@@ -23,7 +23,8 @@ export const addCollaborator = createAsyncThunk(
   "add-collaborator",
   async ({ fieldValue }, { dispatch }) => {
     try {
-      let imageConvert =
+      if(fieldValue.account.length >= 1){
+        let imageConvert =
         fieldValue.imageFile !== ""
           ? await coverImage(fieldValue.imageFile)
           : "https://picsum.photos/200/300";
@@ -39,6 +40,10 @@ export const addCollaborator = createAsyncThunk(
       toast.success("Bạn tạo khoản tiêu chung thành công");
       await dispatch(getCollaborator(fieldValue.user));
       return response;
+      }else{
+        toast.error("Phải có ít nhất 2 thành viên")
+      }
+      
     } catch (error) {
       toast.error(error.response.data);
     }

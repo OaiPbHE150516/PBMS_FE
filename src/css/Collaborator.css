@@ -173,6 +173,9 @@
 .close {
   font-size: 24px;
 }
+.close:hover{
+  cursor: pointer;
+}
 .content input {
   width: 98%;
   height: 50px;
@@ -209,4 +212,28 @@
 }
 .btn-search:hover{
   background: #EFEDE4 !important;
+}
+
+.imageLoad svg{
+  cursor: pointer;
+}
+
+.imgLoad{
+  max-height: 100px !important;
+  max-width: 200px !important;
+} 
+.imgLogo{
+  height: 50px;
+  width: 50px;
+}
+.tableListItem td, .tableListItem td{
+  white-space: nowrap;
+}
+.detailDivideMoney td, .detailDivideMoney td{
+  white-space: nowrap;
+}
+.eachItem .itemMoney{
+  display: flex;
+  justify-content: right;
+  margin-left: -50px;
 }

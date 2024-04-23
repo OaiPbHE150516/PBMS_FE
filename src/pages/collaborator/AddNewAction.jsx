@@ -15,7 +15,8 @@ export const AddNewAction = ({ data, collabID }) => {
   const [actionText, setActionText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [imageValue, setImageValue] = useState(null);
-
+  const [actionTextError, setActionTextError] = useState("");
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -31,6 +32,10 @@ export const AddNewAction = ({ data, collabID }) => {
   };
 
   const handleAddAction = async () => {
+    if (actionText.trim() === "") {
+      setActionTextError("Vui lòng nhập nội dung");
+      return;
+    }
     if (actionText.trim() !== "") {
       await dispatch(
         addActionNoTrans({
@@ -42,6 +47,7 @@ export const AddNewAction = ({ data, collabID }) => {
           },
         })
       );
+      setActionTextError("");
       setActionText("");
       setImagePreview(null);
       setImageValue(null);
@@ -49,13 +55,11 @@ export const AddNewAction = ({ data, collabID }) => {
   };
   return (
     <div className="d-flex gap-2">
-      <div className="d-flex gap-3">
+      <div className="d-flex gap-3" style={{"align-items": "center"}}>
         <img
           src={data.pictureURL}
-          className="img-fluid rounded-full border border-dark"
+          className="rounded-full border border-dark imgLogo"
           alt="..."
-          width={50}
-          height={50}
         ></img>
         <div style={{display: "flex", "align-items": "center"}}>
           <p className="mb-0 bold">{data.accountName}</p>
@@ -66,17 +70,21 @@ export const AddNewAction = ({ data, collabID }) => {
           <Form.Control
             type="text"
             value={actionText}
-            onChange={(e) => setActionText(e.target.value)}
+            onChange={(e) => {
+              setActionText(e.target.value);
+              setActionTextError(""); 
+            }}
           />
+          {actionTextError && <div className="error-message" style={{color: "red"}}>{actionTextError}</div>}
         </div>
         {imagePreview && (
           <img
             src={imagePreview}
             alt="Preview"
-            style={{ width: 50, height: 50 }}
+            className="imgLoad"
           />
         )}
-        <label htmlFor="imageUpload" className="fs-5 px-1">
+        <label htmlFor="imageUpload" className="fs-5 px-1 imageLoad">
           <FaFileImage />
           <input
             id="imageUpload"

@@ -140,10 +140,9 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
 
   useEffect(() => {
     if (show) return;
-    setSearchKey("");
+    setSearchKey("");       
     setSearchResults([]);
     setSelectedMembers([]);
-
     reset();
   }, [show]);
 
@@ -163,7 +162,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
             type="text"
             {...register("name", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"name"} />
+          <FormErrorMessage errors={errors} fieldName={"name"} defaultMessage={"Không được để trống"}/>
         </Form.Group>
         <Form className="c-form"></Form>
         <Form.Label>Tìm kiếm thành viên</Form.Label>
@@ -172,11 +171,11 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
             type="text"
             className="flex-grow-1"
             value={searchKey}
-            onChange={(e) => setSearchKey(e.target.value)}
+            onChange={(e) => {
+              setSearchKey(e.target.value);
+              handleSearch(); 
+            }}
           />
-          <Button onClick={handleSearch} className="btn-search">
-            <span>Tìm</span>
-          </Button>
         </Form.Group>
         <div className="member_search_card">
           {listMemberSearched.map((member, index) => (
@@ -195,7 +194,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
                 as="textarea"
                 style={{ height: "300px" }}
               ></Form.Control>
-              <FormErrorMessage errors={errors} fieldName={"description"} />
+              <FormErrorMessage errors={errors} fieldName={"description"}  defaultMessage={"Không được để trống"}/>
             </Form.Group>
           </div>{" "}
           <div className="col-md-6">

@@ -55,6 +55,7 @@ const WalletViewCard = () => {
   }, [user]);
 
   const [showTable, setShowTable] = useState(true);
+
   return (
     <div class="col-xxl-6 col-md-6 card_Overview_Wallet">
       <div class="card info-card revenue-card">
@@ -76,6 +77,7 @@ const WalletViewCard = () => {
                   type="switch"
                   label=""
                   size={"lg"}
+                  checked={showTable}
                   onChange={() => setShowTable(!showTable)}
                 ></Form.Check>
               </div>
@@ -93,7 +95,7 @@ const WalletViewCard = () => {
                         item.balance < 0 ? "tdMoney red" : "tdMoney green"
                       }
                     >
-                      {item.balance.toLocaleString("vi-VN")} đ
+                      {item.balanceStr}
                     </td>
                   </tr>
                 ))}
@@ -115,6 +117,9 @@ const LastMonthViewCard = () => {
   const month = currentDate.getMonth();
   const year = currentDate.getFullYear();
 
+ const dataAmount = filterLastMonth.categoryWithTransactionData.map(
+    (item) => item.totalAmount
+  );
   const series = filterLastMonth.categoryWithTransactionData.map(
     (item) => item.percentage
   );
@@ -138,6 +143,7 @@ const LastMonthViewCard = () => {
 
   const [showTable, setShowTable] = useState(false);
 
+ 
   const lastMonthTransaction = [
     {
       series: series,
@@ -161,6 +167,19 @@ const LastMonthViewCard = () => {
             },
           },
         ],
+        tooltip: {
+          enabled: true,
+          y: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return dataAmount[dataPointIndex].toLocaleString("vi-VN") + " ₫";
+            },
+          },
+          x: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return labels[dataPointIndex];
+            },
+          },
+        },
       },
     },
   ];
@@ -257,6 +276,11 @@ const ThisMonthViewCard = () => {
   const labels = filterThisMonth.categoryWithTransactionData.map(
     (item) => item.categoryType.name
   );
+
+  const dataAmount = filterThisMonth.categoryWithTransactionData.map(
+    (item) => item.totalAmount
+  );
+
   const labelColors = ["#00E396", "#FF0000", "#FFE15D"];
 
   const totalIn = filterThisMonth.categoryWithTransactionData.find(
@@ -283,6 +307,7 @@ const ThisMonthViewCard = () => {
           type: "donut",
         },
         labels: labels,
+        datasets: dataAmount,
         colors: labelColors,
         responsive: [
           {
@@ -297,6 +322,19 @@ const ThisMonthViewCard = () => {
             },
           },
         ],
+        tooltip: {
+          enabled: true,
+          y: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return dataAmount[dataPointIndex].toLocaleString("vi-VN") + " ₫";
+            },
+          },
+          x: {
+            formatter: function (val, { seriesIndex, dataPointIndex, w }) {
+              return labels[dataPointIndex];
+            },
+          },
+        },
       },
     },
   ];
@@ -382,9 +420,9 @@ const ThisMonthViewCard = () => {
 const Last7DaysViewCard = () => {
   const user = useAppSelector((state) => state.authen.user);
 
-  const lastTransaction = Object.values(useAppSelector(
-    (state) => state.lastTransaction.values
-  )).reverse();
+  const lastTransaction = Object.values(
+    useAppSelector((state) => state.lastTransaction.values)
+  ).reverse();
 
   const dispatch = useDispatch();
 
@@ -757,7 +795,7 @@ const BudgetListViewCard = () => {
                 <>
                   <b>{item.budgetName}</b>
                   <Progress data={item} />
-                  <br/>
+                  <br />
                 </>
               );
             })}
