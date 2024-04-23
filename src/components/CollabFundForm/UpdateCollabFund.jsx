@@ -53,7 +53,7 @@ const UpdateCollabFund = ({
             type="text"
             {...register("name", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"name"} />
+          <FormErrorMessage errors={errors} fieldName={"name"} defaultMessage={"Vui lòng không được để trống"}/>
         </Form.Group>
         <div className="row">
           <div className="col-md-12">
@@ -67,26 +67,6 @@ const UpdateCollabFund = ({
               <FormErrorMessage errors={errors} fieldName={"description"} />
             </Form.Group>
           </div>{" "}
-          {/* <div className="col-md-6">
-            <Form.Group className="mb-2">
-              <Form.Label>Ảnh bìa</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleShowImageSelect}
-              />
-            </Form.Group>
-            {watch("imageLink") ? (
-              <div>
-                <img
-                  src={watch("imageLink")}
-                  alt={`Image`}
-                  className="img-fluid"
-                />
-              </div>
-            ) : null}
-          </div> */}
         </div>
       </Form>
     </Popup>

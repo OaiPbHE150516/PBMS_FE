@@ -23,8 +23,6 @@ const UpdateBudget = ({
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
 
-  console.log("CATE", categories)
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategoryByType());
@@ -46,8 +44,6 @@ const UpdateBudget = ({
     },
   });
 
-  console.log("DATA BUDGET", data)
-
   return (
     <Popup
       title={"Chỉnh sửa hạn mức"}
@@ -61,61 +57,61 @@ const UpdateBudget = ({
           type="text"
           {...register("budgetName", { required: true })}
         ></Form.Control>
-        <FormErrorMessage errors={errors} fieldName={"budgetName"} />
+        <FormErrorMessage
+          errors={errors}
+          fieldName={"budgetName"}
+          defaultMessage={"Không được để trống"}
+        />
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Hạng mục</Form.Label>
-        {/* <div className="row">
-          <div className="col-9">
-            <Controller
-              rules={{ validate: (value) => Boolean(value.length) }}
-              control={control}
-              name="categories"
-              render={({ field }) => (
-                <MultipleSelect isMulti {...field} options={categoryOptions} />
-              )}
-            />
-            <FormErrorMessage errors={errors} fieldName={"categories"} />
-          </div>
-          <div className="col-3 d-flex align-items-center justify-content-center">
-            <div className="force-center">
-              <img src={logo} className="" width={70} height={70} alt="" />
-            </div>
-          </div>
-        </div> */}
-           <select
-            className="form-control"
-            style={{
-              border: "var(--bs-border-width) solid var(--bs-border-color)",
-              borderRadius: "unset",
-              height: "38px",
-            }}
-            {...register("category", { required: true })}
-          >
-            {categories.map((cate) => (
-              <optgroup key={cate.value} label={cate.nameVN}>
-                {cate.children.map((child) => (
-                  <option key={child.categoryID} value={child.categoryID}>
-                    {child.nameVN}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-          <FormErrorMessage errors={errors} fieldName={"category"} />
+        <select
+          className="form-control"
+          style={{
+            border: "var(--bs-border-width) solid var(--bs-border-color)",
+            borderRadius: "unset",
+            height: "38px",
+          }}
+          disabled
+          {...register("category", { required: true })}
+        >
+          {categories.map((cate) => (
+            <optgroup key={cate.value} label={cate.nameVN}>
+              {cate.children.map((child) => (
+                <option key={child.categoryID} value={child.categoryID}>
+                  {child.nameVN}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+        <FormErrorMessage
+          errors={errors}
+          fieldName={"category"}
+          defaultMessage={"Không được để trống"}
+        />
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Ngưỡng chi tiêu</Form.Label>
         <Form.Control
           type="number"
+          min="1000"
           {...register("targetAmount", { required: true })}
         ></Form.Control>
-        <FormErrorMessage errors={errors} fieldName={"targetAmount"} />
+        <FormErrorMessage
+          errors={errors}
+          fieldName={"targetAmount"}
+          defaultMessage={"Số tiền lớn hơn 1.000 đ"}
+        />
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Ghi chú</Form.Label>
         <Form.Control as="textarea" {...register("note")}></Form.Control>
-        <FormErrorMessage errors={errors} fieldName={"note"} />
+        <FormErrorMessage
+          errors={errors}
+          fieldName={"note"}
+          defaultMessage={"Không được để trống"}
+        />
       </Form.Group>
     </Popup>
   );

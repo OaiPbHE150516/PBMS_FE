@@ -50,7 +50,7 @@ const ListTransaction = ({
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-4">{itemTrans.totalAmountStr}</div>
+                  <div className="col-md-4 itemMoney">{itemTrans.totalAmountStr}</div>
                 </div>
               </div>
             ))}
@@ -63,8 +63,14 @@ const ListTransaction = ({
 
 const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID }) => {
   const [note, setNote] = useState("");
+  const [noteError, setNoteError] = useState("");
+
   const dispatch = useDispatch();
   const handleAddAction = async () => {
+    if (!note.trim()) {
+      setNoteError("Vui lòng nhập nội dung"); 
+      return; 
+    }
     const fieldValue = {
       collabID: collabFundID,
       accountID: user.accountID,
@@ -72,9 +78,14 @@ const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID }) => {
       transactionID: itemTrans.transactionID,
     };
     try {
-      await dispatch(addActionWithTrans({user, fieldValue}));
+      await dispatch(addActionWithTrans({ user, fieldValue }));
       onClose();
     } catch (errors) {}
+  };
+
+  const handleNoteChange = (e) => {
+    setNote(e.target.value);
+    setNoteError(""); 
   };
 
   return (
@@ -103,8 +114,9 @@ const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID }) => {
             type="text"
             placeholder="Nhập nội dung"
             value={note}
-            onChange={(e) => setNote(e.target.value)}
+            onChange={handleNoteChange}
           />
+          {noteError && <div className="error-message" style={{color: "red"}}>{noteError}</div>}
         </div>
         <div className="close col-md-1">
           <IoIosSend onClick={handleAddAction} />
@@ -139,7 +151,6 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
 
-  console.log("CATE", categories.filter((item) => item.nameVN === "Chi tiêu"))
   // List Wallet
   const wallets = useAppSelector((state) => state.wallet.values);
 
@@ -160,9 +171,14 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
           <Form.Label>Số tiền</Form.Label>
           <Form.Control
             type="number"
+            min="1000"
             {...register("totalAmount", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"totalAmount"} />
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"totalAmount"}
+            defaultMessage={"Phải lớn hơn 1.000 đ"}
+          />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Hạng mục</Form.Label>
@@ -173,20 +189,30 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
               borderRadius: "unset",
               height: "38px",
             }}
-            {...register("categoryID", { required: true })}
+            {...register(
+              "categoryID",
+              { validate: (value) => value !== "0" },
+              { required: true }
+            )}
           >
             <option value={0}>-----Chọn hạng mục-----</option>
-            {categories.filter((item) => item.nameVN === "Chi tiêu").map((cate) => (
-              <optgroup key={cate.value} label={cate.nameVN}>
-                {cate.children.map((child) => (
-                  <option key={child.categoryID} value={child.categoryID}>
-                    {child.nameVN}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
+            {categories
+              .filter((item) => item.nameVN === "Chi tiêu")
+              .map((cate) => (
+                <optgroup key={cate.value} label={cate.nameVN}>
+                  {cate.children.map((child) => (
+                    <option key={child.categoryID} value={child.categoryID}>
+                      {child.nameVN}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
           </select>
-          <FormErrorMessage errors={errors} fieldName={"categoryID"} />
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"categoryID"}
+            defaultMessage={"Hãy chọn 1 hạng mục"}
+          />
         </Form.Group>
 
         <Form.Group className="mb-2">
@@ -198,7 +224,11 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
               borderRadius: "unset",
               height: "38px",
             }}
-            {...register("walletID", { required: true })}
+            {...register(
+              "walletID",
+              { validate: (value) => value !== "0" },
+              { required: true }
+            )}
           >
             <option value={0}>-----Chọn ví-----</option>
             {wallets.map((item) => (
@@ -207,12 +237,16 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
               </option>
             ))}
           </select>
-          <FormErrorMessage errors={errors} fieldName={"walletID"} />
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"walletID"}
+            defaultMessage={"Hãy chọn 1 ví"}
+          />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"note"} />
+          <FormErrorMessage errors={errors} fieldName={"note"}  defaultMessage={"Không được để trống"}/>
         </Form.Group>
       </Form>
     </Popup>

@@ -35,22 +35,26 @@ export const addBudgets = createAsyncThunk(
   "add-budgets",
   async ({ fieldValue }, { dispatch }) => {
     try {
-      const body = {
-        accountID: fieldValue.accountID,
-        budgetName: fieldValue.budgetName,
-        targetAmount: fieldValue.targetAmount,
-        beginDate: new Date(fieldValue.fromPeriod).toISOString(),
-        endDate: new Date(fieldValue.toPeriod).toISOString(),
-        budgetTypeID: getBudgetId(fieldValue.period),
-        repeatInterVal: fieldValue.repeat ? fieldValue.numberIterations : 0,
-        note: fieldValue.note,
-        createTime: new Date().toISOString(),
-        categoryIDs: [fieldValue.category],
-      };
-      const response = await addBudgetServices(body);
-      toast.success("Bạn tạo khoản chi chung thành công");
-      await dispatch(getBudgets());
-      return response;
+      if (fieldValue.targetAmount >= 1000) {
+        const body = {
+          accountID: fieldValue.accountID,
+          budgetName: fieldValue.budgetName,
+          targetAmount: fieldValue.targetAmount,
+          beginDate: new Date(fieldValue.fromPeriod).toISOString(),
+          endDate: new Date(fieldValue.toPeriod).toISOString(),
+          budgetTypeID: getBudgetId(fieldValue.period),
+          repeatInterVal: fieldValue.repeat ? fieldValue.numberIterations : 0,
+          note: fieldValue.note,
+          createTime: new Date().toISOString(),
+          categoryIDs: [fieldValue.category],
+        };
+        const response = await addBudgetServices(body);
+        toast.success("Bạn tạo khoản chi chung thành công");
+        await dispatch(getBudgets());
+        return response;
+      } else {
+        toast.error("Ngưỡng hạng mục phải lớn hơn 1000");
+      }
     } catch (error) {
       toast.error(error.response.data);
     }
@@ -61,23 +65,28 @@ export const updateBudgets = createAsyncThunk(
   "update-budgets",
   async ({ fieldValue }, { dispatch }) => {
     try {
-      const bodyCate = {
-        accountID: fieldValue.accountID,
-        budgetID: fieldValue.budgetID,
-        categoryIDs: [fieldValue.category],
-      };
-      await updateCategoryBudgetServices(bodyCate);
+      if (fieldValue.targetAmount >= 1000) {
+        const bodyCate = {
+          accountID: fieldValue.accountID,
+          budgetID: fieldValue.budgetID,
+          categoryIDs: [fieldValue.category],
+        };
+        await updateCategoryBudgetServices(bodyCate);
 
-      const body = {
-        accountID: fieldValue.accountID,
-        budgetID: fieldValue.budgetID,
-        budgetName: fieldValue.budgetName,
-        targetAmount: fieldValue.targetAmount,
-        note: fieldValue.note,
-      };
-      toast.success("Bạn đã chỉnh sửa thành công");
-      await updateBudgetServices(body);
-      await dispatch(getBudgets());
+        const body = {
+          accountID: fieldValue.accountID,
+          budgetID: fieldValue.budgetID,
+          budgetName: fieldValue.budgetName,
+          targetAmount: fieldValue.targetAmount,
+          note: fieldValue.note,
+        };
+        toast.success("Bạn đã chỉnh sửa thành công");
+        await updateBudgetServices(body);
+        await dispatch(getBudgets());
+      }
+      else{
+        toast.error("Ngưỡng hạng mục phải lớn hơn 1000");
+      }
     } catch (error) {
       toast.error(error.response.data);
     }
