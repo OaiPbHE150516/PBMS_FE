@@ -134,7 +134,7 @@ const Transaction = () => {
                       </td>
                       <td>{transaction.transactionDateMinus ? `${transaction.transactionDateMinus}` : `${transaction.transactionDateStr, transaction.transactionDateStr}`}</td>
                       <td>{transaction.category.nameVN}</td>
-                      <td style={{ textAlign: 'right', width: "120px" }} >
+                      <td style={{ textAlign: 'right', width: "130px" }} >
                         {transaction.category.categoryType.categoryTypeID === 1 ? (
                           <span style={{ color: '#4CAF50' }}>+{transaction.totalAmountStr}</span>
                         ) : transaction.category.categoryType.categoryTypeID === 2 ? (

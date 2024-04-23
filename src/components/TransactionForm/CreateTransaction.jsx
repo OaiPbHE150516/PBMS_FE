@@ -11,6 +11,7 @@ import { getInvoiceScan } from "../../redux/scanInvoiceSlice";
 import { fileInvoiceName } from "../../redux/fileSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from 'react-bootstrap';
+import "./CreateTransaction.css";
 
 const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
     const dispatch = useDispatch();
@@ -37,6 +38,8 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
             transactionDate: dayjs().format('YYYY-MM-DDTHH:mm:ss')
         },
     });
+    const now = new Date();
+    const dateTimeLocalMax = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     useEffect(() => {
         if (show) {
             reset();
@@ -306,14 +309,13 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     </select>
                                 )}
                             />
-
-
                         </div>
                         <div className="col-8">
                             <Form.Label>Thời gian</Form.Label>
                             <Form.Control
                                 type="datetime-local"
                                 {...register('transactionDate', { required: true })}
+                                max={dateTimeLocalMax}
                             />
                         </div>
 
@@ -324,10 +326,10 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                     <Form.Control as="textarea" {...register("note")}></Form.Control>
                 </Form.Group>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <div style={{ flexBasis: '50%', marginRight: '20px' }}>
+                    <div style={{ flexBasis: '45%', marginTop:'30px', marginRight: '20px' }}>
                         <Form.Group className="mb-2" style={{ position: 'relative' }}>
-                            <Form.Label>Chọn hóa đơn</Form.Label>
-                            <Form.Control type="file" onChange={handleImageChange} />
+                            <Form.Label style={{fontSize: '25px'}}>Tạo giao dịch với hóa đơn</Form.Label>
+                            <Form.Control style={{marginTop:'5px'}} type="file" onChange={handleImageChange} />
                             {isScanning && (
                                 <Spinner animation="border"
                                     role="status"
@@ -411,7 +413,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                                     <FormControl
                                                         {...field}
                                                         type="number"
-                                                        defaultValue={scan.totalAmount}
                                                         aria-describedby="inputGroupPrepend"
                                                     />
                                                     {errors.totalAmount && (
@@ -420,7 +421,6 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                                 </InputGroup>
                                             )}
                                         />
-
                                     </InputGroup>
                                 </Form.Group>
                                 <Form.Group controlId="formName">
@@ -461,43 +461,43 @@ const CreateTransaction = ({ show, showSet, onSubmit = () => { } }) => {
                                     <tbody>
                                         {Array.isArray(scan.productInInvoices) && scan.productInInvoices.map((product, index) => (
                                             <tr key={index}>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td className="table-cell">
                                                     <span
-                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        className="table-cell"
                                                         contentEditable
-                                                        onBlur={(e) => register(`productInInvoices[${index}].productName`, { value: e.target.innerText, required: true })}
+                                                        onBlur={(e) => setValue(`productInInvoices[${index}].productName`, e.target.innerText, { shouldValidate: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.productName }}
                                                     />
                                                 </td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td className="table-cell">
                                                     <span
-                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        className="table-cell"
                                                         contentEditable
-                                                        onBlur={(e) => register(`productInInvoices[${index}].quanity`, { value: e.target.innerText, required: true })}
+                                                        onBlur={(e) => setValue(`productInInvoices[${index}].quanity`, e.target.innerText, { shouldValidate: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.quanity }}
                                                     />
                                                 </td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td className="table-cell">
                                                     <span
-                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        className="table-cell"
                                                         contentEditable
-                                                        onBlur={(e) => register(`productInInvoices[${index}].unitPrice`, { value: e.target.innerText, required: true })}
+                                                        onBlur={(e) => setValue(`productInInvoices[${index}].unitPrice`, e.target.innerText, { shouldValidate: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.unitPrice }}
                                                     />
                                                 </td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td className="table-cell">
                                                     <span
-                                                        style={{ fontSize: '10px', padding: '8px' }}
+                                                        className="table-cell"
                                                         contentEditable
-                                                        onBlur={(e) => register(`productInInvoices[${index}].totalAmount`, { value: e.target.innerText, required: true })}
+                                                        onBlur={(e) => setValue(`productInInvoices[${index}].totalAmount`, e.target.innerText, { shouldValidate: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.totalAmount }}
                                                     />
                                                 </td>
-                                                <td style={{ fontSize: '10px', padding: '8px' }}>
+                                                <td className="table-cell">
                                                     <span
-                                                        style={{ fontSize: '10px' }}
+                                                        className="table-cell"
                                                         contentEditable
-                                                        onBlur={(e) => register(`productInInvoices[${index}].tag`, { value: e.target.innerText, required: true })}
+                                                        onBlur={(e) => setValue(`productInInvoices[${index}].tag`, e.target.innerText, { shouldValidate: true })}
                                                         dangerouslySetInnerHTML={{ __html: product.tag }}
                                                     />
                                                 </td>
