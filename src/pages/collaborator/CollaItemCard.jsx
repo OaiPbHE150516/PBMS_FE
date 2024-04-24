@@ -75,6 +75,7 @@ export const CollaItemCard = ({ data, onItemClick }) => {
                 show={showTransactionForm}
                 showSet={setShowTransactionForm}
                 collabFundID={data.collabFundID}
+                onClose={() => setShowTransactionForm(false)}
               />
             )}
             {data.totalAmount !== 0 ? (
