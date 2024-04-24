@@ -148,7 +148,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
 
   return (
     <Popup
-      title={"Thêm khoản chi tiêu chung"}
+      title={"Thêm nhóm chi tiêu chung"}
       show={show}
       onClose={() => showSet(false)}
       onSubmit={handleSubmit(function (data) {
@@ -157,7 +157,7 @@ const CreateCollabFund = ({ show, showSet, onSubmit = () => {} }) => {
     >
       <Form className="c-form" noValidate validated={isValid}>
         <Form.Group className="mb-2">
-          <Form.Label>Tên khoản chi tiêu</Form.Label>
+          <Form.Label>Tên nhóm chi tiêu chung</Form.Label>
           <Form.Control
             type="text"
             {...register("name", { required: true })}

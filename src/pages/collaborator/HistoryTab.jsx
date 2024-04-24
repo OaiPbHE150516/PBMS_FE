@@ -61,7 +61,7 @@ export const HistoryTab = ({ collabID }) => {
                   </div>
                   <div className="col-lg-5 right">
                     <img
-                      src={item.fromAccount.pictureURL}
+                      src={item.toAccount.pictureURL}
                       className="img-fluid rounded-full border border-dark"
                       width={50}
                       height={50}

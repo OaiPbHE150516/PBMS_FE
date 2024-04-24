@@ -15,7 +15,6 @@ export const AddNewAction = ({ data, collabID }) => {
   const [actionText, setActionText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [imageValue, setImageValue] = useState(null);
-  const [actionTextError, setActionTextError] = useState("");
   
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -32,11 +31,6 @@ export const AddNewAction = ({ data, collabID }) => {
   };
 
   const handleAddAction = async () => {
-    if (actionText.trim() === "") {
-      setActionTextError("Vui lòng nhập nội dung");
-      return;
-    }
-    if (actionText.trim() !== "") {
       await dispatch(
         addActionNoTrans({
           fieldValue: {
@@ -47,11 +41,9 @@ export const AddNewAction = ({ data, collabID }) => {
           },
         })
       );
-      setActionTextError("");
       setActionText("");
       setImagePreview(null);
       setImageValue(null);
-    }
   };
   return (
     <div className="d-flex gap-2">
@@ -72,10 +64,8 @@ export const AddNewAction = ({ data, collabID }) => {
             value={actionText}
             onChange={(e) => {
               setActionText(e.target.value);
-              setActionTextError(""); 
             }}
           />
-          {actionTextError && <div className="error-message" style={{color: "red"}}>{actionTextError}</div>}
         </div>
         {imagePreview && (
           <img

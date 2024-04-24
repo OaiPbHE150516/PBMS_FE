@@ -15,6 +15,7 @@ import { IoMdClose } from "react-icons/io";
 import { BiCheck } from "react-icons/bi";
 import { acceptToCollab, declineToCollab } from "../../redux/memberSlice";
 import { getActionsOfCollab } from "../../redux/actionSlice";
+import { getTotalAmountCollaborator } from "../../redux/totalAmountCollabSlice";
 
 const Callaborator = () => {
   const [show, showSet] = useState(false);
@@ -38,6 +39,24 @@ const Callaborator = () => {
   const handleDeclineCollab = (collabID, accID, user) => {
     dispatch(declineToCollab({ collabID, accID, user }));
   };
+
+  const [totalAmounts, setTotalAmounts] = useState({});
+
+  useEffect(() => {
+    const fetchTotalAmounts = async () => {
+      const amounts = {};
+      for (const collaborator of collaborators) {
+        if (collaborator.accountState.activeStateID !== 3) {
+          const response = await dispatch(getTotalAmountCollaborator(collaborator.collabFundID));
+          const totalAmountStr = response.payload.totalAmountStr;
+          amounts[collaborator.collabFundID] = totalAmountStr;
+        }
+      }
+      setTotalAmounts(amounts);
+    };
+
+    fetchTotalAmounts();
+  }, [collaborators, dispatch]);
 
   return (
     <div className="Callaborator">
@@ -113,8 +132,11 @@ const Callaborator = () => {
                     {collaborators.map((item, index) =>
                       item.accountState.activeStateID !== 3 ? (
                         <CollaItemCard
+                          key={index}
                           data={item}
+                          collabFundID={item.collabFundID}
                           onItemClick={handleCollabItemClick}
+                          totalAmount={totalAmounts[item.collabFundID]} 
                         />
                       ) : (
                         <></>

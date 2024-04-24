@@ -66,6 +66,13 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
 
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
+  const categoryFilter = categories.filter(
+    (item) => item.nameVN === "Chi tiêu"
+  );
+  const categoryOptions = categoryFilter[0]?.children.map((item) => ({
+    label: item.nameVN,
+    value: item.categoryID,
+  }))??[];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -128,30 +135,36 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             type="text"
             {...register("budgetName", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"budgetName"} defaultMessage={"Không được để trống"} />
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"budgetName"}
+            defaultMessage={"Không được để trống"}
+          />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Hạng mục</Form.Label>
-          <select
-            className="form-control"
-            style={{
-              border: "var(--bs-border-width) solid var(--bs-border-color)",
-              borderRadius: "unset",
-              height: "38px",
-            }}
-            {...register("category", { required: true })}
-          >
-            {categories.filter((item) => item.nameVN === "Chi tiêu").map((cate) => (
-              <optgroup key={cate.value} label={cate.nameVN}>
-                {cate.children.map((child) => (
-                  <option key={child.categoryID} value={child.categoryID}>
-                    {child.nameVN}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-          <FormErrorMessage errors={errors} fieldName={"category"} defaultMessage={"Không được để trống"}/>
+          <div className="row">
+            <div className="col-12">
+              <Controller
+                rules={{ validate: (value) => Boolean(value.length) }}
+                control={control}
+                name="category"
+                render={({ field }) => (
+                  <MultipleSelect
+                    isMulti
+                    {...field}
+                    options={categoryOptions}
+                  />
+                )}
+              />
+              <FormErrorMessage errors={errors} fieldName={"category"} />
+            </div>
+          </div>
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"category"}
+            defaultMessage={"Không được để trống"}
+          />
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label>Ngưỡng chi tiêu</Form.Label>
@@ -160,7 +173,11 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
             min="1000"
             {...register("targetAmount", { required: true })}
           ></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"targetAmount"} defaultMessage={"Số tiền lớn hơn 1.000 đ"}/>
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"targetAmount"}
+            defaultMessage={"Số tiền lớn hơn 1.000 đ"}
+          />
         </Form.Group>
         <Form.Group className="mb-3 d-flex align-items-center gap-3">
           <Form.Label>Khoảng thời gian</Form.Label>
@@ -199,7 +216,11 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
               </div>
             )}
           />
-          <FormErrorMessage errors={errors} fieldName={"period"} defaultMessage={"Không được để trống"}/>
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"period"}
+            defaultMessage={"Không được để trống"}
+          />
         </Form.Group>
         <Form.Group className="mb-4">
           {period === "other" && (
@@ -230,7 +251,11 @@ const CreateBudget = ({ show, showSet, onSubmit = () => {} }) => {
         <Form.Group className="mb-2">
           <Form.Label>Ghi chú</Form.Label>
           <Form.Control as="textarea" {...register("note")}></Form.Control>
-          <FormErrorMessage errors={errors} fieldName={"note"}  defaultMessage={"Không được để trống"}/>
+          <FormErrorMessage
+            errors={errors}
+            fieldName={"note"}
+            defaultMessage={"Không được để trống"}
+          />
         </Form.Group>
       </Form>
     </Popup>

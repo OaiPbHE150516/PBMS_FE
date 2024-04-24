@@ -61,7 +61,7 @@ const ListTransaction = ({
   );
 };
 
-const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID }) => {
+const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID, onHide, onExit }) => {
   const [note, setNote] = useState("");
   const [noteError, setNoteError] = useState("");
 
@@ -80,6 +80,8 @@ const AddActionPopup = ({ show, onClose, itemTrans, user, collabFundID }) => {
     try {
       await dispatch(addActionWithTrans({ user, fieldValue }));
       onClose();
+      onHide();
+      onExit();
     } catch (errors) {}
   };
 
@@ -253,7 +255,7 @@ const FormNewTransaction = ({ show, showSet, onSubmit = () => {} }) => {
   );
 };
 
-export const TransactionFrom = ({ show, showSet, collabFundID }) => {
+export const TransactionFrom = ({ show, showSet, collabFundID, onClose }) => {
   const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
   const [itemTrans, setItemTrans] = useState(null);
@@ -322,6 +324,8 @@ export const TransactionFrom = ({ show, showSet, collabFundID }) => {
             itemTrans={itemTrans}
             collabFundID={collabFundID}
             user={user}
+            onExit={onClose}
+            onHide={onClose}
           />
         )}
         {showFormNewTransaction && (

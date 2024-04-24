@@ -19,9 +19,6 @@ export const ActionCard = ({ collabID }) => {
   const [actionSelected, showActionSelected] = useState(null);
   const [showPopupAction, setShowPopupAction] = useState(false);
 
-  console.log("actionSelected", actionSelected);
-  console.log("reversedActions", reversedActions);
-
   const handleGetActionID = (actionID) => {
     const selectedAction = reversedActions.find(
       (item) => item.collabFundActivityID === actionID

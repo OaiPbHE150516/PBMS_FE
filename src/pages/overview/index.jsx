@@ -480,7 +480,7 @@ const Last7DaysViewCard = () => {
         tooltip: {
           y: {
             formatter: function (val) {
-              return val.toLocaleString("vi-VN");
+              return val.toLocaleString("vi-VN") + " ₫";
             },
           },
         },
