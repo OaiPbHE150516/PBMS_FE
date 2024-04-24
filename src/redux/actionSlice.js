@@ -25,7 +25,7 @@ export const addActionNoTrans = createAsyncThunk(
       const body = {
         collabFundID: fieldValue.collabID,
         accountID: fieldValue.accountID,
-        note: fieldValue.note,
+        note: fieldValue.note !== "" ? fieldValue.note : "",
         filename:
           fieldValue.imageFile !== ""
             ? await coverImage(fieldValue.imageFile)
@@ -42,7 +42,7 @@ export const addActionNoTrans = createAsyncThunk(
 
 export const addActionWithTrans = createAsyncThunk(
   "add-action-with-trans",
-  async ({user, fieldValue}, { dispatch }) => {
+  async ({ user, fieldValue }, { dispatch }) => {
     try {
       const body = {
         CollabFundID: fieldValue.collabID,
@@ -58,7 +58,7 @@ export const addActionWithTrans = createAsyncThunk(
       await dispatch(
         getActionsOfCollab(fieldValue.collabID, fieldValue.accountID)
       );
-      await dispatch(getCollaborator(user))
+      await dispatch(getCollaborator(user));
       return response;
     } catch (error) {
       toast.error(error.response.data);

@@ -19,10 +19,17 @@ const UpdateBudget = ({
   onSubmit = () => {},
 }) => {
   const user = useAppSelector((state) => state.authen.user);
-
+  console.log("DATA", data);
   //List Categories
   const categories = useAppSelector((state) => state.category.values);
-
+  const categoryFilter = categories.filter(
+    (item) => item.nameVN === "Chi tiêu"
+  );
+  const categoryOptions =
+    categoryFilter[0]?.children.map((item) => ({
+      label: item.nameVN,
+      value: item.categoryID,
+    })) ?? [];
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategoryByType());
@@ -40,7 +47,10 @@ const UpdateBudget = ({
       budgetName: data.budgetName,
       targetAmount: data.targetAmount,
       note: data.note,
-      category: data.categories?.[0].categoryID,
+      categories: data.categories.map((item) => ({
+        label: item.nameVN,
+        value: item.categoryID,
+      })),
     },
   });
 
@@ -65,26 +75,23 @@ const UpdateBudget = ({
       </Form.Group>
       <Form.Group className="mb-2">
         <Form.Label>Hạng mục</Form.Label>
-        <select
-          className="form-control"
-          style={{
-            border: "var(--bs-border-width) solid var(--bs-border-color)",
-            borderRadius: "unset",
-            height: "38px",
-          }}
-          disabled
-          {...register("category", { required: true })}
-        >
-          {categories.map((cate) => (
-            <optgroup key={cate.value} label={cate.nameVN}>
-              {cate.children.map((child) => (
-                <option key={child.categoryID} value={child.categoryID}>
-                  {child.nameVN}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
+        <div className="row">
+          <div className="col-12">
+            <Controller
+              control={control}
+              name="categories"
+              render={({ field }) => (
+                <MultipleSelect
+                  isMulti
+                  {...field}
+                  options={categoryOptions}
+                  isDisabled={true}
+                />
+              )}
+            />
+            <FormErrorMessage errors={errors} fieldName={"categories"} />
+          </div>
+        </div>
         <FormErrorMessage
           errors={errors}
           fieldName={"category"}

@@ -7,9 +7,27 @@ import logo from "../../assets/Logo.png";
 import * as dayjs from "dayjs";
 import { Form } from "react-bootstrap";
 const Card = ({ onDelete, onEdit, onReload, data }) => {
-  return (
+    return (
     <div className="c-card cardBudgetItem">
-      <h3 className="c-card__title">{data.budgetName}</h3>
+      <div
+        className="c-card__title"
+        style={{ display: "flex", "justify-content": "space-between" }}
+      >
+        <h3 style={{ "font-size": "22px", "font-weight": "bold" }}>
+          {data.budgetName}
+        </h3>
+        {data.percentProgress > 100 ? (
+          <>
+            <div>
+              <h3 style={{ "font-size": "22px", "font-weight": "bold", color: "red" }}>
+                Đã vượt mức chi tiêu
+              </h3>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
       <div className="ps-3">
         <div className="d-flex gap-3">
           <Progress data={data} />
@@ -18,7 +36,7 @@ const Card = ({ onDelete, onEdit, onReload, data }) => {
           <div>
             <p className="mb-0 text-base">Số dư: {data.remainAmountStr} </p>
             <p className="mb-0 text-base">
-              Hạng mục: {data.categories[0].nameVN}
+              Hạng mục: {data.categories.map((item) => item.nameVN).join(", ")}
             </p>
             <p className="mb-0 text-base">Ghi chú: {data.note}</p>
           </div>
