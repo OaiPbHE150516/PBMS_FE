@@ -12,8 +12,6 @@ export const HistoryTab = ({ collabID }) => {
     dispatch(getHistory({ collabID }));
   }, [user, collabID]);
 
-
-  console.log("histories", histories)
   return (
     <div class="card mb-3 cardActionItem">
       {histories.map((item) => (

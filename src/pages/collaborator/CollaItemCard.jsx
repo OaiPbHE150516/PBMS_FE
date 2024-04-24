@@ -13,12 +13,13 @@ import {
 } from "../../redux/collaboratorSlice";
 
 import PopupDelete from "../../components/PopupDelete";
+import { getTotalAmountCollaborator } from "../../redux/totalAmountCollabSlice";
 
-export const CollaItemCard = ({ data, onItemClick }) => {
+export const CollaItemCard = ({ data, onItemClick, collabFundID, totalAmount }) => {
   const handleClick = () => {
     onItemClick(data.collabFundID);
   };
-
+  
   const buttonStyle = {
     backgroundImage: `url(${data.imageURL})`,
     backgroundSize: "cover",
@@ -60,7 +61,7 @@ export const CollaItemCard = ({ data, onItemClick }) => {
           onClick={handleClick}
         >
           <h5 class="card-title totalMoney pt-2 pb-3 mb-0 fs-6">
-            {data.totalAmountStr}
+            {totalAmount}
           </h5>
           <div className="listButton">
             <Button

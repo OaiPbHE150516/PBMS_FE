@@ -23,6 +23,7 @@ import balanceHistorySlice from "./balanceHistorySlice";
 import searchMemberSlice from "../services/searchMemberSlice";
 import historyCollabSlice from "./historyCollabSlice";
 import mostTransExpenseSlice from "./mostTransExpenseSlice";
+import totalAmountCollabSlice from "./totalAmountCollabSlice";
 const rootReducers = combineReducers({
   authen: authenSlice.reducer,
   budget: budgetSlice.reducer,
@@ -48,6 +49,7 @@ const rootReducers = combineReducers({
   searchMember: searchMemberSlice.reducer,
   historyCollab: historyCollabSlice.reducer,
   mostTransExpense: mostTransExpenseSlice.reducer,
+  totalAmount: totalAmountCollabSlice.reducer
 });
 
 const store = configureStore({

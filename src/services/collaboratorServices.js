@@ -15,6 +15,14 @@ export const getCollaborators = async (user) => {
   return response.data;
 };
 
+export const getTotalAmountCollaborator = async (collabFundID) => {
+  const response = await axios.get(
+    API.MANAGE_COLLABORATOR + `/api/collabfund/get/totalAmount/${collabFundID}`
+  );
+  console.log(response);
+  return response.data;
+};
+
 export const addCollaborators = async (data) => {
   const response = await axios.post(
     API.MANAGE_COLLABORATOR + `/api/collabfund/create`,
