@@ -15,11 +15,16 @@ import {
 import PopupDelete from "../../components/PopupDelete";
 import { getTotalAmountCollaborator } from "../../redux/totalAmountCollabSlice";
 
-export const CollaItemCard = ({ data, onItemClick, collabFundID, totalAmount }) => {
+export const CollaItemCard = ({
+  data,
+  onItemClick,
+  collabFundID,
+  totalAmount,
+}) => {
   const handleClick = () => {
     onItemClick(data.collabFundID);
   };
-  
+
   const buttonStyle = {
     backgroundImage: `url(${data.imageURL})`,
     backgroundSize: "cover",
@@ -35,7 +40,7 @@ export const CollaItemCard = ({ data, onItemClick, collabFundID, totalAmount }) 
   const dispatch = useDispatch();
   const [show, showSet] = useState(false);
   const accountID = useSelector((state) => state.authen.user?.accountID);
-
+  const user = useAppSelector((state) => state.authen.user);
   return (
     <div class="card mb-3 cardItem overflow-hidden" onClick={handleClick}>
       <div class="row g-0">
@@ -108,10 +113,13 @@ export const CollaItemCard = ({ data, onItemClick, collabFundID, totalAmount }) 
                 showSet={setShowDivideForm}
                 onSubmit={(fieldValue) => {
                   dispatch(
-                    addDivideMoney({
-                      accountID: accountID,
-                      fieldValue: fieldValue,
-                    })
+                    addDivideMoney(
+                      {
+                        accountID: accountID,
+                        fieldValue: fieldValue,
+                      },
+                      [user]
+                    )
                   )
                     .unwrap()
                     .then(() => showSet(false));
@@ -181,7 +189,8 @@ export const CollaItemCard = ({ data, onItemClick, collabFundID, totalAmount }) 
                     deleteCollaborator({
                       accID: accountID,
                       collabFundID: data.collabFundID,
-                    })
+                      user: user
+                    },[user])
                   )
                     .unwrap()
                     .then(() => showSet(false));

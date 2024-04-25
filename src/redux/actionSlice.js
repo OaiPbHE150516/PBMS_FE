@@ -8,9 +8,9 @@ import { getCollaborator } from "./collaboratorSlice";
 
 export const getActionsOfCollab = createAsyncThunk(
   "get-actionsOfCollab",
-  async (collabID, accountID) => {
+  async ({ collabID, accountID }) => {
     try {
-      const response = await ActionsOfCollabServices(collabID, accountID);
+      const response = await ActionsOfCollabServices(collabID);
       return response;
     } catch (error) {
       toast.error(error.response.data);
@@ -32,7 +32,7 @@ export const addActionNoTrans = createAsyncThunk(
             : "",
       };
       const response = await NewActionsOfCollabNoTransServices(body);
-      await dispatch(getActionsOfCollab(fieldValue.collabID));
+      await dispatch(getActionsOfCollab({ collabID: fieldValue.collabID }));
       return response;
     } catch (error) {
       toast.error(error.response.data);
@@ -56,7 +56,10 @@ export const addActionWithTrans = createAsyncThunk(
       });
       const response = await NewActionsOfCollabWithTransServices(formData);
       await dispatch(
-        getActionsOfCollab(fieldValue.collabID, fieldValue.accountID)
+        getActionsOfCollab({
+          collabID: fieldValue.collabID,
+          accountID: fieldValue.accountID,
+        })
       );
       await dispatch(getCollaborator(user));
       return response;
@@ -82,7 +85,7 @@ const actionSlice = createSlice({
         state.values = action.payload;
       })
       .addCase(getActionsOfCollab.rejected, (state, action) => {
-        console.log("rejected get members");
+        console.log("rejected get actions");
       });
   },
 });
