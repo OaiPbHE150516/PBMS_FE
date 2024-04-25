@@ -85,7 +85,7 @@ const Wallet = () => {
                                 <div class="wallet-container" key={wallet.id}>
                                     <div class="wallet">
                                         <div class="wallet-body">
-                                            <h5 class="wallet-title">{capitalizeFirstLetter(wallet.name)}<span>{formatCurrency(wallet.balance)} {wallet.currency.symbol}</span></h5>
+                                            <h5 class="wallet-title">{capitalizeFirstLetter(wallet.name)}<span>{wallet.balanceStr} </span></h5>
                                             <h6 class="wallet-sub">Ngày tạo ví: {wallet.createTimeStr}</h6>
                                             <h6 class="wallet-sub">Đơn vị tiền: {wallet.currency.name} - {wallet.currency.symbol}</h6>
                                             <h6 class="wallet-sub">Ghi chú: {wallet.note}</h6>
