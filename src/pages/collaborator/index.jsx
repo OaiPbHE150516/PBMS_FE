@@ -63,7 +63,7 @@ const Callaborator = () => {
       {user ? (
         <>
           <PageTitle title="Chi tiêu chung" />
-          {collaborators.map((item) =>
+          {collaborators?.map((item) =>
             item.accountState.activeStateID === 3 ? (
               <div
                 class="alert alert-secondary alert-dismissible fade show"
@@ -129,8 +129,8 @@ const Callaborator = () => {
               {collaborators.length > 0 && (
                 <>
                   <div className="col-lg-4 listColla">
-                    {collaborators.map((item, index) =>
-                      item.accountState.activeStateID !== 3 ? (
+                    {collaborators?.map((item, index) =>
+                      (item.accountState.activeStateID !== 3 && item.accountState.activeStateID !== 2) ? (
                         <CollaItemCard
                           key={index}
                           data={item}

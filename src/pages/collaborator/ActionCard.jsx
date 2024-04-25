@@ -11,9 +11,10 @@ import { Button } from "react-bootstrap";
 export const ActionCard = ({ collabID }) => {
   const actions = useAppSelector((state) => state.action.values);
   const reversedActions = [...actions].reverse();
+  const user = useAppSelector((state) => state.authen.user);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getActionsOfCollab(collabID));
+    dispatch(getActionsOfCollab({collabID}));
   }, [collabID]);
 
   const [actionSelected, showActionSelected] = useState(null);

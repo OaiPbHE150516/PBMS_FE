@@ -5,6 +5,9 @@ import { updateCollaborators as updateCollaboratorsServices } from "../services/
 import { deleteCollaborators as deleteCollaboratorsServices } from "../services/collaboratorServices";
 import { coverImage } from "../services/coverImageServices";
 import { toast } from "react-toastify";
+import { getActionsOfCollab } from "./actionSlice";
+import { getMembersOfCollab } from "./memberSlice";
+import { getHistory } from "./historyCollabSlice";
 
 export const getCollaborator = createAsyncThunk(
   "get-collaborators",
@@ -77,7 +80,10 @@ export const deleteCollaborator = createAsyncThunk(
     try {
       const response = await deleteCollaboratorsServices(accID, collabFundID);
       toast.success("Bạn đã xoá thành công");
-      await dispatch(getCollaborator(user));
+      await dispatch(getCollaborator());
+      await dispatch(getActionsOfCollab({collabID: collabFundID, accountID: accID}))
+      await dispatch(getMembersOfCollab({collabID: collabFundID}))
+      await dispatch(getHistory({collabID: collabFundID}))
       return response;
     } catch (error) {
       toast.error(error.response.data);

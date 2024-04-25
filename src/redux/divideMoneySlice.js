@@ -2,6 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getInforDivide as getInforDivideServices } from "../services/divideMoneyServices";
 import { addDivideMoney as addDivideMoneyServices } from "../services/divideMoneyServices";
 import { toast } from "react-toastify";
+import { get } from "react-hook-form";
+import { getCollaborator } from "./collaboratorSlice";
+import { getActionsOfCollab } from "./actionSlice";
+import { getHistory } from "./historyCollabSlice";
 
 export const getInforDivide = createAsyncThunk(
   "get-infor-divide",
@@ -17,7 +21,7 @@ export const getInforDivide = createAsyncThunk(
 
 export const addDivideMoney = createAsyncThunk(
   "add-divide-money",
-  async ({ accountID, fieldValue }, { dispatch }) => {
+  async ({ accountID, fieldValue, user }, { dispatch }) => {
     try {
       const body = {
         accountID: accountID,
@@ -25,7 +29,9 @@ export const addDivideMoney = createAsyncThunk(
       };
       const response = await addDivideMoneyServices(body);
       toast.success("Bạn chia tiền thành công");
-      await dispatch(getInforDivide());
+      await dispatch(getCollaborator(user))
+      await dispatch(getActionsOfCollab({collabID: fieldValue.collabFundID, accountID: accountID}))
+      await dispatch(getHistory({collabID: fieldValue.collabFundID}))
       return response;
     } catch (error) {
       toast.error(error.response.data);
